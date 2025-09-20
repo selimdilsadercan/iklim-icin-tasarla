@@ -1,12 +1,10 @@
 "use client";
 
 import AppBar from "@/components/AppBar";
-import MobileWrapper from "@/components/MobileWrapper";
 
 export default function ClassPage() {
   return (
-    <MobileWrapper deviceType="generic" width={375} height={812}>
-      <div className="min-h-full bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
         <AppBar />
         
         {/* Main Content with bottom padding for bottom navigation */}
@@ -78,6 +76,5 @@ export default function ClassPage() {
           </div>
         </div>
       </div>
-    </MobileWrapper>
   );
 }

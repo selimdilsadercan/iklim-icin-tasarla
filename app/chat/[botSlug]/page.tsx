@@ -1,4 +1,3 @@
-import MobileWrapper from "@/components/MobileWrapper";
 import ChatPatternBackground from "@/components/ChatPatternBackground";
 import ChatClient from "./ChatClient";
 
@@ -24,8 +23,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
   const botInfo = getBotInfo(botSlug);
 
   return (
-         <MobileWrapper deviceType="generic" width={375} height={812}>
-       <div className="min-h-full bg-gray-50 flex flex-col relative">
+    <div className="h-screen w-full bg-gray-50 flex flex-col relative">
          <ChatPatternBackground botSlug={botSlug} />
         {/* Chat Header */}
         <div className="bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3 relative z-20">
@@ -43,7 +41,6 @@ export default async function ChatPage({ params }: ChatPageProps) {
         {/* Chat Client Component */}
         <ChatClient botSlug={botSlug} />
       </div>
-    </MobileWrapper>
   );
 }
 

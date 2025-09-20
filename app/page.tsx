@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import MobileWrapper from "@/components/MobileWrapper";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -21,8 +20,7 @@ export default function Home() {
   };
 
   return (
-    <MobileWrapper deviceType="generic" width={375} height={812}>
-      <div className="min-h-full bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
+    <div className="h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
         {/* Climate-themed Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Floating leaves */}
@@ -48,7 +46,7 @@ export default function Home() {
         </div>
 
         {/* Main Content */}
-        <div className="relative z-10 flex flex-col mt-36 min-h-full justify-center items-center">
+        <div className="relative z-10 flex flex-col h-full justify-center items-center">
           {/* Header Section */}
           <div className="flex flex-col items-center justify-center px-6 py-8">
             {/* App Logo + Title - Aligned and Compact */}
@@ -146,7 +144,8 @@ export default function Home() {
 
                   {/* Main Login Button */}
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={() => router.push("/home")}
                     className="group relative w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white font-bold py-3 px-4 rounded-2xl shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.2)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out border-b-4 border-green-700 hover:border-green-600 active:border-green-500"
                   >
                     <div className="flex items-center justify-center gap-2">
@@ -168,6 +167,5 @@ export default function Home() {
             </div>
           </div>
         </div>
-    </MobileWrapper>
   );
 }

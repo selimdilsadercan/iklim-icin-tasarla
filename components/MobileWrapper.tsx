@@ -21,6 +21,8 @@ export default function MobileWrapper({
 }: MobileWrapperProps) {
   const [isLandscape, setIsLandscape] = useState(false);
   const [dimensions, setDimensions] = useState({ width, height });
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   const getDeviceStyles = () => {
     switch (deviceType) {
@@ -55,6 +57,9 @@ export default function MobileWrapper({
   };
 
   useEffect(() => {
+    // Set client-side flag
+    setIsClient(true);
+    
     const getResponsiveDimensions = () => {
       if (typeof window !== 'undefined') {
         if (isLandscape) {
@@ -71,30 +76,34 @@ export default function MobileWrapper({
       return { width, height };
     };
 
+    const checkIsMobile = () => {
+      if (typeof window !== 'undefined') {
+        const isMobileDevice = window.innerWidth <= 768;
+        console.log('Mobile check:', { width: window.innerWidth, isMobile: isMobileDevice });
+        setIsMobile(isMobileDevice);
+      }
+    };
+
     setDimensions(getResponsiveDimensions());
+    checkIsMobile();
 
     const handleResize = () => {
       setDimensions(getResponsiveDimensions());
+      checkIsMobile();
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [width, height, isLandscape]);
 
-  if (!showDeviceFrame) {
+  // Debug logging
+  console.log('MobileWrapper Debug:', { showDeviceFrame, isClient, isMobile, shouldHide: !showDeviceFrame || (isClient && isMobile) });
+
+  // Hide frame if explicitly disabled OR if on mobile (after hydration)
+  if (!showDeviceFrame || (isClient && isMobile)) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-        <div 
-          className="bg-white rounded-lg shadow-lg overflow-hidden"
-          style={{ 
-            width: `${dimensions.width}px`, 
-            height: `${dimensions.height}px`,
-            maxWidth: '100vw',
-            maxHeight: '100vh'
-          }}
-        >
-          {children}
-        </div>
+      <div className="h-screen w-full">
+        {children}
       </div>
     );
   }
@@ -139,15 +148,6 @@ export default function MobileWrapper({
         </div>
       </div>
 
-      {/* Device Info */}
-      <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-2 text-sm font-medium shadow-lg">
-        <div className="text-gray-700">
-          <div className="font-semibold">{deviceType.charAt(0).toUpperCase() + deviceType.slice(1)}</div>
-          <div className="text-xs text-gray-500">
-            {dimensions.width} × {dimensions.height}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
