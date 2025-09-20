@@ -6,9 +6,21 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:mobile": "next build && pnpm exec cap sync",
+    "android:dev": "pnpm build:mobile && pnpm exec cap run android",
+    "android:build": "pnpm build:mobile && pnpm exec cap build android",
+    "ios:dev": "pnpm build:mobile && pnpm exec cap run ios",
+    "ios:build": "pnpm build:mobile && pnpm exec cap build ios",
+    "sync": "pnpm exec cap sync",
+    "open:android": "pnpm exec cap open android",
+    "open:ios": "pnpm exec cap open ios"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/cli": "^7.4.3",
+    "@capacitor/core": "^7.4.3",
+    "@capacitor/ios": "^7.4.3",
     "lucide-react": "^0.542.0",
     "next": "15.5.2",
     "react": "19.1.0",
