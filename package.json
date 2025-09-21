@@ -21,6 +21,7 @@
     "@capacitor/cli": "^7.4.3",
     "@capacitor/core": "^7.4.3",
     "@capacitor/ios": "^7.4.3",
+    "@supabase/supabase-js": "^2.57.4",
     "lucide-react": "^0.542.0",
     "next": "15.5.2",
     "react": "19.1.0",

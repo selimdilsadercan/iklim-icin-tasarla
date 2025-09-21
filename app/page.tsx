@@ -1,22 +1,42 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
-export default function Home() {
+export default function LoginPage() {
   const router = useRouter();
+  const { user, signIn } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (user) {
+      router.push("/home");
+    }
+  }, [user, router]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Login logic here
+    setLoading(true);
     setError("");
-    // Navigate to home page after successful login
-    router.push("/home");
+
+    try {
+      const { error } = await signIn(email, password);
+      if (error) {
+        setError(error.message);
+      } else {
+        router.push("/home");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -45,8 +65,8 @@ export default function Home() {
           <div className="absolute bottom-32 right-20 w-16 h-8 bg-green-200 rounded-full opacity-40"></div>
         </div>
 
-        {/* Main Content */}
-        <div className="relative z-10 flex flex-col h-full justify-center items-center">
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col h-full justify-center items-center pb-20">
           {/* Header Section */}
           <div className="flex flex-col items-center justify-center px-6 py-8">
             {/* App Logo + Title - Aligned and Compact */}
@@ -144,23 +164,34 @@ export default function Home() {
 
                   {/* Main Login Button */}
                   <button
-                    type="button"
-                    onClick={() => router.push("/home")}
-                    className="group relative w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white font-bold py-3 px-4 rounded-2xl shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.2)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out border-b-4 border-green-700 hover:border-green-600 active:border-green-500"
+                    type="submit"
+                    disabled={loading}
+                    className="group relative w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white font-bold py-3 px-4 rounded-2xl shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.2)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out border-b-4 border-green-700 hover:border-green-600 active:border-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <div className="flex items-center justify-center gap-2">
-                      <span className="text-base">Giriş Yap</span>
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
+                      <span className="text-base">{loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}</span>
+                      {!loading && (
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      )}
                     </div>
                   </button>
 
                   {/* Forgot Password Link */}
-                  <div className="text-center pt-2">
+                  <div className="text-center pt-2 space-y-2">
                     <a href="#" className="text-sm text-green-600 hover:text-green-700 font-medium transition-colors">
                       Şifremi unuttum
                     </a>
+                    <div className="text-sm text-gray-600">
+                      Hesabınız yok mu?{' '}
+                      <button
+                        onClick={() => router.push("/signup")}
+                        className="text-green-600 hover:text-green-700 font-medium transition-colors"
+                      >
+                        Kayıt olun
+                      </button>
+                    </div>
                   </div>
                 </form>
               </div>

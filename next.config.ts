@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     unoptimized: true
   },
   assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
+  devIndicators: false
 };
 
 export default nextConfig;

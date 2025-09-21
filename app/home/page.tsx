@@ -36,7 +36,7 @@ export default function HomePage() {
     <div className="h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
         <AppBar />
         
-        {/* Main Content with bottom padding for bottom navigation */}
+        {/* Main Content with bottom padding for fixed bottom navigation */}
         <div className="px-6 pb-24 pt-8">
           <div className="max-w-sm mx-auto">
             {/* Welcome Section */}

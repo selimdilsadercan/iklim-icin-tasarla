@@ -1,128 +1,218 @@
-"use client";
+  "use client";
 
-import AppBar from "@/components/AppBar";
+  import AppBar from "@/components/AppBar";
+  import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+  import { useAuth } from "@/contexts/AuthContext";
+  import { useState } from "react";
 
-export default function ProfilePage() {
-  return (
-    <div className="h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
-        <AppBar />
-        
-        {/* Main Content with bottom padding for bottom navigation */}
-        <div className="pt-8 px-6 pb-24">
-          <div className="max-w-sm mx-auto">
-            {/* Profile Header */}
-            <div className="text-center mb-8">
-              <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <svg className="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-1">
-                Ahmet Yılmaz
-              </h2>
-              <p className="text-gray-600 text-sm">
-                İklim Dostu Öğrenci
-              </p>
-            </div>
+  export default function ProfilePage() {
+    const { user, signOut } = useAuth();
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-white/80 rounded-2xl p-3 text-center border border-gray-200 shadow-sm">
-                <div className="text-2xl font-bold text-green-600">24</div>
-                <div className="text-xs text-gray-600">Görev</div>
-              </div>
-              <div className="bg-white/80 rounded-2xl p-3 text-center border border-gray-200 shadow-sm">
-                <div className="text-2xl font-bold text-blue-600">156</div>
-                <div className="text-xs text-gray-600">Puan</div>
-              </div>
-              <div className="bg-white/80 rounded-2xl p-3 text-center border border-gray-200 shadow-sm">
-                <div className="text-2xl font-bold text-purple-600">8</div>
-                <div className="text-xs text-gray-600">Rozet</div>
-              </div>
-            </div>
-
-            {/* Profile Sections */}
-            <div className="space-y-4">
-              <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-blue-500 rounded-xl flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800">Başarılarım</h3>
-                    <p className="text-sm text-gray-600">Son 30 günde 5 başarı</p>
-                  </div>
-                  <div className="text-green-500">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
+    return (
+      <ProtectedRoute>
+        <div className="h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
+            <AppBar />
+          
+          {/* Main Content with bottom padding for fixed bottom navigation */}
+          <div className="pt-8 px-6 pb-24">
+            <div className="max-w-sm mx-auto">
+              {/* Profile Header */}
+              <div className="text-center mb-8">
+                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-white">
+                    {user?.email?.charAt(0).toUpperCase() || 'U'}
+                  </span>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-1">
+                  {user?.email?.split('@')[0] || 'Kullanıcı'}
+                </h2>
+                <p className="text-gray-600 text-sm mb-2">
+                  İklim Dostu Öğrenci
+                </p>
+                <p className="text-gray-500 text-xs">
+                  {user?.email}
+                </p>
+                <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Doğrulanmış Hesap
                 </div>
               </div>
 
-              <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+              {/* User Stats */}
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="bg-white/80 rounded-2xl p-3 text-center border border-gray-200 shadow-sm">
+                  <div className="text-2xl font-bold text-green-600">
+                    {user?.created_at ? Math.floor((Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60 * 24)) : 0}
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800">Öğrenme Süresi</h3>
-                    <p className="text-sm text-gray-600">Bu hafta 12 saat</p>
+                  <div className="text-xs text-gray-600">Gün Üye</div>
+                </div>
+                <div className="bg-white/80 rounded-2xl p-3 text-center border border-gray-200 shadow-sm">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {user?.last_sign_in_at ? 'Aktif' : 'Pasif'}
                   </div>
-                  <div className="text-blue-500">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                  <div className="text-xs text-gray-600">Durum</div>
+                </div>
+                <div className="bg-white/80 rounded-2xl p-3 text-center border border-gray-200 shadow-sm">
+                  <div className="text-2xl font-bold text-purple-600">
+                    {user?.email_confirmed_at ? '✓' : '○'}
                   </div>
+                  <div className="text-xs text-gray-600">E-posta</div>
                 </div>
               </div>
 
-              <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800">Çevre Etkisi</h3>
-                    <p className="text-sm text-gray-600">CO2 tasarrufu: 45 kg</p>
-                  </div>
-                  <div className="text-orange-500">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+              {/* Profile Sections */}
+              <div className="space-y-4">
+                {/* Account Information */}
+                <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-gray-800">Hesap Bilgileri</h3>
+                      <p className="text-sm text-gray-600">E-posta: {user?.email}</p>
+                    </div>
+                    <div className="text-blue-500">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-red-400 to-pink-500 rounded-xl flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
+                {/* Account Status */}
+                <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-blue-500 rounded-xl flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-gray-800">Hesap Durumu</h3>
+                      <p className="text-sm text-gray-600">
+                        {user?.email_confirmed_at ? 'E-posta doğrulanmış' : 'E-posta doğrulanmamış'}
+                      </p>
+                    </div>
+                    <div className="text-green-500">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800">Ayarlar</h3>
-                    <p className="text-sm text-gray-600">Hesap ve uygulama ayarları</p>
+                </div>
+
+                {/* Member Since */}
+                <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-gray-800">Üyelik Tarihi</h3>
+                      <p className="text-sm text-gray-600">
+                        {user?.created_at ? new Date(user.created_at).toLocaleDateString('tr-TR') : 'Bilinmiyor'}
+                      </p>
+                    </div>
+                    <div className="text-orange-500">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
-                  <div className="text-red-500">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                </div>
+
+                {/* Last Sign In */}
+                <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-gray-800">Son Giriş</h3>
+                      <p className="text-sm text-gray-600">
+                        {user?.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString('tr-TR') : 'Bilinmiyor'}
+                      </p>
+                    </div>
+                    <div className="text-purple-500">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
+                </div>
+
+                {/* Logout Button */}
+                <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
+                  <button
+                    onClick={() => setShowLogoutConfirm(true)}
+                    className="w-full flex items-center gap-3 text-red-600 hover:text-red-700 transition-colors"
+                  >
+                    <div className="w-10 h-10 bg-gradient-to-br from-red-400 to-pink-500 rounded-xl flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                    </div>
+                    <div className="flex-1 text-left">
+                      <h3 className="font-semibold">Çıkış Yap</h3>
+                      <p className="text-sm text-gray-600">Hesabınızdan güvenli şekilde çıkış yapın</p>
+                    </div>
+                    <div className="text-red-500">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-  );
-}
+
+        {/* Logout Confirmation Modal */}
+        {showLogoutConfirm && (
+          <div className="fixed inset-0 bg-[#00000090] flex items-center justify-center z-50">
+            <div className="bg-white rounded-2xl p-6 mx-4 max-w-sm w-full">
+              <div className="text-center">
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                  <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Çıkış Yap</h3>
+                <p className="text-sm text-gray-500 mb-6">
+                  Hesabınızdan çıkış yapmak istediğinizden emin misiniz?
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowLogoutConfirm(false)}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    İptal
+                  </button>
+                  <button
+                    onClick={async () => {
+                      await signOut();
+                      setShowLogoutConfirm(false);
+                    }}
+                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    Çıkış Yap
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </ProtectedRoute>
+    );
+  }
