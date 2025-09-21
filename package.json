@@ -7,6 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
+    "generate": "ts-node scripts/generate-types.ts",
     "build:mobile": "next build && pnpm exec cap sync",
     "android:dev": "pnpm build:mobile && pnpm exec cap run android",
     "android:build": "pnpm build:mobile && pnpm exec cap build android",
@@ -22,10 +23,13 @@
     "@capacitor/core": "^7.4.3",
     "@capacitor/ios": "^7.4.3",
     "@supabase/supabase-js": "^2.57.4",
+    "@tailwindcss/typography": "^0.5.18",
     "lucide-react": "^0.542.0",
     "next": "15.5.2",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -36,6 +40,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
