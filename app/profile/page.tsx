@@ -11,11 +11,11 @@
 
     return (
       <ProtectedRoute>
-        <div className="h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
-            <AppBar />
+        <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
+            <AppBar currentPage="profile" />
           
           {/* Main Content with bottom padding for fixed bottom navigation */}
-          <div className="pt-8 px-6 pb-24">
+          <div className="pt-8 px-6 pb-24 min-h-screen">
             <div className="max-w-sm mx-auto">
               {/* Profile Header */}
               <div className="text-center mb-8">

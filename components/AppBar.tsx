@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+
+// Page enum for active state
+export type PageType = "home" | "class" | "profile";
 
 // Navigation items configuration
 const navigationItems = [
   {
     href: "/home",
+    page: "home" as PageType,
     label: "Ana Sayfa",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -17,6 +19,7 @@ const navigationItems = [
   },
   {
     href: "/class",
+    page: "class" as PageType,
     label: "Sınıf",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -26,6 +29,7 @@ const navigationItems = [
   },
   {
     href: "/profile",
+    page: "profile" as PageType,
     label: "Profil",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -35,35 +39,13 @@ const navigationItems = [
   }
 ];
 
-export default function AppBar() {
-  const pathname = usePathname();
-  const [currentPath, setCurrentPath] = useState(pathname);
+interface AppBarProps {
+  currentPage: PageType;
+}
 
-  // Fallback for static export - use window.location if usePathname doesn't work
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setCurrentPath(window.location.pathname);
-    }
-  }, [pathname]);
-
-  const isActive = (path: string) => {
-    // Use currentPath which has fallback to window.location.pathname
-    const activePath = currentPath || pathname;
-    
-    // Debug logging
-    console.log('AppBar Debug:', { pathname, currentPath, activePath, checkingPath: path, isMatch: activePath === path });
-    
-    // Handle root path for login page
-    if (activePath === "/" && path === "/home") {
-      return false; // Don't highlight home when on login page
-    }
-    
-    // Handle chat pages - they should highlight home since they're part of the main flow
-    if (activePath.startsWith("/chat/") && path === "/home") {
-      return true;
-    }
-    
-    return activePath === path;
+export default function AppBar({ currentPage }: AppBarProps) {
+  const isActive = (page: PageType) => {
+    return currentPage === page;
   };
 
   return (
@@ -75,7 +57,7 @@ export default function AppBar() {
               key={item.href}
               href={item.href}
               className={`flex-1 flex flex-col items-center gap-1 py-2 px-2 rounded-xl transition-all duration-200 ${
-                isActive(item.href)
+                isActive(item.page)
                   ? "text-green-600 bg-green-50"
                   : "text-gray-600 hover:text-green-600"
               }`}
