@@ -2,6 +2,8 @@ import ChatPatternBackground from "@/components/ChatPatternBackground";
 import ChatClient from "./ChatClient";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { BackButton } from "./BackButton";
+import { BOT_PERSONAS } from "@/lib/ai-service";
+import { BotSlug } from "@/lib/chat-utils";
 
 // Generate static params for static export
 export async function generateStaticParams() {
@@ -50,6 +52,18 @@ export default async function ChatPage({ params }: ChatPageProps) {
 }
 
 function getBotInfo(botSlug: string) {
+  // Use AI personas for bot information
+  const persona = BOT_PERSONAS[botSlug as BotSlug];
+  if (persona) {
+    return {
+      name: persona.name,
+      emoji: persona.emoji,
+      color: persona.color,
+      status: persona.status
+    };
+  }
+
+  // Fallback to static data if persona not found
   const bots = {
     yaprak: {
       name: "Yaprak - Çevre Asistanı",

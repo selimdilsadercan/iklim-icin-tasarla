@@ -1,5 +1,6 @@
 import { supabase } from './supabase'
-import { ChatMessage, getBotIndex, getBotResponse, getBotWelcomeMessage, BotSlug } from './chat-utils'
+import { ChatMessage, getBotIndex, getBotWelcomeMessage, BotSlug } from './chat-utils'
+import { AIService, BOT_PERSONAS } from './ai-service'
 import { Database } from './supabase-types'
 
 type ChatHistoryRow = Database['public']['Tables']['chat_history']['Row']
@@ -68,17 +69,37 @@ export class ChatService {
     }
   }
 
-  // Get bot response and save it
+  // Get AI bot response and save it
   static async getAndSaveBotResponse(
     botSlug: string, 
     userId: string, 
     userMessage: string
   ): Promise<ChatMessage | null> {
     try {
-      const botResponse = getBotResponse(botSlug as BotSlug, userMessage)
+      // Get AI response using the AI service
+      const botResponse = await AIService.chat(botSlug as BotSlug, userMessage)
       return await this.saveMessage(botSlug, userId, botResponse, false)
     } catch (error) {
-      console.error('Error getting bot response:', error)
+      console.error('Error getting AI bot response:', error)
+      return null
+    }
+  }
+
+  // Get AI bot response with streaming
+  static async getAndSaveBotResponseStream(
+    botSlug: string, 
+    userId: string, 
+    userMessage: string,
+    onChunk: (chunk: string) => void
+  ): Promise<ChatMessage | null> {
+    try {
+      console.log('ChatService: Getting AI response for', botSlug, 'with message:', userMessage);
+      // Get AI response using streaming
+      const botResponse = await AIService.chatStream(botSlug as BotSlug, userMessage, onChunk)
+      console.log('ChatService: Received AI response:', botResponse);
+      return await this.saveMessage(botSlug, userId, botResponse, false)
+    } catch (error) {
+      console.error('Error getting AI bot response stream:', error)
       return null
     }
   }
@@ -98,6 +119,24 @@ export class ChatService {
     } catch (error) {
       console.error('Error initializing chat:', error)
       return null
+    }
+  }
+
+  // Initialize AI chat for a bot
+  static initAIChat(botSlug: string, historyLimit = 64) {
+    try {
+      AIService.initChat(botSlug as BotSlug, historyLimit)
+    } catch (error) {
+      console.error('Error initializing AI chat:', error)
+    }
+  }
+
+  // Clear AI chat history for a bot
+  static clearAIChatHistory(botSlug: string) {
+    try {
+      AIService.clearChatHistory(botSlug as BotSlug)
+    } catch (error) {
+      console.error('Error clearing AI chat history:', error)
     }
   }
 

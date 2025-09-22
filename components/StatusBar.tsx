@@ -7,11 +7,11 @@ export default function StatusBarComponent() {
   useEffect(() => {
     const initializeStatusBar = async () => {
       try {
-        // Set status bar style to dark content on light background
-        await StatusBar.setStyle({ style: Style.Dark });
+        // Set status bar style to dark content on light background (black text/icons)
+        await StatusBar.setStyle({ style: Style.Light });
         
-        // Set status bar background color to match home page gradient
-        await StatusBar.setBackgroundColor({ color: '#eff6ff' });
+        // Set status bar background color to pure white
+        await StatusBar.setBackgroundColor({ color: '#ffffff' });
         
         // Show status bar (in case it was hidden)
         await StatusBar.show();

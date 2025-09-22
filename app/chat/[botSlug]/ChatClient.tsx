@@ -4,8 +4,42 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ChatService } from "@/lib/chat-service";
 import { ChatMessage } from "@/lib/chat-utils";
+import { AIService, BOT_PERSONAS } from "@/lib/ai-service";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+
+// Helper function to format date for day indicators
+const formatDateForIndicator = (date: Date): string => {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  
+  const messageDate = new Date(date);
+  
+  // Reset time to compare only dates
+  const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const yesterdayDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+  const messageDateOnly = new Date(messageDate.getFullYear(), messageDate.getMonth(), messageDate.getDate());
+  
+  if (messageDateOnly.getTime() === todayDate.getTime()) {
+    return "Bugün";
+  } else if (messageDateOnly.getTime() === yesterdayDate.getTime()) {
+    return "Dün";
+  } else {
+    return messageDate.toLocaleDateString("tr-TR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+  }
+};
+
+// Helper function to check if two dates are on different days
+const isDifferentDay = (date1: Date, date2: Date): boolean => {
+  const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+  const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+  return d1.getTime() !== d2.getTime();
+};
 
 interface Message {
   id: string;
@@ -24,6 +58,8 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const [streamingMessage, setStreamingMessage] = useState<string>("");
+  const [isStreaming, setIsStreaming] = useState(false);
 
   // Load chat history on component mount
   useEffect(() => {
@@ -35,6 +71,10 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
 
       try {
         setLoading(true);
+        
+        // Initialize AI chat for this bot
+        console.log('Initializing AI chat for bot:', botSlug);
+        ChatService.initAIChat(botSlug);
         
         // Load existing chat history
         const history = await ChatService.loadChatHistory(botSlug);
@@ -72,11 +112,13 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
   }, [botSlug, user]);
 
   const handleSendMessage = async () => {
-    if (!inputText.trim() || !user || sending) return;
+    if (!inputText.trim() || !user || sending || isStreaming) return;
 
     const userMessageText = inputText.trim();
     setInputText("");
     setSending(true);
+    setIsStreaming(true);
+    setStreamingMessage("");
 
     try {
       // Save user message
@@ -92,8 +134,21 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
         };
         setMessages(prev => [...prev, userMsg]);
 
-        // Get and save bot response
-        const botResponse = await ChatService.getAndSaveBotResponse(botSlug, user.id, userMessageText);
+        // Get and save bot response with streaming
+        console.log('Getting AI response for bot:', botSlug, 'message:', userMessageText);
+        const botResponse = await ChatService.getAndSaveBotResponseStream(
+          botSlug, 
+          user.id, 
+          userMessageText,
+          (chunk: string) => {
+            console.log('Received chunk:', chunk);
+            setStreamingMessage(prev => {
+              const newMessage = prev + chunk;
+              console.log('Updated streaming message:', newMessage);
+              return newMessage;
+            });
+          }
+        );
         
         if (botResponse) {
           const botMsg: Message = {
@@ -104,9 +159,15 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
           };
           setMessages(prev => [...prev, botMsg]);
         }
+        
+        // Clear streaming state after adding final message
+        setIsStreaming(false);
+        setStreamingMessage("");
       }
     } catch (error) {
       console.error('Error sending message:', error);
+      setIsStreaming(false);
+      setStreamingMessage("");
     } finally {
       setSending(false);
     }
@@ -129,55 +190,113 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
     );
   }
 
+  // Debug logging
+  console.log('ChatClient render - isStreaming:', isStreaming, 'streamingMessage length:', streamingMessage.length, 'streamingMessage:', streamingMessage);
+
   return (
     <>
       {/* Chat Messages */}
       <div className="px-4 pb-4 pt-4 flex-1 overflow-y-auto relative z-10 flex flex-col-reverse space-y-reverse space-y-3">
-        {messages.slice().reverse().map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}
-          >
-            <div
-              className={`max-w-xs px-4 py-2 rounded-2xl shadow-sm ${
-                message.isBot
-                  ? "bg-white/90 backdrop-blur-sm text-gray-800 border border-white/20"
-                  : "bg-green-500 text-white shadow-md"
-              }`}
-            >
-              <div className="text-sm prose prose-sm max-w-none">
-                <ReactMarkdown 
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                    strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
-                    em: ({ children }) => <em className="italic">{children}</em>,
-                    ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
-                    ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
-                    li: ({ children }) => <li className="text-sm">{children}</li>,
-                    h1: ({ children }) => <h1 className="text-lg font-bold mb-2">{children}</h1>,
-                    h2: ({ children }) => <h2 className="text-base font-bold mb-2">{children}</h2>,
-                    h3: ({ children }) => <h3 className="text-sm font-bold mb-1">{children}</h3>,
-                    code: ({ children }) => <code className="bg-gray-100 px-1 py-0.5 rounded text-xs">{children}</code>,
-                    blockquote: ({ children }) => <blockquote className="border-l-4 border-gray-300 pl-3 italic">{children}</blockquote>,
-                  }}
+        {messages.slice().reverse().map((message, index) => {
+          // Get the chronologically previous message (in original order, not reversed)
+          const reversedMessages = messages.slice().reverse();
+          const originalIndex = messages.length - 1 - index;
+          const previousMessage = originalIndex > 0 ? messages[originalIndex - 1] : null;
+          const showDayIndicator = !previousMessage || isDifferentDay(message.timestamp, previousMessage.timestamp);
+          
+          return (
+            <div key={message.id}>
+              {/* Day Indicator */}
+              {showDayIndicator && (
+                <div className="flex justify-center my-4">
+                  <div className="bg-gray-600/80 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
+                    {formatDateForIndicator(message.timestamp)}
+                  </div>
+                </div>
+              )}
+              
+              {/* Message */}
+              <div className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}>
+                <div
+                  className={`max-w-xs px-4 py-2 rounded-2xl shadow-sm ${
+                    message.isBot
+                      ? "bg-white/90 backdrop-blur-sm text-gray-800 border border-white/20"
+                      : "bg-green-500 text-white shadow-md"
+                  }`}
                 >
-                  {message.text}
-                </ReactMarkdown>
+                  <div className="text-sm prose prose-sm max-w-none">
+                    <ReactMarkdown 
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                        strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                        em: ({ children }) => <em className="italic">{children}</em>,
+                        ul: ({ children }) => <ul className="list-disc list-outside mb-2 space-y-1 pl-4">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal list-outside mb-2 space-y-1 pl-4">{children}</ol>,
+                        li: ({ children }) => <li className="text-sm">{children}</li>,
+                        h1: ({ children }) => <h1 className="text-lg font-bold mb-2">{children}</h1>,
+                        h2: ({ children }) => <h2 className="text-base font-bold mb-2">{children}</h2>,
+                        h3: ({ children }) => <h3 className="text-sm font-bold mb-1">{children}</h3>,
+                        code: ({ children }) => <code className="bg-gray-100 px-1 py-0.5 rounded text-xs">{children}</code>,
+                        blockquote: ({ children }) => <blockquote className="border-l-4 border-gray-300 pl-3 italic">{children}</blockquote>,
+                      }}
+                    >
+                      {message.text}
+                    </ReactMarkdown>
+                  </div>
+                  <p className={`text-xs mt-1 ${
+                    message.isBot ? "text-gray-400" : "text-green-100"
+                  }`}>
+                    {message.timestamp.toLocaleTimeString("tr-TR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </div>
               </div>
-              <p className={`text-xs mt-1 ${
-                message.isBot ? "text-gray-400" : "text-green-100"
-              }`}>
-                {message.timestamp.toLocaleTimeString("tr-TR", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </p>
+            </div>
+          );
+        })}
+        
+        {/* Streaming message */}
+        {isStreaming && (
+          <div>
+            {/* Day indicator for streaming message if it's a new day */}
+            {messages.length > 0 && isDifferentDay(new Date(), messages[messages.length - 1].timestamp) && (
+              <div className="flex justify-center my-4">
+                <div className="bg-gray-600/80 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
+                  {formatDateForIndicator(new Date())}
+                </div>
+              </div>
+            )}
+            
+            <div className="flex justify-start">
+              <div className="bg-white/90 backdrop-blur-sm text-gray-800 border border-white/20 px-4 py-2 rounded-2xl shadow-sm">
+                <div className="text-sm prose prose-sm max-w-none">
+                  {streamingMessage ? (
+                    <div>
+                      <div className="text-xs text-gray-400 mb-1">Streaming ({streamingMessage.length} chars):</div>
+                      <div className="whitespace-pre-wrap">{streamingMessage}</div>
+                    </div>
+                  ) : (
+                    <div className="text-gray-500">Yazıyor...</div>
+                  )}
+                </div>
+                <div className="flex items-center space-x-2 mt-1">
+                  <div className="text-xs text-gray-400">Yazıyor</div>
+                  <div className="flex space-x-1">
+                    <div className="w-1 h-1 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-1 h-1 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                    <div className="w-1 h-1 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        ))}
-        
-        {sending && (
+        )}
+
+        {/* Loading indicator when sending but not streaming yet */}
+        {sending && !isStreaming && (
           <div className="flex justify-start">
             <div className="bg-white/90 backdrop-blur-sm text-gray-800 border border-white/20 px-4 py-2 rounded-2xl shadow-sm">
               <div className="flex items-center space-x-2">
@@ -206,10 +325,10 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
           />
           <button
             onClick={handleSendMessage}
-            disabled={!inputText.trim() || sending}
+            disabled={!inputText.trim() || sending || isStreaming}
             className="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {sending ? (
+            {(sending || isStreaming) ? (
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
             ) : (
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

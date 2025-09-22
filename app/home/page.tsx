@@ -1,37 +1,44 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import AppBar from "@/components/AppBar";
 import Link from "next/link";
-
-// Mock data for assistant statistics
-const assistantStats = {
-  yaprak: {
-    totalConversations: 1247,
-    lastActive: "2 saat önce",
-    dailyUsers: 23,
-    avgSessionTime: "8 dk"
-  },
-  robi: {
-    totalConversations: 892,
-    lastActive: "5 dakika önce",
-    dailyUsers: 18,
-    avgSessionTime: "12 dk"
-  },
-  bugday: {
-    totalConversations: 654,
-    lastActive: "1 saat önce",
-    dailyUsers: 15,
-    avgSessionTime: "6 dk"
-  },
-  damla: {
-    totalConversations: 1089,
-    lastActive: "2 dakika önce",
-    dailyUsers: 21,
-    avgSessionTime: "10 dk"
-  }
-};
+import { UserStatsService } from "@/lib/user-stats-service";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function HomePage() {
+  const { user } = useAuth();
+  const [assistantStats, setAssistantStats] = useState({
+    yaprak: { totalConversations: 0, lastActive: "Yükleniyor..." },
+    robi: { totalConversations: 0, lastActive: "Yükleniyor..." },
+    bugday: { totalConversations: 0, lastActive: "Yükleniyor..." },
+    damla: { totalConversations: 0, lastActive: "Yükleniyor..." }
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchStats = async () => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      const stats = await UserStatsService.getFormattedUserBotStats(user.id);
+      setAssistantStats(stats);
+    } catch (err) {
+      console.error('Error fetching user stats:', err);
+      setError('İstatistikler yüklenirken bir hata oluştu');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStats();
+  }, [user]);
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
         <AppBar currentPage="home" />
@@ -47,6 +54,26 @@ export default function HomePage() {
               <p className="text-gray-600">
                 İklim dostu öğrenmeye başlayalım
               </p>
+              
+              {/* Loading/Error States */}
+              {loading && (
+                <div className="mt-4 flex justify-center">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-600"></div>
+                </div>
+              )}
+              
+              {error && (
+                <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded-lg">
+                  <p className="text-red-700 text-sm">{error}</p>
+                  <button 
+                    onClick={fetchStats}
+                    className="mt-2 px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
+                  >
+                    Tekrar Dene
+                  </button>
+                </div>
+              )}
+              
             </div>
 
             {/* Character Assistants */}
@@ -74,20 +101,6 @@ export default function HomePage() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <span className="text-xs text-gray-500">{assistantStats.yaprak.lastActive}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 mt-1">
-                      <div className="flex items-center gap-1">
-                        <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        <span className="text-xs text-gray-500">{assistantStats.yaprak.dailyUsers} aktif bugün</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        <span className="text-xs text-gray-500">~{assistantStats.yaprak.avgSessionTime}</span>
                       </div>
                     </div>
                   </div>
@@ -126,20 +139,6 @@ export default function HomePage() {
                         <span className="text-xs text-gray-500">{assistantStats.robi.lastActive}</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3 mt-1">
-                      <div className="flex items-center gap-1">
-                        <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        <span className="text-xs text-gray-500">{assistantStats.robi.dailyUsers} aktif bugün</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        <span className="text-xs text-gray-500">~{assistantStats.robi.avgSessionTime}</span>
-                      </div>
-                    </div>
                   </div>
                   <div className="text-orange-500">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -175,20 +174,6 @@ export default function HomePage() {
                         <span className="text-xs text-gray-500">{assistantStats.bugday.lastActive}</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3 mt-1">
-                      <div className="flex items-center gap-1">
-                        <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        <span className="text-xs text-gray-500">{assistantStats.bugday.dailyUsers} aktif bugün</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        <span className="text-xs text-gray-500">~{assistantStats.bugday.avgSessionTime}</span>
-                      </div>
-                    </div>
                   </div>
                   <div className="text-yellow-500">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -222,20 +207,6 @@ export default function HomePage() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <span className="text-xs text-gray-500">{assistantStats.damla.lastActive}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 mt-1">
-                      <div className="flex items-center gap-1">
-                        <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        <span className="text-xs text-gray-500">{assistantStats.damla.dailyUsers} aktif bugün</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        <span className="text-xs text-gray-500">~{assistantStats.damla.avgSessionTime}</span>
                       </div>
                     </div>
                   </div>
