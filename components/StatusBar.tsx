@@ -13,6 +13,9 @@ export default function StatusBarComponent() {
         // Set status bar background color to pure white
         await StatusBar.setBackgroundColor({ color: '#ffffff' });
         
+        // Set overlay mode to prevent collapse with body content
+        await StatusBar.setOverlaysWebView({ overlay: false });
+        
         // Show status bar (in case it was hidden)
         await StatusBar.show();
       } catch (error) {

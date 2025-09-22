@@ -8,14 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "generate": "ts-node scripts/generate-types.ts",
-    "mobile": "next build && pnpm exec cap sync",
-    "android:dev": "pnpm build:mobile && pnpm exec cap run android",
-    "android:build": "pnpm build:mobile && pnpm exec cap build android",
-    "ios:dev": "pnpm build:mobile && pnpm exec cap run ios",
-    "ios:build": "pnpm build:mobile && pnpm exec cap build ios",
-    "sync": "pnpm exec cap sync",
-    "open:android": "pnpm exec cap open android",
-    "open:ios": "pnpm exec cap open ios"
+    "mobile": "next build && pnpm exec cap sync"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",
