@@ -1,0 +1,393 @@
+{
+  "skillset_name": "Tools, Modules & Libraries",
+  "description": "Technical tools, frameworks, libraries and modules used in the project",
+  "categories": {
+    "nextjs": {
+      "name": "Next.js Framework",
+      "description": "React framework for production",
+      "skills": {
+        "app_router": {
+          "name": "App Router",
+          "description": "New routing system in Next.js 13+",
+          "used_in_project": true,
+          "proficiency_level": "expert"
+        },
+        "static_export": {
+          "name": "Static Site Generation (SSG)",
+          "description": "Pre-rendering pages at build time",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "turbopack": {
+          "name": "Turbopack",
+          "description": "Fast bundler for development",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "dev_indicators": {
+          "name": "Development Indicators",
+          "description": "Build and compilation indicators",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "trailing_slash": {
+          "name": "Trailing Slash Configuration",
+          "description": "URL trailing slash handling",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "image_optimization": {
+          "name": "Image Optimization",
+          "description": "Next.js Image component and optimization",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        }
+      }
+    },
+    "react": {
+      "name": "React Library",
+      "description": "JavaScript library for building user interfaces",
+      "skills": {
+        "hooks": {
+          "name": "React Hooks",
+          "description": "useState, useEffect, useContext, custom hooks",
+          "used_in_project": true,
+          "proficiency_level": "expert"
+        },
+        "context_api": {
+          "name": "Context API",
+          "description": "Global state management with React Context",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "component_lifecycle": {
+          "name": "Component Lifecycle",
+          "description": "Component mounting, updating, unmounting",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "event_handling": {
+          "name": "Event Handling",
+          "description": "Handling user interactions and events",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "conditional_rendering": {
+          "name": "Conditional Rendering",
+          "description": "Rendering components based on conditions",
+          "used_in_project": true,
+          "proficiency_level": "expert"
+        },
+        "props_validation": {
+          "name": "Props Validation",
+          "description": "TypeScript interfaces for prop validation",
+          "used_in_project": true,
+          "proficiency_level": "expert"
+        }
+      }
+    },
+    "typescript": {
+      "name": "TypeScript",
+      "description": "Typed superset of JavaScript",
+      "skills": {
+        "type_annotations": {
+          "name": "Type Annotations",
+          "description": "Explicit type declarations",
+          "used_in_project": true,
+          "proficiency_level": "expert"
+        },
+        "interfaces": {
+          "name": "Interfaces",
+          "description": "Defining object shapes and contracts",
+          "used_in_project": true,
+          "proficiency_level": "expert"
+        },
+        "generics": {
+          "name": "Generics",
+          "description": "Reusable type parameters",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "union_types": {
+          "name": "Union Types",
+          "description": "Types that can be one of several types",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "type_guards": {
+          "name": "Type Guards",
+          "description": "Runtime type checking",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "module_resolution": {
+          "name": "Module Resolution",
+          "description": "Import/export and module system",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        }
+      }
+    },
+    "tailwind_css": {
+      "name": "Tailwind CSS",
+      "description": "Utility-first CSS framework",
+      "skills": {
+        "utility_classes": {
+          "name": "Utility Classes",
+          "description": "Pre-built CSS utility classes",
+          "used_in_project": true,
+          "proficiency_level": "expert"
+        },
+        "responsive_design": {
+          "name": "Responsive Design",
+          "description": "Mobile-first responsive utilities",
+          "used_in_project": true,
+          "proficiency_level": "expert"
+        },
+        "dark_mode": {
+          "name": "Dark Mode",
+          "description": "Dark/light theme switching",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "custom_properties": {
+          "name": "CSS Custom Properties",
+          "description": "CSS variables and theming",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "typography_plugin": {
+          "name": "Typography Plugin",
+          "description": "@tailwindcss/typography for rich text",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "postcss_integration": {
+          "name": "PostCSS Integration",
+          "description": "PostCSS configuration and processing",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        }
+      }
+    },
+    "capacitor": {
+      "name": "Capacitor",
+      "description": "Cross-platform native runtime",
+      "skills": {
+        "android_platform": {
+          "name": "Android Platform",
+          "description": "Android app development and building",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "ios_platform": {
+          "name": "iOS Platform",
+          "description": "iOS app development and building",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "status_bar_plugin": {
+          "name": "Status Bar Plugin",
+          "description": "Native status bar customization",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "app_plugin": {
+          "name": "App Plugin",
+          "description": "App lifecycle and native features",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "back_button_handling": {
+          "name": "Back Button Handling",
+          "description": "Android back button integration",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "native_bridge": {
+          "name": "Native Bridge",
+          "description": "JavaScript to native communication",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        }
+      }
+    },
+    "supabase": {
+      "name": "Supabase",
+      "description": "Backend-as-a-Service platform",
+      "skills": {
+        "authentication": {
+          "name": "Authentication",
+          "description": "User authentication and session management",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "database_queries": {
+          "name": "Database Queries",
+          "description": "PostgreSQL queries and operations",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "row_level_security": {
+          "name": "Row Level Security (RLS)",
+          "description": "Database-level security policies",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "real_time_subscriptions": {
+          "name": "Real-time Subscriptions",
+          "description": "Live data updates and subscriptions",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "database_functions": {
+          "name": "Database Functions",
+          "description": "Custom SQL functions and RPC calls",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "type_generation": {
+          "name": "Type Generation",
+          "description": "Automatic TypeScript types from database",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        }
+      }
+    },
+    "ai_ml": {
+      "name": "AI & Machine Learning",
+      "description": "Artificial Intelligence and ML integrations",
+      "skills": {
+        "ollama_api": {
+          "name": "Ollama API",
+          "description": "Local LLM API integration",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "streaming_responses": {
+          "name": "Streaming Responses",
+          "description": "Real-time AI response streaming",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "chat_history": {
+          "name": "Chat History Management",
+          "description": "Conversation memory and context",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "system_prompts": {
+          "name": "System Prompts",
+          "description": "AI behavior customization",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "bot_personas": {
+          "name": "Bot Personas",
+          "description": "Multiple AI character configurations",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        },
+        "server_sent_events": {
+          "name": "Server-Sent Events (SSE)",
+          "description": "Real-time communication protocol",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        }
+      }
+    },
+    "development_tools": {
+      "name": "Development Tools",
+      "description": "Tools for development workflow",
+      "skills": {
+        "eslint": {
+          "name": "ESLint",
+          "description": "Code linting and quality enforcement",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "pnpm": {
+          "name": "pnpm",
+          "description": "Fast, disk space efficient package manager",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "ts_node": {
+          "name": "ts-node",
+          "description": "TypeScript execution for Node.js",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "hot_reload": {
+          "name": "Hot Reload",
+          "description": "Development server with live reloading",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "build_scripts": {
+          "name": "Build Scripts",
+          "description": "Custom build and deployment scripts",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "environment_config": {
+          "name": "Environment Configuration",
+          "description": "Multi-environment setup and config",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        }
+      }
+    },
+    "ui_libraries": {
+      "name": "UI Libraries & Components",
+      "description": "User interface libraries and components",
+      "skills": {
+        "lucide_react": {
+          "name": "Lucide React",
+          "description": "Icon library for React",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "react_markdown": {
+          "name": "React Markdown",
+          "description": "Markdown rendering in React",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "remark_gfm": {
+          "name": "Remark GFM",
+          "description": "GitHub Flavored Markdown support",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "google_fonts": {
+          "name": "Google Fonts",
+          "description": "Web font integration (Geist)",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "svg_icons": {
+          "name": "SVG Icons",
+          "description": "Scalable vector graphics for icons",
+          "used_in_project": true,
+          "proficiency_level": "intermediate"
+        },
+        "custom_components": {
+          "name": "Custom Components",
+          "description": "Reusable React component library",
+          "used_in_project": true,
+          "proficiency_level": "advanced"
+        }
+      }
+    }
+  },
+  "summary": {
+    "total_categories": 8,
+    "total_skills": 48,
+    "skills_used_in_project": 48,
+    "expert_level_skills": 8,
+    "advanced_level_skills": 16,
+    "intermediate_level_skills": 24,
+    "beginner_level_skills": 0
+  }
+}

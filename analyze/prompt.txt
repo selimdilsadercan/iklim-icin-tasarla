@@ -1,0 +1,967 @@
+  Analyze this repository and create/update skillset JSON files based on the skills demonstrated in the codebase.
+
+  - tools-skillset.json: 
+
+  {
+    "skillset_name": "Tools, Modules & Libraries",
+    "description": "Technical tools, frameworks, libraries and modules used in the project",
+    "categories": {
+      "nextjs": {
+        "name": "Next.js Framework",
+        "description": "React framework for production",
+        "skills": {
+          "app_router": {
+            "name": "App Router",
+            "description": "New routing system in Next.js 13+",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "static_export": {
+            "name": "Static Site Generation (SSG)",
+            "description": "Pre-rendering pages at build time",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "turbopack": {
+            "name": "Turbopack",
+            "description": "Fast bundler for development",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "dev_indicators": {
+            "name": "Development Indicators",
+            "description": "Build and compilation indicators",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "trailing_slash": {
+            "name": "Trailing Slash Configuration",
+            "description": "URL trailing slash handling",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "image_optimization": {
+            "name": "Image Optimization",
+            "description": "Next.js Image component and optimization",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "react": {
+        "name": "React Library",
+        "description": "JavaScript library for building user interfaces",
+        "skills": {
+          "hooks": {
+            "name": "React Hooks",
+            "description": "useState, useEffect, useContext, custom hooks",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "context_api": {
+            "name": "Context API",
+            "description": "Global state management with React Context",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "component_lifecycle": {
+            "name": "Component Lifecycle",
+            "description": "Component mounting, updating, unmounting",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "event_handling": {
+            "name": "Event Handling",
+            "description": "Handling user interactions and events",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "conditional_rendering": {
+            "name": "Conditional Rendering",
+            "description": "Rendering components based on conditions",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "props_validation": {
+            "name": "Props Validation",
+            "description": "TypeScript interfaces for prop validation",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          }
+        }
+      },
+      "typescript": {
+        "name": "TypeScript",
+        "description": "Typed superset of JavaScript",
+        "skills": {
+          "type_annotations": {
+            "name": "Type Annotations",
+            "description": "Explicit type declarations",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "interfaces": {
+            "name": "Interfaces",
+            "description": "Defining object shapes and contracts",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "generics": {
+            "name": "Generics",
+            "description": "Reusable type parameters",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "union_types": {
+            "name": "Union Types",
+            "description": "Types that can be one of several types",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "type_guards": {
+            "name": "Type Guards",
+            "description": "Runtime type checking",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "module_resolution": {
+            "name": "Module Resolution",
+            "description": "Import/export and module system",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          }
+        }
+      },
+      "tailwind_css": {
+        "name": "Tailwind CSS",
+        "description": "Utility-first CSS framework",
+        "skills": {
+          "utility_classes": {
+            "name": "Utility Classes",
+            "description": "Pre-built CSS utility classes",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "responsive_design": {
+            "name": "Responsive Design",
+            "description": "Mobile-first responsive utilities",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "dark_mode": {
+            "name": "Dark Mode",
+            "description": "Dark/light theme switching",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "custom_properties": {
+            "name": "CSS Custom Properties",
+            "description": "CSS variables and theming",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "typography_plugin": {
+            "name": "Typography Plugin",
+            "description": "@tailwindcss/typography for rich text",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "postcss_integration": {
+            "name": "PostCSS Integration",
+            "description": "PostCSS configuration and processing",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "capacitor": {
+        "name": "Capacitor",
+        "description": "Cross-platform native runtime",
+        "skills": {
+          "android_platform": {
+            "name": "Android Platform",
+            "description": "Android app development and building",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "ios_platform": {
+            "name": "iOS Platform",
+            "description": "iOS app development and building",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "status_bar_plugin": {
+            "name": "Status Bar Plugin",
+            "description": "Native status bar customization",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "app_plugin": {
+            "name": "App Plugin",
+            "description": "App lifecycle and native features",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "back_button_handling": {
+            "name": "Back Button Handling",
+            "description": "Android back button integration",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "native_bridge": {
+            "name": "Native Bridge",
+            "description": "JavaScript to native communication",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "supabase": {
+        "name": "Supabase",
+        "description": "Backend-as-a-Service platform",
+        "skills": {
+          "authentication": {
+            "name": "Authentication",
+            "description": "User authentication and session management",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "database_queries": {
+            "name": "Database Queries",
+            "description": "PostgreSQL queries and operations",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "row_level_security": {
+            "name": "Row Level Security (RLS)",
+            "description": "Database-level security policies",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "real_time_subscriptions": {
+            "name": "Real-time Subscriptions",
+            "description": "Live data updates and subscriptions",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "database_functions": {
+            "name": "Database Functions",
+            "description": "Custom SQL functions and RPC calls",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "type_generation": {
+            "name": "Type Generation",
+            "description": "Automatic TypeScript types from database",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "ai_ml": {
+        "name": "AI & Machine Learning",
+        "description": "Artificial Intelligence and ML integrations",
+        "skills": {
+          "ollama_api": {
+            "name": "Ollama API",
+            "description": "Local LLM API integration",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "streaming_responses": {
+            "name": "Streaming Responses",
+            "description": "Real-time AI response streaming",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "chat_history": {
+            "name": "Chat History Management",
+            "description": "Conversation memory and context",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "system_prompts": {
+            "name": "System Prompts",
+            "description": "AI behavior customization",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "bot_personas": {
+            "name": "Bot Personas",
+            "description": "Multiple AI character configurations",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "server_sent_events": {
+            "name": "Server-Sent Events (SSE)",
+            "description": "Real-time communication protocol",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "development_tools": {
+        "name": "Development Tools",
+        "description": "Tools for development workflow",
+        "skills": {
+          "eslint": {
+            "name": "ESLint",
+            "description": "Code linting and quality enforcement",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "pnpm": {
+            "name": "pnpm",
+            "description": "Fast, disk space efficient package manager",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "ts_node": {
+            "name": "ts-node",
+            "description": "TypeScript execution for Node.js",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "hot_reload": {
+            "name": "Hot Reload",
+            "description": "Development server with live reloading",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "build_scripts": {
+            "name": "Build Scripts",
+            "description": "Custom build and deployment scripts",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "environment_config": {
+            "name": "Environment Configuration",
+            "description": "Multi-environment setup and config",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "ui_libraries": {
+        "name": "UI Libraries & Components",
+        "description": "User interface libraries and components",
+        "skills": {
+          "lucide_react": {
+            "name": "Lucide React",
+            "description": "Icon library for React",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "react_markdown": {
+            "name": "React Markdown",
+            "description": "Markdown rendering in React",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "remark_gfm": {
+            "name": "Remark GFM",
+            "description": "GitHub Flavored Markdown support",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "google_fonts": {
+            "name": "Google Fonts",
+            "description": "Web font integration (Geist)",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "svg_icons": {
+            "name": "SVG Icons",
+            "description": "Scalable vector graphics for icons",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "custom_components": {
+            "name": "Custom Components",
+            "description": "Reusable React component library",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          }
+        }
+      }
+    },
+    "summary": {
+      "total_categories": 8,
+      "total_skills": 48,
+      "skills_used_in_project": 48,
+      "expert_level_skills": 8,
+      "advanced_level_skills": 16,
+      "intermediate_level_skills": 24,
+      "beginner_level_skills": 0
+    }
+  }
+
+
+
+  - concepts-skillset.json: 
+
+  {
+    "skillset_name": "Development Concepts & Practices",
+    "description": "Software development concepts, patterns, and best practices demonstrated in the project",
+    "categories": {
+      "web_development": {
+        "name": "Web Development",
+        "description": "Core web development concepts and practices",
+        "skills": {
+          "responsive_design": {
+            "name": "Responsive Design",
+            "description": "Designing for multiple screen sizes and devices",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "mobile_first": {
+            "name": "Mobile-First Design",
+            "description": "Designing for mobile devices first, then scaling up",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "progressive_enhancement": {
+            "name": "Progressive Enhancement",
+            "description": "Building core functionality first, then adding enhancements",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "semantic_html": {
+            "name": "Semantic HTML",
+            "description": "Using meaningful HTML elements for structure",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "accessibility": {
+            "name": "Web Accessibility",
+            "description": "Making web content accessible to all users",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "seo_optimization": {
+            "name": "SEO Optimization",
+            "description": "Search engine optimization techniques",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "frontend_architecture": {
+        "name": "Frontend Architecture",
+        "description": "Frontend application architecture patterns",
+        "skills": {
+          "component_architecture": {
+            "name": "Component-Based Architecture",
+            "description": "Building applications with reusable components",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "state_management": {
+            "name": "State Management",
+            "description": "Managing application state effectively",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "context_pattern": {
+            "name": "Context Pattern",
+            "description": "Using React Context for global state",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "custom_hooks": {
+            "name": "Custom Hooks",
+            "description": "Extracting reusable logic into custom hooks",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "separation_of_concerns": {
+            "name": "Separation of Concerns",
+            "description": "Separating different aspects of application logic",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "dependency_injection": {
+            "name": "Dependency Injection",
+            "description": "Injecting dependencies rather than hard-coding them",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "mobile_development": {
+        "name": "Mobile Development",
+        "description": "Mobile application development concepts",
+        "skills": {
+          "cross_platform": {
+            "name": "Cross-Platform Development",
+            "description": "Building apps that work on multiple platforms",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "native_features": {
+            "name": "Native Feature Integration",
+            "description": "Accessing device-specific features",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "touch_interactions": {
+            "name": "Touch Interactions",
+            "description": "Designing for touch-based user interactions",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "device_orientation": {
+            "name": "Device Orientation",
+            "description": "Handling landscape and portrait orientations",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "app_lifecycle": {
+            "name": "App Lifecycle Management",
+            "description": "Managing app states and lifecycle events",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "performance_optimization": {
+            "name": "Mobile Performance Optimization",
+            "description": "Optimizing apps for mobile device performance",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "database_design": {
+        "name": "Database Design",
+        "description": "Database design and management concepts",
+        "skills": {
+          "relational_modeling": {
+            "name": "Relational Data Modeling",
+            "description": "Designing relational database schemas",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "data_normalization": {
+            "name": "Data Normalization",
+            "description": "Organizing data to reduce redundancy",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "indexing_strategies": {
+            "name": "Database Indexing",
+            "description": "Optimizing database queries with indexes",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "data_integrity": {
+            "name": "Data Integrity",
+            "description": "Ensuring data consistency and accuracy",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "query_optimization": {
+            "name": "Query Optimization",
+            "description": "Writing efficient database queries",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "backup_recovery": {
+            "name": "Backup and Recovery",
+            "description": "Data backup and disaster recovery strategies",
+            "used_in_project": false,
+            "proficiency_level": "beginner"
+          }
+        }
+      },
+      "security_concepts": {
+        "name": "Security Concepts",
+        "description": "Application security principles and practices",
+        "skills": {
+          "authentication": {
+            "name": "Authentication",
+            "description": "User identity verification",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "authorization": {
+            "name": "Authorization",
+            "description": "Access control and permissions",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "jwt_tokens": {
+            "name": "JWT Tokens",
+            "description": "JSON Web Token implementation",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "session_management": {
+            "name": "Session Management",
+            "description": "Managing user sessions securely",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "data_encryption": {
+            "name": "Data Encryption",
+            "description": "Encrypting sensitive data",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "sql_injection_prevention": {
+            "name": "SQL Injection Prevention",
+            "description": "Preventing SQL injection attacks",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "api_design": {
+        "name": "API Design",
+        "description": "Application Programming Interface design concepts",
+        "skills": {
+          "restful_apis": {
+            "name": "RESTful API Design",
+            "description": "Designing RESTful web services",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "api_versioning": {
+            "name": "API Versioning",
+            "description": "Managing API versions and backward compatibility",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "error_handling": {
+            "name": "API Error Handling",
+            "description": "Proper error handling in APIs",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "rate_limiting": {
+            "name": "Rate Limiting",
+            "description": "Controlling API request rates",
+            "used_in_project": false,
+            "proficiency_level": "beginner"
+          },
+          "api_documentation": {
+            "name": "API Documentation",
+            "description": "Documenting APIs for developers",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "data_validation": {
+            "name": "Data Validation",
+            "description": "Validating input data in APIs",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          }
+        }
+      },
+      "real_time_applications": {
+        "name": "Real-time Applications",
+        "description": "Building applications with real-time features",
+        "skills": {
+          "websockets": {
+            "name": "WebSockets",
+            "description": "Bidirectional real-time communication",
+            "used_in_project": false,
+            "proficiency_level": "beginner"
+          },
+          "server_sent_events": {
+            "name": "Server-Sent Events",
+            "description": "One-way real-time communication from server",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "streaming_data": {
+            "name": "Data Streaming",
+            "description": "Processing continuous data streams",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "event_driven_architecture": {
+            "name": "Event-Driven Architecture",
+            "description": "Building systems around events and messages",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "live_updates": {
+            "name": "Live Data Updates",
+            "description": "Updating UI with live data changes",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "connection_management": {
+            "name": "Connection Management",
+            "description": "Managing persistent connections",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "ai_ml_concepts": {
+        "name": "AI & Machine Learning",
+        "description": "Artificial Intelligence and Machine Learning concepts",
+        "skills": {
+          "llm_integration": {
+            "name": "LLM Integration",
+            "description": "Integrating Large Language Models",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "prompt_engineering": {
+            "name": "Prompt Engineering",
+            "description": "Designing effective prompts for AI models",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "conversation_memory": {
+            "name": "Conversation Memory",
+            "description": "Maintaining context in AI conversations",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "ai_personas": {
+            "name": "AI Personas",
+            "description": "Creating distinct AI character personalities",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "model_management": {
+            "name": "Model Management",
+            "description": "Managing different AI models and versions",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "ai_ethics": {
+            "name": "AI Ethics",
+            "description": "Ethical considerations in AI development",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          }
+        }
+      },
+      "performance_optimization": {
+        "name": "Performance Optimization",
+        "description": "Optimizing application performance",
+        "skills": {
+          "code_splitting": {
+            "name": "Code Splitting",
+            "description": "Dividing code into smaller chunks",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "lazy_loading": {
+            "name": "Lazy Loading",
+            "description": "Loading resources only when needed",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "caching_strategies": {
+            "name": "Caching Strategies",
+            "description": "Implementing effective caching mechanisms",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "bundle_optimization": {
+            "name": "Bundle Optimization",
+            "description": "Optimizing JavaScript bundles",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "memory_management": {
+            "name": "Memory Management",
+            "description": "Efficient memory usage and garbage collection",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "performance_monitoring": {
+            "name": "Performance Monitoring",
+            "description": "Monitoring and measuring performance",
+            "used_in_project": false,
+            "proficiency_level": "beginner"
+          }
+        }
+      },
+      "testing_strategies": {
+        "name": "Testing Strategies",
+        "description": "Software testing concepts and practices",
+        "skills": {
+          "unit_testing": {
+            "name": "Unit Testing",
+            "description": "Testing individual components in isolation",
+            "used_in_project": false,
+            "proficiency_level": "beginner"
+          },
+          "integration_testing": {
+            "name": "Integration Testing",
+            "description": "Testing component interactions",
+            "used_in_project": false,
+            "proficiency_level": "beginner"
+          },
+          "end_to_end_testing": {
+            "name": "End-to-End Testing",
+            "description": "Testing complete user workflows",
+            "used_in_project": false,
+            "proficiency_level": "beginner"
+          },
+          "error_boundaries": {
+            "name": "Error Boundaries",
+            "description": "Graceful error handling in React",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "type_safety": {
+            "name": "Type Safety",
+            "description": "Compile-time error prevention",
+            "used_in_project": true,
+            "proficiency_level": "expert"
+          },
+          "code_quality": {
+            "name": "Code Quality",
+            "description": "Maintaining high code quality standards",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          }
+        }
+      },
+      "user_experience": {
+        "name": "User Experience (UX)",
+        "description": "User experience design principles",
+        "skills": {
+          "user_interface_design": {
+            "name": "User Interface Design",
+            "description": "Designing intuitive user interfaces",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "user_journey_mapping": {
+            "name": "User Journey Mapping",
+            "description": "Mapping user interactions and flows",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "usability_testing": {
+            "name": "Usability Testing",
+            "description": "Testing user experience and usability",
+            "used_in_project": false,
+            "proficiency_level": "beginner"
+          },
+          "responsive_interactions": {
+            "name": "Responsive Interactions",
+            "description": "Designing interactions for different devices",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "loading_states": {
+            "name": "Loading States",
+            "description": "Providing feedback during async operations",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          },
+          "error_handling_ux": {
+            "name": "Error Handling UX",
+            "description": "User-friendly error messages and recovery",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          }
+        }
+      },
+      "internationalization": {
+        "name": "Internationalization",
+        "description": "Making applications work across different languages and regions",
+        "skills": {
+          "localization": {
+            "name": "Localization",
+            "description": "Adapting content for specific regions",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "multi_language_support": {
+            "name": "Multi-language Support",
+            "description": "Supporting multiple languages in applications",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "cultural_adaptation": {
+            "name": "Cultural Adaptation",
+            "description": "Adapting UI/UX for different cultures",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "rtl_support": {
+            "name": "RTL Support",
+            "description": "Right-to-left language support",
+            "used_in_project": false,
+            "proficiency_level": "beginner"
+          },
+          "date_time_formatting": {
+            "name": "Date/Time Formatting",
+            "description": "Formatting dates and times for different locales",
+            "used_in_project": true,
+            "proficiency_level": "intermediate"
+          },
+          "currency_formatting": {
+            "name": "Currency Formatting",
+            "description": "Formatting currency for different regions",
+            "used_in_project": false,
+            "proficiency_level": "beginner"
+          }
+        }
+      }
+    },
+    "summary": {
+      "total_categories": 12,
+      "total_skills": 72,
+      "skills_used_in_project": 54,
+      "expert_level_skills": 6,
+      "advanced_level_skills": 24,
+      "intermediate_level_skills": 24,
+      "beginner_level_skills": 18
+    }
+  }
+
+
+
+  **Update two JSON files:**
+
+  1. **tools-skillset.json** - Tools, modules, libraries used
+  2. **concepts-skillset.json** - Development concepts and practices
+
+  **For each skill, include:**
+  - name: Skill name
+  - description: Brief description
+  - used_in_project: true/false
+  - proficiency_level: expert/advanced/intermediate/beginner
+
+  **If merging with existing skillsets:**
+  - Add NEW skills to appropriate categories
+  - Create new categories if needed
+  - Keep existing skills unchanged
+  - Update proficiency levels if new analysis shows higher level
+  - Set used_in_project: true for skills found in this project
+
+  DO NOT DELETE EXISTING SKİLLS OR CATEGORİES THAT I GİVE YOU IN THE PROMT THEY MUST REMAIN AS used_in_project: false
+
+  **JSON Structure:**
+  ```json
+  {
+    "skillset_name": "Tools, Modules & Libraries",
+    "description": "Technical tools, frameworks, libraries and modules used in the project",
+    "categories": {
+      "category_name": {
+        "name": "Category Display Name",
+        "description": "Category description",
+        "skills": {
+          "skill_key": {
+            "name": "Skill Name",
+            "description": "Skill description",
+            "used_in_project": true,
+            "proficiency_level": "advanced"
+          }
+        }
+      }
+    }
+  }
+  ```
+
+  **Output only the two complete JSON files to /analyze folder, no explanations.**
