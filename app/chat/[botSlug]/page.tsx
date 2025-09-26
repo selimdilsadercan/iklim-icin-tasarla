@@ -4,7 +4,7 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { BackButton } from "./BackButton";
 import { BOT_PERSONAS } from "@/lib/ai-service";
 import { BotSlug } from "@/lib/chat-utils";
-import { Leaf, Zap, Wheat, Droplets } from "lucide-react";
+import Image from "next/image";
 
 // Generate static params for static export
 export async function generateStaticParams() {
@@ -35,7 +35,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
           <div className="bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3 relative z-20">
             <div className="flex items-center gap-3">
               <BackButton />
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${botInfo.gradient}`}>
+              <div className="w-10 h-10">
                 {botInfo.icon}
               </div>
               <div className="flex-1">
@@ -60,26 +60,66 @@ function getBotInfo(botSlug: string) {
     const botMappings = {
       yaprak: {
         name: "Yaprak",
-        gradient: "bg-gradient-to-br from-green-400 to-emerald-500",
-        icon: <Leaf className="w-6 h-6 text-white" />,
+        gradient: "",
+        icon: (
+          <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl overflow-hidden">
+            <Image 
+              src="/bot/yaprak.jpeg" 
+              alt="Yaprak" 
+              width={40} 
+              height={40} 
+              className="w-full h-full object-cover opacity-80"
+            />
+          </div>
+        ),
         status: "Çevre Asistanı",
       },
       robi: {
         name: "Robi",
-        gradient: "bg-gradient-to-br from-yellow-400 to-orange-500",
-        icon: <Zap className="w-6 h-6 text-white" />,
+        gradient: "",
+        icon: (
+          <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl overflow-hidden">
+            <Image 
+              src="/bot/robi.jpeg" 
+              alt="Robi" 
+              width={40} 
+              height={40} 
+              className="w-full h-full object-cover opacity-80"
+            />
+          </div>
+        ),
         status: "Enerji Asistanı",
       },
       bugday: {
         name: "Buğday",
-        gradient: "bg-gradient-to-br from-amber-400 to-yellow-500",
-        icon: <Wheat className="w-6 h-6 text-white" />,
+        gradient: "",
+        icon: (
+          <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-xl overflow-hidden">
+            <Image 
+              src="/bot/bugday.jpeg" 
+              alt="Buğday" 
+              width={40} 
+              height={40} 
+              className="w-full h-full object-cover opacity-80"
+            />
+          </div>
+        ),
         status: "Tarım Asistanı",
       },
       damla: {
         name: "Damla",
-        gradient: "bg-gradient-to-br from-blue-400 to-cyan-500",
-        icon: <Droplets className="w-6 h-6 text-white" />,
+        gradient: "",
+        icon: (
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl overflow-hidden">
+            <Image 
+              src="/bot/damla.jpeg" 
+              alt="Damla" 
+              width={40} 
+              height={40} 
+              className="w-full h-full object-cover opacity-80"
+            />
+          </div>
+        ),
         status: "Su Asistanı",
       },
     };
@@ -91,26 +131,66 @@ function getBotInfo(botSlug: string) {
   const bots = {
     yaprak: {
       name: "Yaprak",
-      gradient: "bg-gradient-to-br from-green-400 to-emerald-500",
-      icon: <Leaf className="w-6 h-6 text-white" />,
+      gradient: "",
+      icon: (
+        <div className="w-10 h-10 rounded-xl overflow-hidden">
+          <Image 
+            src="/bot/yaprak.jpeg" 
+            alt="Yaprak" 
+            width={40} 
+            height={40} 
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ),
       status: "Çevre Asistanı",
     },
     robi: {
       name: "Robi",
-      gradient: "bg-gradient-to-br from-yellow-400 to-orange-500",
-      icon: <Zap className="w-6 h-6 text-white" />,
+      gradient: "",
+      icon: (
+        <div className="w-10 h-10 rounded-xl overflow-hidden">
+          <Image 
+            src="/bot/robi.jpeg" 
+            alt="Robi" 
+            width={40} 
+            height={40} 
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ),
       status: "Enerji Asistanı",
     },
     bugday: {
       name: "Buğday",
-      gradient: "bg-gradient-to-br from-amber-400 to-yellow-500",
-      icon: <Wheat className="w-6 h-6 text-white" />,
+      gradient: "",
+      icon: (
+        <div className="w-10 h-10 rounded-xl overflow-hidden">
+          <Image 
+            src="/bot/bugday.jpeg" 
+            alt="Buğday" 
+            width={40} 
+            height={40} 
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ),
       status: "Tarım Asistanı",
     },
     damla: {
       name: "Damla",
-      gradient: "bg-gradient-to-br from-blue-400 to-cyan-500",
-      icon: <Droplets className="w-6 h-6 text-white" />,
+      gradient: "",
+      icon: (
+        <div className="w-10 h-10 rounded-xl overflow-hidden">
+          <Image 
+            src="/bot/damla.jpeg" 
+            alt="Damla" 
+            width={40} 
+            height={40} 
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ),
       status: "Su Asistanı",
     },
   };

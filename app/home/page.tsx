@@ -5,7 +5,7 @@ import AppBar from "@/components/AppBar";
 import Link from "next/link";
 import { UserStatsService } from "@/lib/user-stats-service";
 import { useAuth } from "@/contexts/AuthContext";
-import { Leaf, Zap, Wheat, Droplets } from "lucide-react";
+import Image from "next/image";
 
 export default function HomePage() {
   const { user } = useAuth();
@@ -53,8 +53,8 @@ export default function HomePage() {
                 Hoş Geldin! 🌱
               </h2>
               <p className="text-gray-600">
-                İklim dostu öğrenmeye başlayalım
-              </p>
+                Merak ettiğin konuda asistanlar ile konuşmaya başlayabilirsin!
+              </p>  
               
               {/* Error State */}
               {error && (
@@ -159,8 +159,14 @@ export default function HomePage() {
                 <div className="flex flex-col gap-3">
                   {/* First row: Icon + Title + Right arrow */}
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center">
-                      <Leaf className="w-6 h-6 text-white" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl overflow-hidden">
+                      <Image 
+                        src="/bot/yaprak.jpeg" 
+                        alt="Yaprak" 
+                        width={48} 
+                        height={48} 
+                        className="w-full h-full object-cover opacity-80"
+                      />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-800">Yaprak</h3>
@@ -196,8 +202,14 @@ export default function HomePage() {
                 <div className="flex flex-col gap-3">
                   {/* First row: Icon + Title + Right arrow */}
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
-                      <Zap className="w-6 h-6 text-white" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl overflow-hidden">
+                      <Image 
+                        src="/bot/robi.jpeg" 
+                        alt="Robi" 
+                        width={48} 
+                        height={48} 
+                        className="w-full h-full object-cover opacity-80"
+                      />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-800">Robi</h3>
@@ -233,8 +245,14 @@ export default function HomePage() {
                 <div className="flex flex-col gap-3">
                   {/* First row: Icon + Title + Right arrow */}
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-xl flex items-center justify-center">
-                      <Wheat className="w-6 h-6 text-white" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-xl overflow-hidden">
+                      <Image 
+                        src="/bot/bugday.jpeg" 
+                        alt="Buğday" 
+                        width={48} 
+                        height={48} 
+                        className="w-full h-full object-cover opacity-80"
+                      />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-800">Buğday</h3>
@@ -270,8 +288,14 @@ export default function HomePage() {
                 <div className="flex flex-col gap-3">
                   {/* First row: Icon + Title + Right arrow */}
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center">
-                      <Droplets className="w-6 h-6 text-white" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl overflow-hidden">
+                      <Image 
+                        src="/bot/damla.jpeg" 
+                        alt="Damla" 
+                        width={48} 
+                        height={48} 
+                        className="w-full h-full object-cover opacity-80"
+                      />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-800">Damla</h3>

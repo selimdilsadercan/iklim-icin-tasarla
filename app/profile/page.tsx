@@ -47,7 +47,7 @@
                   <div className="text-2xl font-bold text-green-600">
                     {user?.created_at ? Math.floor((Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60 * 24)) : 0}
                   </div>
-                  <div className="text-xs text-gray-600">Gün Üye</div>
+                  <div className="text-xs text-gray-600">Gündür Üye</div>
                 </div>
                 <div className="bg-white/80 rounded-2xl p-3 text-center border border-gray-200 shadow-sm">
                   <div className="text-2xl font-bold text-blue-600">
@@ -65,47 +65,6 @@
 
               {/* Profile Sections */}
               <div className="space-y-4">
-                {/* Account Information */}
-                <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
-                      <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-800">Hesap Bilgileri</h3>
-                      <p className="text-sm text-gray-600">E-posta: {user?.email}</p>
-                    </div>
-                    <div className="text-blue-500">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Account Status */}
-                <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-blue-500 rounded-xl flex items-center justify-center">
-                      <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-800">Hesap Durumu</h3>
-                      <p className="text-sm text-gray-600">
-                        {user?.email_confirmed_at ? 'E-posta doğrulanmış' : 'E-posta doğrulanmamış'}
-                      </p>
-                    </div>
-                    <div className="text-green-500">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
 
                 {/* Member Since */}
                 <div className="bg-white/80 rounded-2xl p-4 border border-gray-200 shadow-sm">
@@ -120,11 +79,6 @@
                       <p className="text-sm text-gray-600">
                         {user?.created_at ? new Date(user.created_at).toLocaleDateString('tr-TR') : 'Bilinmiyor'}
                       </p>
-                    </div>
-                    <div className="text-orange-500">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
                     </div>
                   </div>
                 </div>
@@ -143,11 +97,6 @@
                         {user?.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString('tr-TR') : 'Bilinmiyor'}
                       </p>
                     </div>
-                    <div className="text-purple-500">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
                   </div>
                 </div>
 
@@ -164,7 +113,7 @@
                     </div>
                     <div className="flex-1 text-left">
                       <h3 className="font-semibold">Çıkış Yap</h3>
-                      <p className="text-sm text-gray-600">Hesabınızdan güvenli şekilde çıkış yapın</p>
+                      <p className="text-sm text-gray-600">Hesabınızdan çıkış yapın</p>
                     </div>
                     <div className="text-red-500">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

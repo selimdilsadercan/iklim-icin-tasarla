@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import Image from "next/image";
 
 export default function SplashScreen() {
   const router = useRouter();
@@ -31,10 +32,14 @@ export default function SplashScreen() {
       <div className="text-center">
         {/* App Logo */}
         <div className="mb-8">
-          <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-3xl flex items-center justify-center mx-auto shadow-2xl">
-            <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clipRule="evenodd" />
-            </svg>
+          <div className="w-20 h-20 mx-auto shadow-2xl">
+            <Image 
+              src="/logo.png" 
+              alt="İklim İçin Tasarla Logo" 
+              width={80} 
+              height={80} 
+              className="w-full h-full object-contain"
+            />
           </div>
         </div>
 

@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "generate": "ts-node scripts/generate-types.ts",
-    "mobile": "next build && pnpm exec cap sync"
+    "mobile": "next build && npx cap sync"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",
