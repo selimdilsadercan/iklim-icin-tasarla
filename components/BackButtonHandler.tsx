@@ -37,15 +37,10 @@ export default function BackButtonHandler() {
               if (currentPath.startsWith('/chat/')) {
                 // From chat pages, go back to home
                 router.push('/home');
-              } else if (currentPath === '/profile') {
-                // From profile, go to home
-                router.push('/home');
-              } else if (currentPath === '/class') {
-                // From class, go to home
-                router.push('/home');
-              } else if (currentPath === '/home') {
-                // From home, minimize the app instead of closing
-                App.minimizeApp();
+              } else if (currentPath === '/profile' || currentPath === '/class' || currentPath === '/home') {
+                // On home, class, and profile pages - do nothing (disable back navigation)
+                console.log('Back button disabled on main pages');
+                return; // Do nothing, prevent navigation
               } else {
                 // For any other page, go to home
                 router.push('/home');

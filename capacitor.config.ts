@@ -12,6 +12,9 @@ const config: CapacitorConfig = {
       style: 'DARK',
       backgroundColor: '#ffffff',
       overlaysWebView: true
+    },
+    ScreenOrientation: {
+      orientation: 'portrait'
     }
   }
 };

@@ -14,40 +14,44 @@ export default function ChatPatternBackground({ botSlug, className = "" }: ChatP
   const getPatternIcons = (slug: string) => {
     switch (slug) {
       case "yaprak":
+        // Green gradient: from-green-400 to-emerald-500 -> use green-400 (dominant)
         return [
-          { Icon: Leaf, color: "text-green-300" },
+          { Icon: Leaf, color: "text-green-400" },
           { Icon: TreePine, color: "text-green-400" },
-          { Icon: Sprout, color: "text-green-300" },
+          { Icon: Sprout, color: "text-green-400" },
           { Icon: Flower, color: "text-green-400" },
-          { Icon: Recycle, color: "text-green-300" },
+          { Icon: Recycle, color: "text-green-400" },
           { Icon: Heart, color: "text-green-400" },
         ];
       case "robi":
+        // Orange gradient: from-yellow-400 to-orange-500 -> use orange-500 (dominant)
         return [
-          { Icon: Zap, color: "text-blue-300" },
-          { Icon: Sun, color: "text-blue-400" },
-          { Icon: Wind, color: "text-blue-300" },
-          { Icon: Cloud, color: "text-blue-400" },
-          { Icon: Globe, color: "text-blue-300" },
-          { Icon: Mountain, color: "text-blue-400" },
+          { Icon: Zap, color: "text-orange-500" },
+          { Icon: Sun, color: "text-orange-500" },
+          { Icon: Wind, color: "text-orange-500" },
+          { Icon: Cloud, color: "text-orange-500" },
+          { Icon: Globe, color: "text-orange-500" },
+          { Icon: Mountain, color: "text-orange-500" },
         ];
       case "bugday":
+        // Yellow gradient: from-amber-400 to-yellow-500 -> use yellow-500 (dominant)
         return [
-          { Icon: Wheat, color: "text-yellow-300" },
-          { Icon: Sun, color: "text-yellow-400" },
-          { Icon: Sprout, color: "text-yellow-300" },
-          { Icon: Mountain, color: "text-yellow-400" },
-          { Icon: Leaf, color: "text-yellow-300" },
-          { Icon: Flower, color: "text-yellow-400" },
+          { Icon: Wheat, color: "text-yellow-500" },
+          { Icon: Sun, color: "text-yellow-500" },
+          { Icon: Sprout, color: "text-yellow-500" },
+          { Icon: Mountain, color: "text-yellow-500" },
+          { Icon: Leaf, color: "text-yellow-500" },
+          { Icon: Flower, color: "text-yellow-500" },
         ];
       case "damla":
+        // Blue gradient: from-blue-400 to-cyan-500 -> use blue-400 (dominant)
         return [
-          { Icon: Droplets, color: "text-purple-300" },
-          { Icon: Waves, color: "text-purple-400" },
-          { Icon: Cloud, color: "text-purple-300" },
-          { Icon: Globe, color: "text-purple-400" },
-          { Icon: Wind, color: "text-purple-300" },
-          { Icon: Heart, color: "text-purple-400" },
+          { Icon: Droplets, color: "text-blue-400" },
+          { Icon: Waves, color: "text-blue-400" },
+          { Icon: Cloud, color: "text-blue-400" },
+          { Icon: Globe, color: "text-blue-400" },
+          { Icon: Wind, color: "text-blue-400" },
+          { Icon: Heart, color: "text-blue-400" },
         ];
       default:
         return [
