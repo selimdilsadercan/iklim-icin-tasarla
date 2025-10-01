@@ -27,7 +27,7 @@ export default async function BetaChatPage({ params }: ChatPageProps) {
   const botInfo = getBotInfo(botSlug);
 
   return (
-    <div className="h-screen w-full bg-gray-50 flex flex-col relative overflow-hidden">
+    <div className="h-[100dvh] w-full bg-gray-50 flex flex-col relative overflow-hidden" style={{ minHeight: '100dvh' }}>
       <BetaBanner />
       <ChatPatternBackground botSlug={botSlug} />
       {/* Chat Header */}

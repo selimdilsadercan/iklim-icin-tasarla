@@ -204,7 +204,7 @@ export default function BetaChatClient({ botSlug }: BetaChatClientProps) {
       )}
 
       {/* Chat Input */}
-      <div className="bg-white/95 backdrop-blur-sm border-t border-gray-200 p-4 relative z-30 flex-shrink-0">
+      <div className="bg-white/95 backdrop-blur-sm border-t border-gray-200 p-4 sticky bottom-0 z-30 flex-shrink-0 pb-safe">
         <div className="max-w-md mx-auto flex items-center gap-3">
           <input
             type="text"
