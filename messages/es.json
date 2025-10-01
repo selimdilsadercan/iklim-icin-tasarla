@@ -1,0 +1,152 @@
+{
+  "app": {
+    "title": "Diseña para el Clima",
+    "description": "Plataforma de diseño para el cambio climático",
+    "subtitle": "Aprendizaje amigable con el clima para niños"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "class": "Clase",
+    "profile": "Perfil",
+    "login": "Iniciar Sesión",
+    "signup": "Registrarse"
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "email": "Correo Electrónico",
+      "password": "Contraseña",
+      "emailPlaceholder": "ejemplo@email.com",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Iniciar Sesión",
+      "submitting": "Iniciando sesión...",
+      "noAccount": "¿No tienes una cuenta?",
+      "signupLink": "Regístrate",
+      "continueWithoutAccount": "Continuar Sin Cuenta"
+    },
+    "signup": {
+      "title": "Registrarse",
+      "email": "Correo Electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar Contraseña",
+      "emailPlaceholder": "ejemplo@email.com",
+      "passwordPlaceholder": "••••••••",
+      "confirmPasswordPlaceholder": "••••••••",
+      "submit": "Registrarse",
+      "submitting": "Creando cuenta...",
+      "hasAccount": "¿Ya tienes una cuenta?",
+      "loginLink": "Inicia sesión"
+    },
+    "errors": {
+      "unexpected": "Ocurrió un error inesperado",
+      "invalidCredentials": "Correo electrónico o contraseña inválidos",
+      "emailAlreadyExists": "Esta dirección de correo electrónico ya está en uso",
+      "weakPassword": "La contraseña es muy débil",
+      "passwordsDoNotMatch": "Las contraseñas no coinciden"
+    }
+  },
+  "home": {
+    "welcome": "¡Bienvenido! 🌱",
+    "description": "¡Puedes empezar a hablar con asistentes sobre temas que te interesan!",
+    "loading": "Cargando...",
+    "error": "Ocurrió un error al cargar las estadísticas",
+    "retry": "Intentar de Nuevo",
+    "conversations": "conversaciones",
+    "assistants": {
+      "yaprak": {
+        "name": "Hoja",
+        "title": "Asistente Ambiental"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Asistente de Energía"
+      },
+      "bugday": {
+        "name": "Trigo",
+        "title": "Asistente Agrícola"
+      },
+      "damla": {
+        "name": "Gota",
+        "title": "Asistente de Agua"
+      }
+    }
+  },
+  "chat": {
+    "sendMessage": "Escribe tu mensaje...",
+    "send": "Enviar",
+    "typing": "Escribiendo...",
+    "error": "Ocurrió un error al enviar el mensaje",
+    "retry": "Intentar de Nuevo",
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "botTyping": "El bot está escribiendo",
+    "streaming": "Transmitiendo",
+    "loading": "Cargando...",
+    "assistants": {
+      "yaprak": {
+        "name": "Hoja",
+        "title": "Asistente Ambiental"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Asistente de Energía"
+      },
+      "bugday": {
+        "name": "Trigo",
+        "title": "Asistente Agrícola"
+      },
+      "damla": {
+        "name": "Gota",
+        "title": "Asistente de Agua"
+      }
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "email": "Correo Electrónico",
+    "logout": "Cerrar Sesión",
+    "stats": "Estadísticas",
+    "userType": "Estudiante Amigable con el Clima",
+    "verifiedAccount": "Cuenta Verificada",
+    "memberSince": "Miembro Desde",
+    "lastSignIn": "Último Inicio de Sesión",
+    "logoutConfirm": "Cerrar Sesión",
+    "logoutMessage": "¿Estás seguro de que quieres cerrar sesión de tu cuenta?",
+    "cancel": "Cancelar",
+    "daysMember": "Días Miembro",
+    "status": "Estado",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "emailStatus": "Correo",
+    "unknown": "Desconocido",
+    "language": "Idioma",
+    "languageDescription": "Cambiar idioma de la aplicación"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "retry": "Intentar de Nuevo",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar"
+  },
+  "class": {
+    "title": "¡Próximamente! 🚀",
+    "description": "La función de clase está actualmente en desarrollo",
+    "whatsComing": "¿Qué Viene?",
+    "features": {
+      "progressTracking": "Seguimiento de progreso",
+      "interactiveLearning": "Aprendizaje interactivo con simulaciones",
+      "badgeSystem": "Sistema de insignias"
+    },
+    "excited": "¡Estamos emocionados por esta función! 🌱"
+  },
+  "languages": {
+    "tr": "Türkçe",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français"
+  }
+}

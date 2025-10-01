@@ -4,12 +4,15 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useBeta } from "@/contexts/BetaContext";
+import { useTranslations } from "@/hooks/useTranslations";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
   const { user, signIn } = useAuth();
   const { enableBetaMode, setBetaUser } = useBeta();
+  const t = useTranslations('');
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,7 +39,7 @@ export default function LoginPage() {
         router.push("/home");
       }
     } catch (err) {
-      setError("An unexpected error occurred");
+      setError(t('errors.unexpected'));
     } finally {
       setLoading(false);
     }
@@ -91,19 +94,24 @@ export default function LoginPage() {
                 <div className="w-16 h-16 shadow-lg">
                   <Image 
                     src="/logo.png" 
-                    alt="İklim İçin Tasarla Logo" 
+                    alt={t('app.title')} 
                     width={64} 
                     height={64} 
                     className="w-full h-full object-contain"
                   />
                 </div>
                 <h1 className="text-2xl font-bold text-gray-800">
-                  İklim İçin Tasarla
+                  {t('app.title')}
                 </h1>
               </div>
               <p className="text-center text-gray-600 text-sm">
-                İklim Asistanları ile tanışmaya hazır mısın?
+                {t('app.subtitle')}
               </p>
+            </div>
+
+            {/* Language Selector */}
+            <div className="mb-6">
+              <LanguageSwitcher />
             </div>
 
             {/* Login Form */}
@@ -119,7 +127,7 @@ export default function LoginPage() {
                   {/* Email Input */}
                   <div className="space-y-2">
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                      E-posta
+                      {t('auth.login.email')}
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -136,7 +144,7 @@ export default function LoginPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200 bg-white/80"
-                        placeholder="E-posta adresinizi girin"
+                        placeholder={t('auth.login.emailPlaceholder')}
                       />
                     </div>
                   </div>
@@ -144,7 +152,7 @@ export default function LoginPage() {
                   {/* Password Input */}
                   <div className="space-y-2">
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                      Şifre
+                      {t('auth.login.password')}
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -161,7 +169,7 @@ export default function LoginPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         className="block w-full pl-10 pr-12 py-3 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200 bg-white/80"
-                        placeholder="Şifrenizi girin"
+                        placeholder={t('auth.login.passwordPlaceholder')}
                       />
                       <button
                         type="button"
@@ -189,7 +197,7 @@ export default function LoginPage() {
                     className="group relative w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white font-bold py-3 px-4 rounded-2xl shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.2)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out border-b-4 border-green-700 hover:border-green-600 active:border-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <div className="flex items-center justify-center gap-2">
-                      <span className="text-base">{loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}</span>
+                      <span className="text-base">{loading ? t('auth.login.submitting') : t('auth.login.submit')}</span>
                       {!loading && (
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -217,7 +225,7 @@ export default function LoginPage() {
                       className="mt-8 group relative w-full bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 text-white font-bold py-3 px-4 rounded-2xl shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.2)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out border-b-4 border-blue-700 hover:border-blue-600 active:border-blue-500"
                     >
                       <div className="flex items-center justify-center gap-2">
-                        <span className="text-base">Hesap Olmadan Devam Et</span>
+                        <span className="text-base">{t('auth.login.continueWithoutAccount')}</span>
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>

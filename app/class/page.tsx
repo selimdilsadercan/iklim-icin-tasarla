@@ -1,8 +1,11 @@
 "use client";
 
 import AppBar from "@/components/AppBar";
+import { useTranslations } from "@/hooks/useTranslations";
 
 export default function ClassPage() {
+  const t = useTranslations('');
+
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
         <AppBar currentPage="class" />
@@ -19,16 +22,16 @@ export default function ClassPage() {
               </div>
               
               <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Yakında Geliyor! 🚀
+                {t('class.title')}
               </h2>
               
               <p className="text-gray-600 mb-6">
-                Sınıf özelliği şu anda geliştiriliyor
+                {t('class.description')}
               </p>
               
               <div className="bg-white/80 rounded-2xl p-6 border border-gray-200 shadow-sm">
                 <h3 className="font-semibold text-gray-800 mb-3">
-                  Ne Geliyor?
+                  {t('class.whatsComing')}
                 </h3>
                 <div className="space-y-3 text-left">
                   <div className="flex items-center gap-3">
@@ -37,7 +40,7 @@ export default function ClassPage() {
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                     </div>
-                    <span className="text-gray-700">İlerleme takibi</span>
+                    <span className="text-gray-700">{t('class.features.progressTracking')}</span>
                   </div>
                   
                   <div className="flex items-center gap-3">
@@ -46,7 +49,7 @@ export default function ClassPage() {
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                     </div>
-                    <span className="text-gray-700">İnteraktif simulasyonlarla öğrenme</span>
+                    <span className="text-gray-700">{t('class.features.interactiveLearning')}</span>
                   </div>
                   
                   <div className="flex items-center gap-3">
@@ -55,13 +58,13 @@ export default function ClassPage() {
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                     </div>
-                    <span className="text-gray-700">Rozet sistemi</span>
+                    <span className="text-gray-700">{t('class.features.badgeSystem')}</span>
                   </div>
                 </div>
               </div>
               
               <p className="text-sm text-gray-500 mt-6">
-                Bu özellik için sabırsızlanıyoruz! 🌱
+                {t('class.excited')}
               </p>
             </div>
           </div>

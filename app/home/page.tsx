@@ -5,15 +5,17 @@ import AppBar from "@/components/AppBar";
 import Link from "next/link";
 import { UserStatsService } from "@/lib/user-stats-service";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslations } from "@/hooks/useTranslations";
 import Image from "next/image";
 
 export default function HomePage() {
   const { user } = useAuth();
+  const t = useTranslations('home');
   const [assistantStats, setAssistantStats] = useState({
-    yaprak: { totalConversations: 0, lastActive: "Yükleniyor..." },
-    robi: { totalConversations: 0, lastActive: "Yükleniyor..." },
-    bugday: { totalConversations: 0, lastActive: "Yükleniyor..." },
-    damla: { totalConversations: 0, lastActive: "Yükleniyor..." }
+    yaprak: { totalConversations: 0, lastActive: t('loading') },
+    robi: { totalConversations: 0, lastActive: t('loading') },
+    bugday: { totalConversations: 0, lastActive: t('loading') },
+    damla: { totalConversations: 0, lastActive: t('loading') }
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +33,7 @@ export default function HomePage() {
       setAssistantStats(stats);
     } catch (err) {
       console.error('Error fetching user stats:', err);
-      setError('İstatistikler yüklenirken bir hata oluştu');
+      setError(t('error'));
     } finally {
       setLoading(false);
     }
@@ -50,10 +52,10 @@ export default function HomePage() {
             {/* Welcome Section */}
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Hoş Geldin! 🌱
+                {t('welcome')}
               </h2>
               <p className="text-gray-600">
-                Merak ettiğin konuda asistanlar ile konuşmaya başlayabilirsin!
+                {t('description')}
               </p>  
               
               {/* Error State */}
@@ -64,7 +66,7 @@ export default function HomePage() {
                     onClick={fetchStats}
                     className="mt-2 px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
                   >
-                    Tekrar Dene
+                    {t('retry')}
                   </button>
                 </div>
               )}
@@ -169,8 +171,8 @@ export default function HomePage() {
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-800">Yaprak</h3>
-                      <p className="text-sm text-gray-600">Çevre Asistanı</p>
+                      <h3 className="font-semibold text-gray-800">{t('assistants.yaprak.name')}</h3>
+                      <p className="text-sm text-gray-600">{t('assistants.yaprak.title')}</p>
                     </div>
                     <div className="text-green-500">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -183,7 +185,7 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 ml-15">
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                      <span className="text-xs text-gray-500">{assistantStats.yaprak.totalConversations} konuşma</span>
+                      <span className="text-xs text-gray-500">{assistantStats.yaprak.totalConversations} {t('conversations')}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -212,8 +214,8 @@ export default function HomePage() {
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-800">Robi</h3>
-                      <p className="text-sm text-gray-600">Enerji Asistanı</p>
+                      <h3 className="font-semibold text-gray-800">{t('assistants.robi.name')}</h3>
+                      <p className="text-sm text-gray-600">{t('assistants.robi.title')}</p>
                     </div>
                     <div className="text-orange-500">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -226,7 +228,7 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 ml-15">
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                      <span className="text-xs text-gray-500">{assistantStats.robi.totalConversations} konuşma</span>
+                      <span className="text-xs text-gray-500">{assistantStats.robi.totalConversations} {t('conversations')}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -255,8 +257,8 @@ export default function HomePage() {
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-800">Buğday</h3>
-                      <p className="text-sm text-gray-600">Tarım Asistanı</p>
+                      <h3 className="font-semibold text-gray-800">{t('assistants.bugday.name')}</h3>
+                      <p className="text-sm text-gray-600">{t('assistants.bugday.title')}</p>
                     </div>
                     <div className="text-yellow-500">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -269,7 +271,7 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 ml-15">
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                      <span className="text-xs text-gray-500">{assistantStats.bugday.totalConversations} konuşma</span>
+                      <span className="text-xs text-gray-500">{assistantStats.bugday.totalConversations} {t('conversations')}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -298,8 +300,8 @@ export default function HomePage() {
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-800">Damla</h3>
-                      <p className="text-sm text-gray-600">Su Asistanı</p>
+                      <h3 className="font-semibold text-gray-800">{t('assistants.damla.name')}</h3>
+                      <p className="text-sm text-gray-600">{t('assistants.damla.title')}</p>
                     </div>
                     <div className="text-blue-500">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -312,7 +314,7 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 ml-15">
                     <div className="flex items-center gap-1">
                       <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                      <span className="text-xs text-gray-500">{assistantStats.damla.totalConversations} konuşma</span>
+                      <span className="text-xs text-gray-500">{assistantStats.damla.totalConversations} {t('conversations')}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

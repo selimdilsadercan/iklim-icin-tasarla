@@ -1,0 +1,152 @@
+{
+  "app": {
+    "title": "Design for Climate",
+    "description": "Design platform for climate change",
+    "subtitle": "Climate-friendly learning for children"
+  },
+  "navigation": {
+    "home": "Home",
+    "class": "Class",
+    "profile": "Profile",
+    "login": "Login",
+    "signup": "Sign Up"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "email": "Email",
+      "password": "Password",
+      "emailPlaceholder": "example@email.com",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Sign In",
+      "submitting": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Sign up",
+      "continueWithoutAccount": "Continue Without Account"
+    },
+    "signup": {
+      "title": "Sign Up",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "emailPlaceholder": "example@email.com",
+      "passwordPlaceholder": "••••••••",
+      "confirmPasswordPlaceholder": "••••••••",
+      "submit": "Sign Up",
+      "submitting": "Creating account...",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in"
+    },
+    "errors": {
+      "unexpected": "An unexpected error occurred",
+      "invalidCredentials": "Invalid email or password",
+      "emailAlreadyExists": "This email address is already in use",
+      "weakPassword": "Password is too weak",
+      "passwordsDoNotMatch": "Passwords do not match"
+    }
+  },
+  "home": {
+    "welcome": "Welcome! 🌱",
+    "description": "You can start talking with assistants about topics you're curious about!",
+    "loading": "Loading...",
+    "error": "An error occurred while loading statistics",
+    "retry": "Try Again",
+    "conversations": "conversations",
+    "assistants": {
+      "yaprak": {
+        "name": "Leaf",
+        "title": "Environment Assistant"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Energy Assistant"
+      },
+      "bugday": {
+        "name": "Wheat",
+        "title": "Agriculture Assistant"
+      },
+      "damla": {
+        "name": "Drop",
+        "title": "Water Assistant"
+      }
+    }
+  },
+  "chat": {
+    "sendMessage": "Type your message...",
+    "send": "Send",
+    "typing": "Typing...",
+    "error": "An error occurred while sending the message",
+    "retry": "Try Again",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "botTyping": "Bot is typing",
+    "streaming": "Streaming",
+    "loading": "Loading...",
+    "assistants": {
+      "yaprak": {
+        "name": "Leaf",
+        "title": "Environment Assistant"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Energy Assistant"
+      },
+      "bugday": {
+        "name": "Wheat",
+        "title": "Agriculture Assistant"
+      },
+      "damla": {
+        "name": "Drop",
+        "title": "Water Assistant"
+      }
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "email": "Email",
+    "logout": "Logout",
+    "stats": "Statistics",
+    "userType": "Climate-Friendly Student",
+    "verifiedAccount": "Verified Account",
+    "memberSince": "Member Since",
+    "lastSignIn": "Last Sign In",
+    "logoutConfirm": "Logout",
+    "logoutMessage": "Are you sure you want to logout from your account?",
+    "cancel": "Cancel",
+    "daysMember": "Days Member",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "emailStatus": "Email",
+    "unknown": "Unknown",
+    "language": "Language",
+    "languageDescription": "Change application language"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Try Again",
+    "back": "Back",
+    "next": "Next",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "class": {
+    "title": "Coming Soon! 🚀",
+    "description": "Class feature is currently under development",
+    "whatsComing": "What's Coming?",
+    "features": {
+      "progressTracking": "Progress tracking",
+      "interactiveLearning": "Interactive learning with simulations",
+      "badgeSystem": "Badge system"
+    },
+    "excited": "We're excited about this feature! 🌱"
+  },
+  "languages": {
+    "tr": "Türkçe",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français"
+  }
+}
