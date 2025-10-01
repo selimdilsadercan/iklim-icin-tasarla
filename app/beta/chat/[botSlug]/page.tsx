@@ -27,11 +27,11 @@ export default async function BetaChatPage({ params }: ChatPageProps) {
   const botInfo = getBotInfo(botSlug);
 
   return (
-    <div className="h-screen w-full bg-gray-50 flex flex-col relative">
+    <div className="h-screen w-full bg-gray-50 flex flex-col relative overflow-hidden">
       <BetaBanner />
       <ChatPatternBackground botSlug={botSlug} />
       {/* Chat Header */}
-      <div className="bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3 relative z-30">
+      <div className="bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3 relative z-30 flex-shrink-0">
         <div className="flex items-center gap-3">
           <BetaBackButton />
           <div className="w-10 h-10">
@@ -45,7 +45,9 @@ export default async function BetaChatPage({ params }: ChatPageProps) {
       </div>
 
       {/* Chat Client Component */}
-      <BetaChatClient botSlug={botSlug} />
+      <div className="flex-1 flex flex-col min-h-0">
+        <BetaChatClient botSlug={botSlug} />
+      </div>
     </div>
   );
 }
