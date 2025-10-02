@@ -232,3 +232,6 @@ export default function FeedbackPage() {
     </div>
   );
 }
+
+{/* Bottom Navigation */}
+<AppBar currentPage="profile" />
