@@ -2,13 +2,20 @@
   "name": "iklim-icin-tasarla",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
     "generate": "ts-node scripts/generate-types.ts",
-    "mobile": "next build && npx cap sync"
+    "increment-version": "node scripts/increment-version.ts",
+    "mobile": "npm run increment-version && next build --turbopack && npx cap sync && npm run apk",
+    "apk": "cd android && ./gradlew assembleDebug && ./gradlew bundleRelease && cd .. && npm run open-aab",
+    "open-apk": "xdg-open /home/meral/Desktop/iklim-icin-tasarla/android/app/build/outputs/apk/debug",
+    "aab": "npm run increment-version && cd android && ./gradlew bundleRelease && cd ..",
+    "open-aab": "xdg-open /home/meral/Desktop/iklim-icin-tasarla/android/app/build/outputs/bundle/release",
+    "clean": "cd android && ./gradlew clean"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",
@@ -17,6 +24,7 @@
     "@capacitor/core": "^7.4.3",
     "@capacitor/ios": "^7.4.3",
     "@capacitor/status-bar": "^7.0.3",
+    "@phosphor-icons/react": "^2.1.10",
     "@supabase/supabase-js": "^2.57.4",
     "@tailwindcss/typography": "^0.5.18",
     "lucide-react": "^0.542.0",
