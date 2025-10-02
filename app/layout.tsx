@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { BetaProvider } from "@/contexts/BetaContext";
+import { LocaleProvider } from "@/contexts/LocaleContext";
 import StatusBarComponent from "@/components/StatusBar";
 import BackButtonHandler from "@/components/BackButtonHandler";
 
@@ -30,11 +32,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <StatusBarComponent />
-        <BackButtonHandler />
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <LocaleProvider>
+          <StatusBarComponent />
+          <BackButtonHandler />
+          <BetaProvider>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </BetaProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

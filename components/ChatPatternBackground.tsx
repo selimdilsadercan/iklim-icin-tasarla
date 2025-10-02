@@ -68,7 +68,7 @@ export default function ChatPatternBackground({ botSlug, className = "" }: ChatP
   const icons = getPatternIcons(botSlug);
 
   return (
-    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
+    <div className={`absolute inset-0 overflow-hidden pointer-events-none z-10 ${className}`}>
       <div className="absolute inset-0 opacity-30">
         {/* Create an organic scattered pattern with icons - no overlapping */}
         {(() => {

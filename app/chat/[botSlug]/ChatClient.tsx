@@ -5,11 +5,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { ChatService } from "@/lib/chat-service";
 import { ChatMessage } from "@/lib/chat-utils";
 import { AIService, BOT_PERSONAS } from "@/lib/ai-service";
+import { useTranslations } from "@/hooks/useTranslations";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 // Helper function to format date for day indicators
-const formatDateForIndicator = (date: Date): string => {
+const formatDateForIndicator = (date: Date, t: any): string => {
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
@@ -22,9 +23,9 @@ const formatDateForIndicator = (date: Date): string => {
   const messageDateOnly = new Date(messageDate.getFullYear(), messageDate.getMonth(), messageDate.getDate());
   
   if (messageDateOnly.getTime() === todayDate.getTime()) {
-    return "Bugün";
+    return t('today');
   } else if (messageDateOnly.getTime() === yesterdayDate.getTime()) {
-    return "Dün";
+    return t('yesterday');
   } else {
     return messageDate.toLocaleDateString("tr-TR", {
       day: "numeric",
@@ -54,6 +55,7 @@ interface ChatClientProps {
 
 export default function ChatClient({ botSlug }: ChatClientProps) {
   const { user } = useAuth();
+  const t = useTranslations('chat');
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(true);
@@ -210,7 +212,7 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
               {showDayIndicator && (
                 <div className="flex justify-center my-4">
                   <div className="bg-gray-600/80 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
-                    {formatDateForIndicator(message.timestamp)}
+                    {formatDateForIndicator(message.timestamp, t)}
                   </div>
                 </div>
               )}
@@ -265,7 +267,7 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
             {messages.length > 0 && isDifferentDay(new Date(), messages[messages.length - 1].timestamp) && (
               <div className="flex justify-center my-4">
                 <div className="bg-gray-600/80 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
-                  {formatDateForIndicator(new Date())}
+                  {formatDateForIndicator(new Date(), t)}
                 </div>
               </div>
             )}
@@ -279,11 +281,11 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
                       <div className="whitespace-pre-wrap">{streamingMessage}</div>
                     </div>
                   ) : (
-                    <div className="text-gray-500">Yazıyor...</div>
+                    <div className="text-gray-500">{t('typing')}</div>
                   )}
                 </div>
                 <div className="flex items-center space-x-2 mt-1">
-                  <div className="text-xs text-gray-400">Yazıyor</div>
+                  <div className="text-xs text-gray-400">{t('typing')}</div>
                   <div className="flex space-x-1">
                     <div className="w-1 h-1 bg-gray-400 rounded-full animate-bounce"></div>
                     <div className="w-1 h-1 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
@@ -300,7 +302,7 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
           <div className="flex justify-start">
             <div className="bg-white/90 backdrop-blur-sm text-gray-800 border border-white/20 px-4 py-2 rounded-2xl shadow-sm">
               <div className="flex items-center space-x-2">
-                <div className="animate-pulse">Bot yazıyor</div>
+                <div className="animate-pulse">{t('botTyping')}</div>
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
@@ -320,7 +322,7 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Mesajınızı yazın..."
+            placeholder={t('sendMessage')}
             className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-400"
           />
           <button

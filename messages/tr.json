@@ -1,0 +1,154 @@
+{
+  "app": {
+    "title": "İklim İçin Tasarla",
+    "description": "İklim değişikliği için tasarım platformu",
+    "subtitle": "Çocuklar için iklim dostu öğrenme"
+  },
+  "navigation": {
+    "home": "Ana Sayfa",
+    "class": "Sınıf",
+    "profile": "Profil",
+    "login": "Giriş",
+    "signup": "Kayıt Ol"
+  },
+  "auth": {
+    "login": {
+      "title": "Giriş Yap",
+      "email": "E-posta",
+      "password": "Şifre",
+      "emailPlaceholder": "ornek@email.com",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Giriş Yap",
+      "submitting": "Giriş yapılıyor...",
+      "noAccount": "Hesabınız yok mu?",
+      "signupLink": "Kayıt olun",
+      "continueWithoutAccount": "Hesap Olmadan Devam Et"
+    },
+    "signup": {
+      "title": "Kayıt Ol",
+      "email": "E-posta",
+      "password": "Şifre",
+      "confirmPassword": "Şifre Tekrar",
+      "emailPlaceholder": "ornek@email.com",
+      "passwordPlaceholder": "••••••••",
+      "confirmPasswordPlaceholder": "••••••••",
+      "submit": "Kayıt Ol",
+      "submitting": "Kayıt oluşturuluyor...",
+      "hasAccount": "Zaten hesabınız var mı?",
+      "loginLink": "Giriş yapın",
+      "successTitle": "Kayıt Başarılı!",
+      "successMessage": "E-posta adresinize gönderilen doğrulama linkine tıklayarak hesabınızı aktifleştirin.",
+      "backToLogin": "Giriş Sayfasına Dön"
+    },
+    "errors": {
+      "unexpected": "Beklenmeyen bir hata oluştu",
+      "invalidCredentials": "Geçersiz e-posta veya şifre",
+      "emailAlreadyExists": "Bu e-posta adresi zaten kullanılıyor",
+      "weakPassword": "Şifre çok zayıf",
+      "passwordsDoNotMatch": "Şifreler eşleşmiyor"
+    }
+  },
+  "home": {
+    "welcome": "Hoş Geldin! 🌱",
+    "description": "Merak ettiğin konuda asistanlar ile konuşmaya başlayabilirsin!",
+    "loading": "Yükleniyor...",
+    "error": "İstatistikler yüklenirken bir hata oluştu",
+    "retry": "Tekrar Dene",
+    "conversations": "konuşma",
+    "assistants": {
+      "yaprak": {
+        "name": "Yaprak",
+        "title": "Çevre Asistanı"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Enerji Asistanı"
+      },
+      "bugday": {
+        "name": "Buğday",
+        "title": "Tarım Asistanı"
+      },
+      "damla": {
+        "name": "Damla",
+        "title": "Su Asistanı"
+      }
+    }
+  },
+  "chat": {
+    "sendMessage": "Mesajınızı yazın...",
+    "send": "Gönder",
+    "typing": "Yazıyor...",
+    "error": "Mesaj gönderilirken bir hata oluştu",
+    "retry": "Tekrar Dene",
+    "today": "Bugün",
+    "yesterday": "Dün",
+    "botTyping": "Bot yazıyor",
+    "streaming": "Akış",
+    "loading": "Yükleniyor...",
+    "assistants": {
+      "yaprak": {
+        "name": "Yaprak",
+        "title": "Çevre Asistanı"
+      },
+      "robi": {
+        "name": "Robi", 
+        "title": "Enerji Asistanı"
+      },
+      "bugday": {
+        "name": "Buğday",
+        "title": "Tarım Asistanı"
+      },
+      "damla": {
+        "name": "Damla",
+        "title": "Su Asistanı"
+      }
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "email": "E-posta",
+    "logout": "Çıkış Yap",
+    "stats": "İstatistikler",
+    "userType": "İklim Dostu Öğrenci",
+    "verifiedAccount": "Doğrulanmış Hesap",
+    "memberSince": "Üyelik Tarihi",
+    "lastSignIn": "Son Giriş",
+    "logoutConfirm": "Çıkış Yap",
+    "logoutMessage": "Hesabınızdan çıkış yapmak istediğinizden emin misiniz?",
+    "cancel": "İptal",
+    "daysMember": "Gündür Üye",
+    "status": "Durum",
+    "active": "Aktif",
+    "inactive": "Pasif",
+    "emailStatus": "E-posta",
+    "unknown": "Bilinmiyor",
+    "language": "Dil"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "retry": "Tekrar Dene",
+    "back": "Geri",
+    "next": "İleri",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "confirm": "Onayla"
+  },
+  "class": {
+    "title": "Yakında Geliyor! 🚀",
+    "description": "Sınıf özelliği şu anda geliştiriliyor",
+    "whatsComing": "Ne Geliyor?",
+    "features": {
+      "progressTracking": "İlerleme takibi",
+      "interactiveLearning": "İnteraktif simulasyonlarla öğrenme",
+      "badgeSystem": "Rozet sistemi"
+    },
+    "excited": "Bu özellik için sabırsızlanıyoruz! 🌱"
+  },
+  "languages": {
+    "tr": "Türkçe",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français"
+  }
+}

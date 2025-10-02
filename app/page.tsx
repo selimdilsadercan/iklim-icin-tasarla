@@ -3,11 +3,13 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslations } from "@/hooks/useTranslations";
 import Image from "next/image";
 
 export default function SplashScreen() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const t = useTranslations('app');
 
   useEffect(() => {
     // Don't redirect while auth is still loading
@@ -35,7 +37,7 @@ export default function SplashScreen() {
           <div className="w-20 h-20 mx-auto shadow-2xl">
             <Image 
               src="/logo.png" 
-              alt="İklim İçin Tasarla Logo" 
+              alt={`${t('title')} Logo`} 
               width={80} 
               height={80} 
               className="w-full h-full object-contain"
@@ -45,12 +47,12 @@ export default function SplashScreen() {
 
         {/* App Title */}
         <h1 className="text-3xl font-bold text-gray-800 mb-3">
-          İklim İçin Tasarla
+          {t('title')}
         </h1>
         
         {/* Subtitle */}
         <p className="text-gray-600 text-lg">
-          Çocuklar için iklim dostu öğrenme
+          {t('subtitle')}
         </p>
       </div>
     </div>
