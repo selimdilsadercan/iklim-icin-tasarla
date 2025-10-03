@@ -10,7 +10,8 @@ const flagMap = {
   'tr': '🇹🇷',
   'en': '🇺🇸',
   'es': '🇪🇸',
-  'fr': '🇫🇷'
+  'de': '🇩🇪',
+  'nl': '🇳🇱'
 };
 
 export default function LanguageSwitcher() {

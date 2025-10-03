@@ -147,6 +147,59 @@
     "tr": "Türkçe",
     "en": "English",
     "es": "Español",
-    "fr": "Français"
+    "de": "Deutsch",
+    "nl": "Nederlands"
+  },
+  "about": {
+    "title": "Acerca de Nosotros",
+    "subtitle": "Diseño para el Clima",
+    "back": "Atrás",
+    "appAbout": "Acerca de la Aplicación",
+    "appDescription": "Diseño para el Clima es una plataforma de aprendizaje amigable con el clima para niños. Proporcionamos orientación sobre protección ambiental, sostenibilidad, ahorro de energía y vida amigable con la naturaleza con nuestros 4 asistentes de IA expertos.",
+    "expertAssistants": "Nuestros Asistentes Expertos",
+    "assistants": {
+      "yaprak": {
+        "name": "Hoja",
+        "title": "Asistente Ambiental",
+        "description": "Orientación sobre protección ambiental y sostenibilidad"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Asistente de Energía",
+        "description": "Experto en ahorro de energía y temas de energía renovable"
+      },
+      "bugday": {
+        "name": "Trigo",
+        "title": "Asistente Agrícola",
+        "description": "Consultoría sobre agricultura sostenible y seguridad alimentaria"
+      },
+      "damla": {
+        "name": "Gota",
+        "title": "Asistente de Agua",
+        "description": "Orientación sobre ahorro de agua y protección de recursos hídricos"
+      }
+    },
+    "features": "Características",
+    "aiLearning": "Aprendizaje con IA",
+    "aiLearningDescription": "Experiencia de chat y aprendizaje en tiempo real con 4 asistentes expertos.",
+    "multilingualSupport": "Soporte Multilingüe",
+    "multilingualSupportDescription": "Soporte para idiomas turco, inglés, español, alemán y holandés.",
+    "progressTracking": "Seguimiento de Progreso",
+    "progressTrackingDescription": "Rastrea tu historial de conversaciones y estadísticas de aprendizaje.",
+    "securePlatform": "Plataforma Segura",
+    "securePlatformDescription": "Entorno seguro sin anuncios, centrado en la privacidad y amigable para niños.",
+    "mission": "Nuestra Misión",
+    "missionTitle": "Criar generaciones conscientes para luchar contra el cambio climático.",
+    "missionDescription": "Ayudamos a los niños a tomar conciencia de la vida amigable con el medio ambiente, permitiéndoles dar los primeros pasos hacia un futuro sostenible.",
+    "contact": "Contacto",
+    "contactTitle": "Comparte tus opiniones y sugerencias con nosotros",
+    "contactEmail": "Email: selimdilsadercan@gmail.com",
+    "legalPages": "Páginas Legales e Informativas",
+    "privacyPolicy": "Política de Privacidad",
+    "privacyPolicyDescription": "Aprende cómo se protegen tus datos personales",
+    "feedback": "Comentarios",
+    "feedbackDescription": "Comparte tus opiniones y sugerencias con nosotros",
+    "appVersion": "Versión de la Aplicación",
+    "lastUpdate": "Última actualización"
   }
 }

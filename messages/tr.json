@@ -149,6 +149,59 @@
     "tr": "Türkçe",
     "en": "English",
     "es": "Español",
-    "fr": "Français"
+    "de": "Deutsch",
+    "nl": "Nederlands"
+  },
+  "about": {
+    "title": "Hakkımızda",
+    "subtitle": "İklim İçin Tasarla",
+    "back": "Geri",
+    "appAbout": "Uygulama Hakkında",
+    "appDescription": "İklim İçin Tasarla, çocuklar için iklim dostu öğrenme platformudur. 4 uzman AI asistanımızla çevre koruma, sürdürülebilirlik, enerji tasarrufu ve doğa dostu yaşam konularında rehberlik sağlıyoruz.",
+    "expertAssistants": "Uzman Asistanlarımız",
+    "assistants": {
+      "yaprak": {
+        "name": "Yaprak",
+        "title": "Çevre Asistanı",
+        "description": "Çevre koruma ve sürdürülebilirlik konularında rehberlik"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Enerji Asistanı",
+        "description": "Enerji tasarrufu ve yenilenebilir enerji konularında uzman"
+      },
+      "bugday": {
+        "name": "Buğday",
+        "title": "Tarım Asistanı",
+        "description": "Sürdürülebilir tarım ve gıda güvenliği konularında danışmanlık"
+      },
+      "damla": {
+        "name": "Damla",
+        "title": "Su Asistanı",
+        "description": "Su tasarrufu ve su kaynaklarının korunması konularında rehberlik"
+      }
+    },
+    "features": "Özellikler",
+    "aiLearning": "AI Destekli Öğrenme",
+    "aiLearningDescription": "4 uzman asistanla gerçek zamanlı sohbet ve öğrenme deneyimi.",
+    "multilingualSupport": "Çok Dilli Destek",
+    "multilingualSupportDescription": "Türkçe, İngilizce, İspanyolca, Almanca ve Hollandaca dil desteği.",
+    "progressTracking": "İlerleme Takibi",
+    "progressTrackingDescription": "Konuşma geçmişi ve öğrenme istatistiklerinizi takip edin.",
+    "securePlatform": "Güvenli Platform",
+    "securePlatformDescription": "Reklamsız, gizlilik odaklı ve çocuk dostu güvenli ortam.",
+    "mission": "Misyonumuz",
+    "missionTitle": "İklim değişikliğiyle mücadele etmek için bilinçli nesiller yetiştirmek.",
+    "missionDescription": "Çocukların çevre dostu yaşam konusunda bilinçlenmesine yardımcı olarak, sürdürülebilir bir gelecek için ilk adımları atmalarını sağlıyoruz.",
+    "contact": "İletişim",
+    "contactTitle": "Görüş ve önerilerinizi bizimle paylaşın",
+    "contactEmail": "E-posta: selimdilsadercan@gmail.com",
+    "legalPages": "Yasal ve Bilgilendirme Sayfaları",
+    "privacyPolicy": "Gizlilik Politikası",
+    "privacyPolicyDescription": "Kişisel verilerinizin nasıl korunduğunu öğrenin",
+    "feedback": "Geri Bildirim",
+    "feedbackDescription": "Görüş ve önerilerinizi bizimle paylaşın",
+    "appVersion": "Uygulama Versiyonu",
+    "lastUpdate": "Son güncelleme"
   }
 }

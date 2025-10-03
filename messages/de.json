@@ -1,0 +1,205 @@
+{
+  "app": {
+    "title": "Design für das Klima",
+    "description": "Design-Plattform für den Klimawandel",
+    "subtitle": "Klimafreundliches Lernen für Kinder"
+  },
+  "navigation": {
+    "home": "Startseite",
+    "class": "Klasse",
+    "profile": "Profil",
+    "login": "Anmelden",
+    "signup": "Registrieren"
+  },
+  "auth": {
+    "login": {
+      "title": "Anmelden",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "emailPlaceholder": "beispiel@email.com",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Anmelden",
+      "submitting": "Anmeldung läuft...",
+      "noAccount": "Haben Sie noch kein Konto?",
+      "signupLink": "Registrieren",
+      "continueWithoutAccount": "Ohne Konto fortfahren"
+    },
+    "signup": {
+      "title": "Registrieren",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "emailPlaceholder": "beispiel@email.com",
+      "passwordPlaceholder": "••••••••",
+      "confirmPasswordPlaceholder": "••••••••",
+      "submit": "Registrieren",
+      "submitting": "Konto wird erstellt...",
+      "hasAccount": "Haben Sie bereits ein Konto?",
+      "loginLink": "Anmelden"
+    },
+    "errors": {
+      "unexpected": "Ein unerwarteter Fehler ist aufgetreten",
+      "invalidCredentials": "Ungültige E-Mail oder Passwort",
+      "emailAlreadyExists": "Diese E-Mail-Adresse wird bereits verwendet",
+      "weakPassword": "Das Passwort ist zu schwach",
+      "passwordsDoNotMatch": "Die Passwörter stimmen nicht überein"
+    }
+  },
+  "home": {
+    "welcome": "Willkommen! 🌱",
+    "description": "Sie können mit den Assistenten über Themen sprechen, die Sie interessieren!",
+    "loading": "Laden...",
+    "error": "Beim Laden der Statistiken ist ein Fehler aufgetreten",
+    "retry": "Erneut versuchen",
+    "conversations": "Unterhaltungen",
+    "assistants": {
+      "yaprak": {
+        "name": "Blatt",
+        "title": "Umwelt-Assistent"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Energie-Assistent"
+      },
+      "bugday": {
+        "name": "Weizen",
+        "title": "Landwirtschafts-Assistent"
+      },
+      "damla": {
+        "name": "Tropfen",
+        "title": "Wasser-Assistent"
+      }
+    }
+  },
+  "chat": {
+    "sendMessage": "Geben Sie Ihre Nachricht ein...",
+    "send": "Senden",
+    "typing": "Tippen...",
+    "error": "Beim Senden der Nachricht ist ein Fehler aufgetreten",
+    "retry": "Erneut versuchen",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "botTyping": "Bot tippt",
+    "streaming": "Streaming",
+    "loading": "Laden...",
+    "assistants": {
+      "yaprak": {
+        "name": "Blatt",
+        "title": "Umwelt-Assistent"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Energie-Assistent"
+      },
+      "bugday": {
+        "name": "Weizen",
+        "title": "Landwirtschafts-Assistent"
+      },
+      "damla": {
+        "name": "Tropfen",
+        "title": "Wasser-Assistent"
+      }
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "email": "E-Mail",
+    "logout": "Abmelden",
+    "stats": "Statistiken",
+    "userType": "Klimafreundlicher Student",
+    "verifiedAccount": "Verifiziertes Konto",
+    "memberSince": "Mitglied seit",
+    "lastSignIn": "Letzte Anmeldung",
+    "logoutConfirm": "Abmelden",
+    "logoutMessage": "Sind Sie sicher, dass Sie sich von Ihrem Konto abmelden möchten?",
+    "cancel": "Abbrechen",
+    "daysMember": "Tage Mitglied",
+    "status": "Status",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "emailStatus": "E-Mail",
+    "unknown": "Unbekannt",
+    "language": "Sprache",
+    "languageDescription": "Anwendungssprache ändern"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "retry": "Erneut versuchen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen"
+  },
+  "class": {
+    "title": "Demnächst verfügbar! 🚀",
+    "description": "Die Klassen-Funktion befindet sich derzeit in der Entwicklung",
+    "whatsComing": "Was kommt?",
+    "features": {
+      "progressTracking": "Fortschrittsverfolgung",
+      "interactiveLearning": "Interaktives Lernen mit Simulationen",
+      "badgeSystem": "Abzeichen-System"
+    },
+    "excited": "Wir freuen uns auf diese Funktion! 🌱"
+  },
+  "languages": {
+    "tr": "Türkçe",
+    "en": "English",
+    "es": "Español",
+    "de": "Deutsch",
+    "nl": "Nederlands"
+  },
+  "about": {
+    "title": "Über Uns",
+    "subtitle": "Design für das Klima",
+    "back": "Zurück",
+    "appAbout": "Über die App",
+    "appDescription": "Design für das Klima ist eine klimafreundliche Lernplattform für Kinder. Wir bieten Orientierung zu Umweltschutz, Nachhaltigkeit, Energiesparen und naturfreundlichem Leben mit unseren 4 Experten-KI-Assistenten.",
+    "expertAssistants": "Unsere Experten-Assistenten",
+    "assistants": {
+      "yaprak": {
+        "name": "Blatt",
+        "title": "Umwelt-Assistent",
+        "description": "Orientierung zu Umweltschutz und Nachhaltigkeit"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Energie-Assistent",
+        "description": "Experte für Energiesparen und erneuerbare Energien"
+      },
+      "bugday": {
+        "name": "Weizen",
+        "title": "Landwirtschafts-Assistent",
+        "description": "Beratung zu nachhaltiger Landwirtschaft und Ernährungssicherheit"
+      },
+      "damla": {
+        "name": "Tropfen",
+        "title": "Wasser-Assistent",
+        "description": "Orientierung zu Wassersparen und Schutz der Wasserressourcen"
+      }
+    },
+    "features": "Funktionen",
+    "aiLearning": "KI-gestütztes Lernen",
+    "aiLearningDescription": "Echtzeit-Chat und Lernerfahrung mit 4 Experten-Assistenten.",
+    "multilingualSupport": "Mehrsprachige Unterstützung",
+    "multilingualSupportDescription": "Unterstützung für Türkisch, Englisch, Spanisch, Deutsch und Niederländisch.",
+    "progressTracking": "Fortschrittsverfolgung",
+    "progressTrackingDescription": "Verfolgen Sie Ihren Gesprächsverlauf und Lernstatistiken.",
+    "securePlatform": "Sichere Plattform",
+    "securePlatformDescription": "Werbefreie, datenschutzorientierte und kinderfreundliche sichere Umgebung.",
+    "mission": "Unsere Mission",
+    "missionTitle": "Bewusste Generationen aufziehen, um den Klimawandel zu bekämpfen.",
+    "missionDescription": "Wir helfen Kindern, sich des umweltfreundlichen Lebens bewusst zu werden und ermöglichen ihnen, die ersten Schritte in eine nachhaltige Zukunft zu machen.",
+    "contact": "Kontakt",
+    "contactTitle": "Teilen Sie Ihre Meinungen und Vorschläge mit uns",
+    "contactEmail": "E-Mail: selimdilsadercan@gmail.com",
+    "legalPages": "Rechtliche und Informationsseiten",
+    "privacyPolicy": "Datenschutzrichtlinie",
+    "privacyPolicyDescription": "Erfahren Sie, wie Ihre persönlichen Daten geschützt werden",
+    "feedback": "Feedback",
+    "feedbackDescription": "Teilen Sie Ihre Meinungen und Vorschläge mit uns",
+    "appVersion": "App-Version",
+    "lastUpdate": "Letzte Aktualisierung"
+  }
+}

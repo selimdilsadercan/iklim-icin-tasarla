@@ -5,7 +5,8 @@ import { locales, defaultLocale, type Locale } from '@/i18n';
 import trMessages from '@/messages/tr.json';
 import enMessages from '@/messages/en.json';
 import esMessages from '@/messages/es.json';
-import frMessages from '@/messages/fr.json';
+import deMessages from '@/messages/de.json';
+import nlMessages from '@/messages/nl.json';
 
 interface LocaleContextType {
   locale: Locale;
@@ -21,7 +22,8 @@ const messagesMap = {
   'tr': trMessages,
   'en': enMessages,
   'es': esMessages,
-  'fr': frMessages
+  'de': deMessages,
+  'nl': nlMessages
 };
 
 export function LocaleProvider({ children }: { children: React.ReactNode }) {

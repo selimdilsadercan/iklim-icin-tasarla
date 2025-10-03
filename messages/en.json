@@ -147,6 +147,59 @@
     "tr": "Türkçe",
     "en": "English",
     "es": "Español",
-    "fr": "Français"
+    "de": "Deutsch",
+    "nl": "Nederlands"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Design for Climate",
+    "back": "Back",
+    "appAbout": "About the App",
+    "appDescription": "Design for Climate is a climate-friendly learning platform for children. We provide guidance on environmental protection, sustainability, energy saving, and nature-friendly living with our 4 expert AI assistants.",
+    "expertAssistants": "Our Expert Assistants",
+    "assistants": {
+      "yaprak": {
+        "name": "Leaf",
+        "title": "Environment Assistant",
+        "description": "Guidance on environmental protection and sustainability"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Energy Assistant",
+        "description": "Expert in energy saving and renewable energy topics"
+      },
+      "bugday": {
+        "name": "Wheat",
+        "title": "Agriculture Assistant",
+        "description": "Consultation on sustainable agriculture and food security"
+      },
+      "damla": {
+        "name": "Drop",
+        "title": "Water Assistant",
+        "description": "Guidance on water saving and water resource protection"
+      }
+    },
+    "features": "Features",
+    "aiLearning": "AI-Powered Learning",
+    "aiLearningDescription": "Real-time chat and learning experience with 4 expert assistants.",
+    "multilingualSupport": "Multilingual Support",
+    "multilingualSupportDescription": "Support for Turkish, English, Spanish, German and Dutch languages.",
+    "progressTracking": "Progress Tracking",
+    "progressTrackingDescription": "Track your conversation history and learning statistics.",
+    "securePlatform": "Secure Platform",
+    "securePlatformDescription": "Ad-free, privacy-focused and child-friendly secure environment.",
+    "mission": "Our Mission",
+    "missionTitle": "Raising conscious generations to fight climate change.",
+    "missionDescription": "We help children become aware of environmentally friendly living, enabling them to take the first steps towards a sustainable future.",
+    "contact": "Contact",
+    "contactTitle": "Share your opinions and suggestions with us",
+    "contactEmail": "Email: selimdilsadercan@gmail.com",
+    "legalPages": "Legal and Information Pages",
+    "privacyPolicy": "Privacy Policy",
+    "privacyPolicyDescription": "Learn how your personal data is protected",
+    "feedback": "Feedback",
+    "feedbackDescription": "Share your opinions and suggestions with us",
+    "appVersion": "App Version",
+    "lastUpdate": "Last update"
   }
 }

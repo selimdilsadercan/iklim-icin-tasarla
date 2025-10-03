@@ -1,0 +1,205 @@
+{
+  "app": {
+    "title": "Ontwerp voor het Klimaat",
+    "description": "Ontwerpplatform voor klimaatverandering",
+    "subtitle": "Klimaatvriendelijk leren voor kinderen"
+  },
+  "navigation": {
+    "home": "Home",
+    "class": "Klas",
+    "profile": "Profiel",
+    "login": "Inloggen",
+    "signup": "Registreren"
+  },
+  "auth": {
+    "login": {
+      "title": "Inloggen",
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "emailPlaceholder": "voorbeeld@email.com",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Inloggen",
+      "submitting": "Inloggen...",
+      "noAccount": "Heeft u nog geen account?",
+      "signupLink": "Registreren",
+      "continueWithoutAccount": "Doorgaan zonder account"
+    },
+    "signup": {
+      "title": "Registreren",
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "confirmPassword": "Wachtwoord bevestigen",
+      "emailPlaceholder": "voorbeeld@email.com",
+      "passwordPlaceholder": "••••••••",
+      "confirmPasswordPlaceholder": "••••••••",
+      "submit": "Registreren",
+      "submitting": "Account aanmaken...",
+      "hasAccount": "Heeft u al een account?",
+      "loginLink": "Inloggen"
+    },
+    "errors": {
+      "unexpected": "Er is een onverwachte fout opgetreden",
+      "invalidCredentials": "Ongeldige e-mail of wachtwoord",
+      "emailAlreadyExists": "Dit e-mailadres wordt al gebruikt",
+      "weakPassword": "Het wachtwoord is te zwak",
+      "passwordsDoNotMatch": "De wachtwoorden komen niet overeen"
+    }
+  },
+  "home": {
+    "welcome": "Welkom! 🌱",
+    "description": "U kunt beginnen met praten met assistenten over onderwerpen die u interesseren!",
+    "loading": "Laden...",
+    "error": "Er is een fout opgetreden bij het laden van statistieken",
+    "retry": "Opnieuw proberen",
+    "conversations": "gesprekken",
+    "assistants": {
+      "yaprak": {
+        "name": "Blad",
+        "title": "Milieu-assistent"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Energie-assistent"
+      },
+      "bugday": {
+        "name": "Tarwe",
+        "title": "Landbouw-assistent"
+      },
+      "damla": {
+        "name": "Druppel",
+        "title": "Water-assistent"
+      }
+    }
+  },
+  "chat": {
+    "sendMessage": "Typ uw bericht...",
+    "send": "Verzenden",
+    "typing": "Typen...",
+    "error": "Er is een fout opgetreden bij het verzenden van het bericht",
+    "retry": "Opnieuw proberen",
+    "today": "Vandaag",
+    "yesterday": "Gisteren",
+    "botTyping": "Bot is aan het typen",
+    "streaming": "Streaming",
+    "loading": "Laden...",
+    "assistants": {
+      "yaprak": {
+        "name": "Blad",
+        "title": "Milieu-assistent"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Energie-assistent"
+      },
+      "bugday": {
+        "name": "Tarwe",
+        "title": "Landbouw-assistent"
+      },
+      "damla": {
+        "name": "Druppel",
+        "title": "Water-assistent"
+      }
+    }
+  },
+  "profile": {
+    "title": "Profiel",
+    "email": "E-mail",
+    "logout": "Uitloggen",
+    "stats": "Statistieken",
+    "userType": "Klimaatvriendelijke student",
+    "verifiedAccount": "Geverifieerd account",
+    "memberSince": "Lid sinds",
+    "lastSignIn": "Laatste inlog",
+    "logoutConfirm": "Uitloggen",
+    "logoutMessage": "Weet u zeker dat u wilt uitloggen van uw account?",
+    "cancel": "Annuleren",
+    "daysMember": "Dagen lid",
+    "status": "Status",
+    "active": "Actief",
+    "inactive": "Inactief",
+    "emailStatus": "E-mail",
+    "unknown": "Onbekend",
+    "language": "Taal",
+    "languageDescription": "Applicatietaal wijzigen"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Fout",
+    "retry": "Opnieuw proberen",
+    "back": "Terug",
+    "next": "Volgende",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "confirm": "Bevestigen"
+  },
+  "class": {
+    "title": "Binnenkort beschikbaar! 🚀",
+    "description": "De klas-functie is momenteel in ontwikkeling",
+    "whatsComing": "Wat komt eraan?",
+    "features": {
+      "progressTracking": "Voortgangsvolging",
+      "interactiveLearning": "Interactief leren met simulaties",
+      "badgeSystem": "Badge-systeem"
+    },
+    "excited": "We zijn enthousiast over deze functie! 🌱"
+  },
+  "languages": {
+    "tr": "Türkçe",
+    "en": "English",
+    "es": "Español",
+    "de": "Deutsch",
+    "nl": "Nederlands"
+  },
+  "about": {
+    "title": "Over Ons",
+    "subtitle": "Ontwerp voor het Klimaat",
+    "back": "Terug",
+    "appAbout": "Over de App",
+    "appDescription": "Ontwerp voor het Klimaat is een klimaatvriendelijk leerplatform voor kinderen. We bieden begeleiding over milieubescherming, duurzaamheid, energiebesparing en natuurvriendelijk leven met onze 4 expert AI-assistenten.",
+    "expertAssistants": "Onze Expert Assistenten",
+    "assistants": {
+      "yaprak": {
+        "name": "Blad",
+        "title": "Milieu-assistent",
+        "description": "Begeleiding over milieubescherming en duurzaamheid"
+      },
+      "robi": {
+        "name": "Robi",
+        "title": "Energie-assistent",
+        "description": "Expert in energiebesparing en hernieuwbare energie onderwerpen"
+      },
+      "bugday": {
+        "name": "Tarwe",
+        "title": "Landbouw-assistent",
+        "description": "Advies over duurzame landbouw en voedselzekerheid"
+      },
+      "damla": {
+        "name": "Druppel",
+        "title": "Water-assistent",
+        "description": "Begeleiding over waterbesparing en bescherming van waterbronnen"
+      }
+    },
+    "features": "Functies",
+    "aiLearning": "AI-aangedreven Leren",
+    "aiLearningDescription": "Real-time chat en leerervaring met 4 expert assistenten.",
+    "multilingualSupport": "Meertalige Ondersteuning",
+    "multilingualSupportDescription": "Ondersteuning voor Turks, Engels, Spaans, Duits en Nederlands.",
+    "progressTracking": "Voortgangsvolging",
+    "progressTrackingDescription": "Volg uw gespreksgeschiedenis en leerstatistieken.",
+    "securePlatform": "Veilig Platform",
+    "securePlatformDescription": "Advertentievrije, privacy-gerichte en kindvriendelijke veilige omgeving.",
+    "mission": "Onze Missie",
+    "missionTitle": "Bewuste generaties opvoeden om klimaatverandering te bestrijden.",
+    "missionDescription": "We helpen kinderen bewust te worden van milieuvriendelijk leven, waardoor ze de eerste stappen kunnen zetten naar een duurzame toekomst.",
+    "contact": "Contact",
+    "contactTitle": "Deel uw meningen en suggesties met ons",
+    "contactEmail": "E-mail: selimdilsadercan@gmail.com",
+    "legalPages": "Juridische en Informatieve Pagina's",
+    "privacyPolicy": "Privacybeleid",
+    "privacyPolicyDescription": "Leer hoe uw persoonlijke gegevens worden beschermd",
+    "feedback": "Feedback",
+    "feedbackDescription": "Deel uw meningen en suggesties met ons",
+    "appVersion": "App Versie",
+    "lastUpdate": "Laatste update"
+  }
+}
