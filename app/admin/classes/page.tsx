@@ -1,0 +1,166 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { useAuth } from "@/contexts/AuthContext";
+import { TeacherClassesService, TeacherClass } from "@/lib/teacher-classes-service";
+import Link from "next/link";
+
+export default function AdminClassesPage() {
+  const { user } = useAuth();
+  const [classes, setClasses] = useState<TeacherClass[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchClasses = async () => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      const teacherClasses = await TeacherClassesService.getTeacherClassesByUid(user.id);
+      setClasses(teacherClasses);
+
+      console.log(teacherClasses)
+    } catch (err) {
+      console.error('Error fetching teacher classes:', err);
+      setError('Sınıflar yüklenirken bir hata oluştu');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchClasses();
+  }, [user]);
+
+  return (
+    <ProtectedRoute>
+      <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
+        {/* Main Content */}
+        <div className="px-6 py-8 min-h-screen">
+          <div className="max-w-sm mx-auto">
+            {/* Header Section */}
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                Sınıflarım
+              </h2>
+              <p className="text-gray-600">
+                Öğrencilerinizi yönetin ve sınıf bilgilerinizi görüntüleyin
+              </p>  
+              
+              {/* Error State */}
+              {error && (
+                <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded-lg">
+                  <p className="text-red-700 text-sm">{error}</p>
+                  <button 
+                    onClick={fetchClasses}
+                    className="mt-2 px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
+                  >
+                    Tekrar Dene
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Classes List */}
+            <div className="space-y-4">
+              {/* Skeleton Loaders */}
+              {loading && (
+                <>
+                  {/* Skeleton Card 1 */}
+                  <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)]">
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gray-200 rounded-xl animate-pulse"></div>
+                        <div className="flex-1">
+                          <div className="h-4 bg-gray-200 rounded animate-pulse mb-2 w-20"></div>
+                          <div className="h-3 bg-gray-200 rounded animate-pulse w-24"></div>
+                        </div>
+                        <div className="w-5 h-5 bg-gray-200 rounded animate-pulse"></div>
+                      </div>
+                      <div className="flex items-center gap-3 ml-15">
+                        <div className="h-3 bg-gray-200 rounded animate-pulse w-16"></div>
+                        <div className="h-3 bg-gray-200 rounded animate-pulse w-20"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Skeleton Card 2 */}
+                  <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)]">
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gray-200 rounded-xl animate-pulse"></div>
+                        <div className="flex-1">
+                          <div className="h-4 bg-gray-200 rounded animate-pulse mb-2 w-16"></div>
+                          <div className="h-3 bg-gray-200 rounded animate-pulse w-20"></div>
+                        </div>
+                        <div className="w-5 h-5 bg-gray-200 rounded animate-pulse"></div>
+                      </div>
+                      <div className="flex items-center gap-3 ml-15">
+                        <div className="h-3 bg-gray-200 rounded animate-pulse w-16"></div>
+                        <div className="h-3 bg-gray-200 rounded animate-pulse w-20"></div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Actual Classes - Only show when not loading */}
+              {!loading && classes.length === 0 && (
+                <div className="bg-white/80 rounded-2xl p-8 border border-gray-200 shadow-sm text-center">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Henüz sınıf yok</h3>
+                  <p className="text-gray-600 text-sm">
+                    Henüz hiç sınıfınız bulunmuyor. Yeni sınıf oluşturmak için yöneticinizle iletişime geçin.
+                  </p>
+                </div>
+              )}
+
+              {/* Classes Cards */}
+              {!loading && classes.map((classItem) => (
+                <Link key={classItem.id} href={`/admin/classes/detail?id=${classItem.id}`} className="block">
+                  <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.1)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.1)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out">
+                    <div className="flex flex-col gap-3">
+                      {/* First row: Icon + Class Name + Right arrow */}
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center">
+                          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-800">{classItem.name}</h3>
+                          <div className="flex items-center gap-1 mt-1">
+                            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                            </svg>
+                            <span className="text-sm text-gray-500">
+                              {classItem.student_count} öğrenci
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-blue-500">
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </ProtectedRoute>
+  );
+}

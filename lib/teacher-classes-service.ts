@@ -1,0 +1,72 @@
+import { supabase } from './supabase';
+
+export interface TeacherClass {
+  id: string;
+  name: string;
+  created_at: string;
+  student_count: number;
+}
+
+export interface ClassStudent {
+  user_id: string;
+  email: string;
+  display_name: string;
+  role: string;
+  class_name?: string;
+}
+
+export class TeacherClassesService {
+  /**
+   * Get all classes for the current teacher
+   */
+  static async getTeacherClasses(): Promise<TeacherClass[]> {
+    const { data, error } = await supabase.rpc('get_teacher_classes');
+    
+    if (error) {
+      console.error('Error fetching teacher classes:', error);
+      throw new Error('Failed to fetch teacher classes');
+    }
+    
+    return data || [];
+  }
+
+  /**
+   * Get all classes for a specific teacher by UID
+   */
+  static async getTeacherClassesByUid(teacherUid: string): Promise<TeacherClass[]> {
+    const { data, error } = await supabase.rpc('get_teacher_classes_by_uid', {
+      teacher_uid: teacherUid
+    });
+    
+    if (error) {
+      console.error('Error fetching teacher classes by UID:', error);
+      throw new Error('Failed to fetch teacher classes');
+    }
+    
+    return data || [];
+  }
+
+  /**
+   * Get students for a specific class
+   */
+  static async getClassStudents(classId: string): Promise<ClassStudent[]> {
+    const { data, error } = await supabase.rpc('get_class_students', {
+      class_id_param: classId
+    });
+    
+    if (error) {
+      console.error('Error fetching class students:', error);
+      throw new Error('Failed to fetch class students');
+    }
+    
+    return data || [];
+  }
+
+  /**
+   * Get student count for a specific class
+   */
+  static async getClassStudentCount(classId: string): Promise<number> {
+    const students = await this.getClassStudents(classId);
+    return students.length;
+  }
+}
