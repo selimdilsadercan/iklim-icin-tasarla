@@ -15,6 +15,13 @@ export interface ClassStudent {
   class_name?: string;
 }
 
+export interface ClassInfo {
+  id: string;
+  name: string;
+  created_at: string;
+  student_count: number;
+}
+
 export class TeacherClassesService {
   /**
    * Get all classes for the current teacher
@@ -68,5 +75,21 @@ export class TeacherClassesService {
   static async getClassStudentCount(classId: string): Promise<number> {
     const students = await this.getClassStudents(classId);
     return students.length;
+  }
+
+  /**
+   * Get class information by ID
+   */
+  static async getClassInfo(classId: string): Promise<ClassInfo | null> {
+    const { data, error } = await supabase.rpc('get_class_info', {
+      class_id_param: classId
+    });
+    
+    if (error) {
+      console.error('Error fetching class info:', error);
+      throw new Error('Failed to fetch class information');
+    }
+    
+    return data?.[0] || null;
   }
 }

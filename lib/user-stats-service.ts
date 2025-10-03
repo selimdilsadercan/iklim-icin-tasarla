@@ -25,27 +25,6 @@ export interface UserBotStatsJson {
 }
 
 export class UserStatsService {
-  /**
-   * Get bot statistics for a specific user
-   * Returns detailed stats for each bot
-   */
-  static async getUserBotStats(userId: string): Promise<UserBotStats[]> {
-    try {
-      const { data, error } = await supabase.rpc('get_user_bot_stats', {
-        user_id_param: userId
-      });
-
-      if (error) {
-        console.error('Error fetching user bot stats:', error);
-        throw error;
-      }
-
-      return data || [];
-    } catch (error) {
-      console.error('Error in getUserBotStats:', error);
-      throw error;
-    }
-  }
 
   /**
    * Get bot statistics for a specific user in JSON format
@@ -69,27 +48,6 @@ export class UserStatsService {
     }
   }
 
-  /**
-   * Get overall user statistics
-   * Returns summary stats about user's chat activity
-   */
-  static async getUserOverallStats(userId: string): Promise<UserOverallStats | null> {
-    try {
-      const { data, error } = await supabase.rpc('get_user_overall_stats', {
-        user_id_param: userId
-      });
-
-      if (error) {
-        console.error('Error fetching user overall stats:', error);
-        throw error;
-      }
-
-      return data?.[0] || null;
-    } catch (error) {
-      console.error('Error in getUserOverallStats:', error);
-      throw error;
-    }
-  }
 
   /**
    * Get formatted bot statistics for display

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 import { TeacherClassesService, TeacherClass } from "@/lib/teacher-classes-service";
+import AdminAppBar from "@/components/AdminAppBar";
+import AdminSidebar from "@/components/AdminSidebar";
 import Link from "next/link";
 
 export default function AdminClassesPage() {
@@ -40,9 +42,12 @@ export default function AdminClassesPage() {
   return (
     <ProtectedRoute>
       <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
-        {/* Main Content */}
-        <div className="px-6 py-8 min-h-screen">
-          <div className="max-w-sm mx-auto">
+        <AdminAppBar currentPage="classes" />
+        <AdminSidebar currentPage="classes" />
+        
+        {/* Main Content with responsive layout */}
+        <div className="lg:ml-64 px-6 pb-24 lg:pb-8 pt-8 min-h-screen">
+          <div className="max-w-sm lg:max-w-4xl mx-auto">
             {/* Header Section */}
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-2">
@@ -67,7 +72,7 @@ export default function AdminClassesPage() {
             </div>
 
             {/* Classes List */}
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
               {/* Skeleton Loaders */}
               {loading && (
                 <>

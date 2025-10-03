@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 import { TeacherClassesService, ClassStudent } from "@/lib/teacher-classes-service";
+import AdminAppBar from "@/components/AdminAppBar";
+import AdminSidebar from "@/components/AdminSidebar";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function ClassDetailPage() {
@@ -57,27 +59,31 @@ export default function ClassDetailPage() {
   return (
     <ProtectedRoute>
       <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-6 py-4">
-          <div className="max-w-sm mx-auto flex items-center gap-4">
-            <button
-              onClick={() => router.back()}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <svg className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <div className="flex-1">
-              <h1 className="text-xl font-bold text-gray-800">{className}</h1>
-              <p className="text-sm text-gray-600">Sınıf Öğrencileri</p>
+        <AdminSidebar currentPage={null} />
+        
+        {/* Main Content with responsive layout */}
+        <div className="lg:ml-64">
+          {/* Header */}
+          <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-4">
+            <div className="max-w-sm lg:max-w-4xl mx-auto flex items-center gap-4">
+              <button
+                onClick={() => router.back()}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <svg className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <div className="flex-1">
+                <h1 className="text-xl font-bold text-gray-800">{className}</h1>
+                <p className="text-sm text-gray-600">Sınıf Öğrencileri</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Main Content */}
-        <div className="px-6 py-8">
-          <div className="max-w-sm mx-auto">
+          {/* Content */}
+          <div className="px-6 pb-24 lg:pb-8 pt-8">
+            <div className="max-w-sm lg:max-w-4xl mx-auto">
             {/* Error State */}
             {error && (
               <div className="mb-6 p-4 bg-red-100 border border-red-300 rounded-lg">
@@ -138,11 +144,13 @@ export default function ClassDetailPage() {
                     </div>
                     
                     {/* Student Info */}
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-800">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-gray-800 truncate" title={student.display_name || 'İsimsiz Öğrenci'}>
                         {student.display_name || 'İsimsiz Öğrenci'}
                       </h3>
-                      <p className="text-sm text-gray-600">{student.email}</p>
+                      <p className="text-sm text-gray-600 truncate" title={student.email}>
+                        {student.email}
+                      </p>
                     </div>
                     
                     {/* Role Badge */}
@@ -168,6 +176,7 @@ export default function ClassDetailPage() {
                 </div>
               </div>
             )}
+            </div>
           </div>
         </div>
       </div>
