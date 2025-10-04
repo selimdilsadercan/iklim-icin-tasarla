@@ -5,6 +5,7 @@ export interface TeacherClass {
   name: string;
   created_at: string;
   student_count: number;
+  conversation_count: number;
 }
 
 export interface ClassStudent {

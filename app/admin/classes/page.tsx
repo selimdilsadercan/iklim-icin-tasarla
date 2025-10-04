@@ -7,6 +7,7 @@ import { TeacherClassesService, TeacherClass } from "@/lib/teacher-classes-servi
 import AdminAppBar from "@/components/AdminAppBar";
 import AdminSidebar from "@/components/AdminSidebar";
 import Link from "next/link";
+import { BookOpen, Users, CaretRight, ChatCircle } from "@phosphor-icons/react";
 
 export default function AdminClassesPage() {
   const { user } = useAuth();
@@ -85,7 +86,7 @@ export default function AdminClassesPage() {
         
         {/* Main Content with responsive layout */}
         <div className="lg:ml-64 px-6 pb-24 lg:pb-8 pt-8 min-h-screen">
-          <div className="max-w-sm lg:max-w-4xl mx-auto">
+          <div className="max-w-sm lg:max-w-6xl mx-auto">
             {/* Header Section */}
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-2">
@@ -156,9 +157,7 @@ export default function AdminClassesPage() {
               {!loading && classes.length === 0 && (
                 <div className="bg-white/80 rounded-2xl p-8 border border-gray-200 shadow-sm text-center">
                   <div className="w-16 h-16 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
+                    <BookOpen className="w-8 h-8 text-gray-400" weight="bold" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">Henüz sınıf yok</h3>
                   <p className="text-gray-600 text-sm">
@@ -175,25 +174,27 @@ export default function AdminClassesPage() {
                       {/* First row: Icon + Class Name + Right arrow */}
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center">
-                          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                          </svg>
+                          <BookOpen className="w-6 h-6 text-white" weight="bold" />
                         </div>
                         <div className="flex-1">
                           <h3 className="font-semibold text-gray-800">{classItem.name}</h3>
-                          <div className="flex items-center gap-1 mt-1">
-                            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                            </svg>
-                            <span className="text-sm text-gray-500">
-                              {classItem.student_count} öğrenci
-                            </span>
+                          <div className="flex items-center gap-3 mt-1">
+                            <div className="flex items-center gap-1">
+                              <Users className="w-4 h-4 text-gray-400" weight="regular" />
+                              <span className="text-sm text-gray-500">
+                                {classItem.student_count} öğrenci
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <ChatCircle className="w-4 h-4 text-gray-400" weight="regular" />
+                              <span className="text-sm text-gray-500">
+                                {classItem.conversation_count} konuşma
+                              </span>
+                            </div>
                           </div>
                         </div>
                         <div className="text-blue-500">
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
+                          <CaretRight className="w-5 h-5" weight="regular" />
                         </div>
                       </div>
                     </div>

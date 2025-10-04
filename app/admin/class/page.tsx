@@ -106,7 +106,7 @@ function ClassDetailPageContent() {
         <div className="lg:ml-64">
           {/* Header */}
           <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-4">
-            <div className="max-w-sm lg:max-w-4xl mx-auto flex items-center gap-4">
+            <div className="max-w-sm lg:max-w-6xl mx-auto flex items-center gap-4">
               <button
                 onClick={() => router.back()}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -124,7 +124,7 @@ function ClassDetailPageContent() {
 
           {/* Content */}
           <div className="px-6 pb-24 lg:pb-8 pt-8">
-            <div className="max-w-sm lg:max-w-4xl mx-auto">
+            <div className="max-w-sm lg:max-w-6xl mx-auto">
             {/* Error State */}
             {error && (
               <div className="mb-6 p-4 bg-red-100 border border-red-300 rounded-lg">
