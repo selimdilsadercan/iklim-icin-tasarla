@@ -13,6 +13,11 @@ export interface ClassStudent {
   display_name: string;
   role: string;
   class_name?: string;
+  total_conversations: number;
+  yaprak_conversations: number;
+  robi_conversations: number;
+  bugday_conversations: number;
+  damla_conversations: number;
 }
 
 export interface ClassInfo {

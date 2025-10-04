@@ -11,7 +11,7 @@ import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { user, signIn } = useAuth();
+  const { user, signIn, isAdmin, loading: authLoading, userRole } = useAuth();
   const { enableBetaMode, setBetaUser } = useBeta();
   const t = useTranslations('');
   const [showPassword, setShowPassword] = useState(false);
@@ -22,10 +22,17 @@ export default function LoginPage() {
 
   // Redirect if already authenticated
   useEffect(() => {
-    if (user) {
-      router.push("/home");
+    // Only redirect if auth is not loading and user exists
+    if (!authLoading && user) {
+      console.log('User role:', userRole, 'isAdmin:', isAdmin);
+      // Redirect admins to admin panel, others to home
+      if (isAdmin) {
+        router.push("/admin");
+      } else {
+        router.push("/home");
+      }
     }
-  }, [user, router]);
+  }, [user, isAdmin, userRole, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +44,8 @@ export default function LoginPage() {
       if (error) {
         setError(error.message);
       } else {
-        router.push("/home");
+        // The redirect logic is handled in the useEffect above
+        // based on the user's role
       }
     } catch (err) {
       setError(t('errors.unexpected'));

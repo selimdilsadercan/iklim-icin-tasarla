@@ -7,6 +7,7 @@ import { UserStatsService } from "@/lib/user-stats-service";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslations } from "@/hooks/useTranslations";
 import Image from "next/image";
+import { UserProtectedRoute } from "@/components/auth/UserProtectedRoute";
 
 export default function HomePage() {
   const { user } = useAuth();
@@ -42,8 +43,10 @@ export default function HomePage() {
   useEffect(() => {
     fetchStats();
   }, [user]);
+  
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <UserProtectedRoute>
+      <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
         <AppBar currentPage="home" />
         
         {/* Main Content with bottom padding for fixed bottom navigation */}
@@ -332,5 +335,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+    </UserProtectedRoute>
   );
 }

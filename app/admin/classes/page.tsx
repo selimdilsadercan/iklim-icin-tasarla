@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { AdminProtectedRoute } from "@/components/auth/AdminProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 import { TeacherClassesService, TeacherClass } from "@/lib/teacher-classes-service";
 import AdminAppBar from "@/components/AdminAppBar";
@@ -13,23 +13,33 @@ export default function AdminClassesPage() {
   const [classes, setClasses] = useState<TeacherClass[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
-  const fetchClasses = async () => {
+  const fetchClasses = async (isRetry = false) => {
     if (!user) {
       setLoading(false);
       return;
     }
 
     try {
-      setLoading(true);
-      setError(null);
+      if (!isRetry) {
+        setLoading(true);
+        setError(null);
+      }
+      
       const teacherClasses = await TeacherClassesService.getTeacherClassesByUid(user.id);
       setClasses(teacherClasses);
-
-      console.log(teacherClasses)
+      setRetryCount(0); // Reset retry count on success
     } catch (err) {
       console.error('Error fetching teacher classes:', err);
       setError('Sınıflar yüklenirken bir hata oluştu');
+      
+      // Auto-retry logic
+      if (retryCount < 3) {
+        console.log(`Retrying fetchClasses, attempt ${retryCount + 1}`);
+        setRetryCount(prev => prev + 1);
+        setTimeout(() => fetchClasses(true), 2000 * (retryCount + 1)); // Exponential backoff
+      }
     } finally {
       setLoading(false);
     }
@@ -39,8 +49,36 @@ export default function AdminClassesPage() {
     fetchClasses();
   }, [user]);
 
+  // Handle page visibility changes to refresh data when tab becomes active
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && user) {
+        console.log('Page became visible, refreshing classes');
+        fetchClasses();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [user]);
+
+  // Timeout mechanism to prevent infinite loading
+  useEffect(() => {
+    if (loading) {
+      const timeout = setTimeout(() => {
+        console.log('Loading timeout reached, stopping loading state');
+        setLoading(false);
+        setError('Yükleme zaman aşımına uğradı. Lütfen sayfayı yenileyin.');
+      }, 15000); // 15 second timeout
+
+      return () => clearTimeout(timeout);
+    }
+  }, [loading]);
+
   return (
-    <ProtectedRoute>
+    <AdminProtectedRoute>
       <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
         <AdminAppBar currentPage="classes" />
         <AdminSidebar currentPage="classes" />
@@ -62,7 +100,7 @@ export default function AdminClassesPage() {
                 <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded-lg">
                   <p className="text-red-700 text-sm">{error}</p>
                   <button 
-                    onClick={fetchClasses}
+                    onClick={() => fetchClasses()}
                     className="mt-2 px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
                   >
                     Tekrar Dene
@@ -131,7 +169,7 @@ export default function AdminClassesPage() {
 
               {/* Classes Cards */}
               {!loading && classes.map((classItem) => (
-                <Link key={classItem.id} href={`/admin/classes/detail?id=${classItem.id}`} className="block">
+                <Link key={classItem.id} href={`/admin/class?id=${classItem.id}`} className="block">
                   <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.1)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.1)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out">
                     <div className="flex flex-col gap-3">
                       {/* First row: Icon + Class Name + Right arrow */}
@@ -166,6 +204,6 @@ export default function AdminClassesPage() {
           </div>
         </div>
       </div>
-    </ProtectedRoute>
+      </AdminProtectedRoute>
   );
 }

@@ -1,12 +1,12 @@
   "use client";
 
 import AppBar from "@/components/AppBar";
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { UserProtectedRoute } from "@/components/auth/UserProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslations } from "@/hooks/useTranslations";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useState } from "react";
-import Link from "next/link";
+import Link from "next/link"; 
 
 export default function ProfilePage() {
   const { user, signOut } = useAuth();
@@ -14,7 +14,7 @@ export default function ProfilePage() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
     return (
-      <ProtectedRoute>
+      <UserProtectedRoute>
         <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
             <AppBar currentPage="profile" />
           
@@ -204,6 +204,6 @@ export default function ProfilePage() {
             </div>
           </div>
         )}
-      </ProtectedRoute>
+      </UserProtectedRoute>
     );
   }

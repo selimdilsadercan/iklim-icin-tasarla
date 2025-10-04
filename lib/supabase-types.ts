@@ -431,13 +431,39 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_chat_history_by_uid: {
+        Args: { bot_idx: number; user_id_param: string }
+        Returns: {
+          bot_index: number
+          created_at: string
+          id: string
+          is_user: boolean
+          message: string
+          user_id: string
+        }[]
+      }
+      get_class_info: {
+        Args: { class_id_param: string }
+        Returns: {
+          created_at: string
+          id: string
+          name: string
+          student_count: number
+        }[]
+      }
       get_class_students: {
         Args: { class_id_param: string }
         Returns: {
+          bugday_conversations: number
+          class_name: string
+          damla_conversations: number
           display_name: string
           email: string
+          robi_conversations: number
           role: string
+          total_conversations: number
           user_id: string
+          yaprak_conversations: number
         }[]
       }
       get_favorite_bot: {
@@ -461,6 +487,12 @@ export type Database = {
           bot_index: number
         }[]
       }
+      get_student_details_by_uid: {
+        Args: { user_id_param: string }
+        Returns: {
+          display_name: string
+        }[]
+      }
       get_student_messages: {
         Args: { student_id_param: string }
         Returns: {
@@ -480,9 +512,32 @@ export type Database = {
           name: string
         }[]
       }
+      get_teacher_classes_by_uid: {
+        Args: { teacher_uid: string }
+        Returns: {
+          created_at: string
+          id: string
+          name: string
+          student_count: number
+        }[]
+      }
       get_total_message_count: {
         Args: Record<PropertyKey, never>
         Returns: number
+      }
+      get_user_bot_stats: {
+        Args: { user_id_param: string }
+        Returns: {
+          bot_index: number
+          bot_name: string
+          last_active: string
+          last_active_text: string
+          total_conversations: number
+        }[]
+      }
+      get_user_bot_stats_json: {
+        Args: { user_id_param: string }
+        Returns: Json
       }
       get_user_class: {
         Args: Record<PropertyKey, never>
@@ -492,8 +547,19 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_user_overall_stats: {
+        Args: { user_id_param: string }
+        Returns: {
+          first_chat_date: string
+          last_chat_date: string
+          most_used_bot: string
+          most_used_bot_conversations: number
+          total_conversations: number
+          total_messages: number
+        }[]
+      }
       get_user_role: {
-        Args: Record<PropertyKey, never>
+        Args: { user_id_param: string }
         Returns: string
       }
       save_chat_message: {
