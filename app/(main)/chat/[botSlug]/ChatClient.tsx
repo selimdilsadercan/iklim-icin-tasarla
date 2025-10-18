@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ChatService } from "@/lib/chat-service";
 import { ChatMessage } from "@/lib/chat-utils";
@@ -62,6 +62,7 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
   const [sending, setSending] = useState(false);
   const [streamingMessage, setStreamingMessage] = useState<string>("");
   const [isStreaming, setIsStreaming] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Load chat history on component mount
   useEffect(() => {
@@ -112,6 +113,11 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
 
     loadChatHistory();
   }, [botSlug, user]);
+
+  // Auto-scroll to bottom when messages change or streaming updates
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, streamingMessage, isStreaming]);
 
   const handleSendMessage = async () => {
     if (!inputText.trim() || !user || sending || isStreaming) return;
@@ -198,12 +204,10 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
   return (
     <>
       {/* Chat Messages */}
-      <div className="px-4 pb-4 pt-4 flex-1 overflow-y-auto relative z-10 flex flex-col-reverse space-y-reverse space-y-3">
-        {messages.slice().reverse().map((message, index) => {
-          // Get the chronologically previous message (in original order, not reversed)
-          const reversedMessages = messages.slice().reverse();
-          const originalIndex = messages.length - 1 - index;
-          const previousMessage = originalIndex > 0 ? messages[originalIndex - 1] : null;
+      <div className="px-4 pb-4 pt-4 flex-1 overflow-y-auto relative z-10 flex flex-col space-y-3">
+        {messages.map((message, index) => {
+          // Get the chronologically previous message
+          const previousMessage = index > 0 ? messages[index - 1] : null;
           const showDayIndicator = !previousMessage || isDifferentDay(message.timestamp, previousMessage.timestamp);
           
           return (
@@ -312,9 +316,12 @@ export default function ChatClient({ botSlug }: ChatClientProps) {
             </div>
           </div>
         )}
+        
+        {/* Scroll anchor */}
+        <div ref={messagesEndRef} />
       </div>
 
-      {/* Chat Input */}
+      {/* Chat Input */}j
       <div className="bg-white/95 backdrop-blur-sm border-t border-gray-200 p-4 relative z-20">
         <div className="max-w-md mx-auto flex items-center gap-3">
           <input

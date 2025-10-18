@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useBeta } from "@/contexts/BetaContext";
 import { BOT_PERSONAS } from "@/lib/ai-service";
@@ -29,6 +29,7 @@ export default function BetaChatClient({ botSlug }: BetaChatClientProps) {
   const [sending, setSending] = useState(false);
   const [streamingMessage, setStreamingMessage] = useState<string>("");
   const [isStreaming, setIsStreaming] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const botInfo = BOT_PERSONAS[botSlug as BotSlug];
 
@@ -50,6 +51,11 @@ export default function BetaChatClient({ botSlug }: BetaChatClientProps) {
       timestamp: new Date()
     }]);
   }, [botSlug, betaUser, router]);
+
+  // Auto-scroll to bottom when messages change or streaming updates
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, streamingMessage, isStreaming]);
 
   const handleSendMessage = async () => {
     if (!inputText.trim() || sending) return;
@@ -189,6 +195,9 @@ export default function BetaChatClient({ botSlug }: BetaChatClientProps) {
             </div>
           </div>
         )}
+        
+        {/* Scroll anchor */}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Example Questions */}
