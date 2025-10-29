@@ -9,7 +9,7 @@ interface UserProtectedRouteProps {
 }
 
 export function UserProtectedRoute({ children }: UserProtectedRouteProps) {
-  const { user, isAdmin, loading } = useAuth();
+  const { user, isAdmin, isTeacher, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -22,14 +22,14 @@ export function UserProtectedRoute({ children }: UserProtectedRouteProps) {
       return;
     }
 
-    // If user is admin, redirect to admin panel
-    if (isAdmin) {
+    // If user is admin or teacher, redirect to admin panel
+    if (isAdmin || isTeacher) {
       router.push("/admin");
       return;
     }
 
-    // If user is logged in and not admin, allow access to the page
-  }, [user, isAdmin, loading, router]);
+    // If user is logged in and not admin or teacher, allow access to the page
+  }, [user, isAdmin, isTeacher, loading, router]);
 
   // Show loading while checking auth
   if (loading) {
@@ -43,8 +43,8 @@ export function UserProtectedRoute({ children }: UserProtectedRouteProps) {
     );
   }
 
-  // If user is not logged in or is admin, don't render children
-  if (!user || isAdmin) {
+  // If user is not logged in or is admin/teacher, don't render children
+  if (!user || isAdmin || isTeacher) {
     return null;
   }
 
