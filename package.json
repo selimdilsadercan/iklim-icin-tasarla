@@ -7,15 +7,14 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint",
-    "generate": "ts-node scripts/generate-types.ts",
+    "ios": "next build --turbopack && npx cap sync && npx cap open ios",
     "increment-version": "node scripts/increment-version.ts",
     "mobile": "npm run increment-version && next build --turbopack && npx cap sync && npm run apk",
-    "apk": "cd android && ./gradlew assembleDebug && ./gradlew bundleRelease && cd .. && npm run open-aab",
-    "open-apk": "xdg-open /home/meral/Desktop/iklim-icin-tasarla/android/app/build/outputs/apk/debug",
-    "aab": "npm run increment-version && cd android && ./gradlew bundleRelease && cd ..",
-    "open-aab": "xdg-open /home/meral/Desktop/iklim-icin-tasarla/android/app/build/outputs/bundle/release",
-    "clean": "cd android && ./gradlew clean"
+    "apk": "cd android && gradlew.bat assembleDebug && gradlew.bat bundleRelease && cd .. && npm run open-aab",
+    "open-apk": "start android\\app\\build\\outputs\\apk\\debug",
+    "aab": "npm run increment-version && cd android && gradlew.bat bundleRelease && cd ..",
+    "open-aab": "start android\\app\\build\\outputs\\bundle\\release",
+    "clean": "cd android && gradlew.bat clean"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",
