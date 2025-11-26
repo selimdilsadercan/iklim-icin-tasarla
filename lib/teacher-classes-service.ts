@@ -7,6 +7,7 @@ export interface TeacherClass {
   is_active: boolean;
   student_count: number;
   conversation_count: number;
+  last_message_date?: string | null;
 }
 
 export interface ClassStudent {
@@ -20,6 +21,7 @@ export interface ClassStudent {
   robi_conversations: number;
   bugday_conversations: number;
   damla_conversations: number;
+  last_message_date?: string | null;
 }
 
 export interface ClassInfo {
@@ -32,6 +34,16 @@ export interface ClassInfo {
 export interface OtherStudentsStats {
   student_count: number;
   conversation_count: number;
+}
+
+export interface Teacher {
+  user_id: string;
+  email: string;
+  display_name: string;
+  role: string;
+  total_classes: number;
+  total_students: number;
+  total_conversations: number;
 }
 
 export class TeacherClassesService {
@@ -51,12 +63,15 @@ export class TeacherClassesService {
 
   /**
    * Get all classes for a specific teacher by UID
+   * @param sortBy - Sort type: 'conversations' (default), 'name', or 'date'
    */
   static async getTeacherClassesByUid(
-    teacherUid: string
+    teacherUid: string,
+    sortBy: "conversations" | "name" | "date" = "conversations"
   ): Promise<TeacherClass[]> {
     const { data, error } = await supabase.rpc("get_teacher_classes_by_uid", {
       teacher_uid: teacherUid,
+      sort_by: sortBy,
     });
 
     if (error) {
@@ -69,10 +84,19 @@ export class TeacherClassesService {
 
   /**
    * Get students for a specific class
+   * @param sortBy - Sort type: 'conversations' (default), 'name', or 'date'
    */
-  static async getClassStudents(classId: string): Promise<ClassStudent[]> {
+  static async getClassStudents(
+    classId: string,
+    startDate?: string | null,
+    endDate?: string | null,
+    sortBy: "conversations" | "name" | "date" = "conversations"
+  ): Promise<ClassStudent[]> {
     const { data, error } = await supabase.rpc("get_class_students", {
       class_id_param: classId,
+      start_date: startDate || null,
+      end_date: endDate || null,
+      sort_by: sortBy,
     });
 
     if (error) {
@@ -130,6 +154,20 @@ export class TeacherClassesService {
     if (error) {
       console.error("Error fetching other students:", error);
       throw new Error("Failed to fetch other students");
+    }
+
+    return data || [];
+  }
+
+  /**
+   * Get all teachers (admin only)
+   */
+  static async getAllTeachers(): Promise<Teacher[]> {
+    const { data, error } = await supabase.rpc("get_all_teachers");
+
+    if (error) {
+      console.error("Error fetching all teachers:", error);
+      throw new Error("Failed to fetch all teachers");
     }
 
     return data || [];

@@ -6,10 +6,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 // Page enum for active state
-export type AdminPageType = "overview" | "classes" | "profile";
+export type AdminPageType = "overview" | "classes" | "teachers" | "profile";
 
 // Admin navigation items configuration
-const getAdminNavigationItems = (t: any) => [
+const getAdminNavigationItems = (t: any, isAdmin: boolean) => [
   {
     href: "/admin",
     page: "overview" as AdminPageType,
@@ -50,6 +50,30 @@ const getAdminNavigationItems = (t: any) => [
       </svg>
     ),
   },
+  ...(isAdmin
+    ? [
+        {
+          href: "/admin/teachers",
+          page: "teachers" as AdminPageType,
+          label: "Öğretmenler",
+          icon: (
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+          ),
+        },
+      ]
+    : []),
   {
     href: "/admin/profile",
     page: "profile" as AdminPageType,
@@ -80,7 +104,7 @@ export default function AdminSidebar({ currentPage }: AdminSidebarProps) {
   const { user, signOut, isAdmin, isTeacher } = useAuth();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const router = useRouter();
-  const items = getAdminNavigationItems({});
+  const items = getAdminNavigationItems({}, isAdmin || false);
 
   const isActive = (page: AdminPageType) => {
     return currentPage === page;

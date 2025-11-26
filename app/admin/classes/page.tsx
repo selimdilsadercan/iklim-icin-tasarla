@@ -7,6 +7,7 @@ import {
   TeacherClassesService,
   TeacherClass,
   OtherStudentsStats,
+  Teacher,
 } from "@/lib/teacher-classes-service";
 import AdminAppBar from "@/components/AdminAppBar";
 import AdminSidebar from "@/components/AdminSidebar";
@@ -19,6 +20,7 @@ import {
   ChatCircle,
   Funnel,
   Check,
+  SortAscending,
 } from "@phosphor-icons/react";
 
 type FilterType = "active" | "old";
@@ -30,9 +32,30 @@ export default function AdminClassesPage() {
     useState<OtherStudentsStats | null>(null);
   const [filterType, setFilterType] = useState<FilterType>("active");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedTeacherId, setSelectedTeacherId] = useState<string | null>(
+    null
+  );
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [isTeacherDropdownOpen, setIsTeacherDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+
+  // Sort state - only for admin
+  type SortType = "conversations" | "name" | "date";
+  const [sortBy, setSortBy] = useState<SortType>("conversations");
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+
+  const fetchTeachers = async () => {
+    if (!isAdmin) return;
+
+    try {
+      const allTeachers = await TeacherClassesService.getAllTeachers();
+      setTeachers(allTeachers);
+    } catch (err) {
+      console.error("Error fetching teachers:", err);
+    }
+  };
 
   const fetchClasses = async (isRetry = false) => {
     if (!user) {
@@ -46,8 +69,12 @@ export default function AdminClassesPage() {
         setError(null);
       }
 
+      // If admin selected a teacher, fetch that teacher's classes, otherwise fetch current user's classes
+      const teacherIdToFetch =
+        isAdmin && selectedTeacherId ? selectedTeacherId : user.id;
       const teacherClasses = await TeacherClassesService.getTeacherClassesByUid(
-        user.id
+        teacherIdToFetch,
+        isAdmin ? sortBy : "conversations"
       );
       // SQL already sorts by conversation_count DESC, so we can use the data as-is
       setClasses(teacherClasses);
@@ -80,8 +107,14 @@ export default function AdminClassesPage() {
   };
 
   useEffect(() => {
+    if (isAdmin) {
+      fetchTeachers();
+    }
+  }, [isAdmin]);
+
+  useEffect(() => {
     fetchClasses();
-  }, [user]);
+  }, [user, selectedTeacherId, sortBy]);
 
   // Handle page visibility changes to refresh data when tab becomes active
   useEffect(() => {
@@ -153,7 +186,99 @@ export default function AdminClassesPage() {
 
               {/* Filter Section - Only show for admin users */}
               {isAdmin && (
-                <div className="flex justify-center mb-6">
+                <div className="flex justify-center gap-4 mb-6 flex-wrap">
+                  {/* Teacher Filter */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setIsTeacherDropdownOpen(!isTeacherDropdownOpen)
+                      }
+                      className="pl-9 pr-8 py-2 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-white hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer min-w-[200px] flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Users
+                          className="w-4 h-4 text-gray-400"
+                          weight="regular"
+                        />
+                        <span>
+                          {selectedTeacherId
+                            ? teachers.find(
+                                (t) => t.user_id === selectedTeacherId
+                              )?.display_name || "Öğretmen Seçin"
+                            : "Tüm Öğretmenler"}
+                        </span>
+                      </div>
+                      <CaretDown
+                        className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
+                          isTeacherDropdownOpen ? "rotate-180" : ""
+                        }`}
+                        weight="bold"
+                      />
+                    </button>
+
+                    {/* Teacher Dropdown Menu */}
+                    {isTeacherDropdownOpen && (
+                      <>
+                        {/* Backdrop */}
+                        <div
+                          className="fixed inset-0 z-10"
+                          onClick={() => setIsTeacherDropdownOpen(false)}
+                        />
+                        {/* Dropdown Options */}
+                        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl border-2 border-gray-200 shadow-lg z-20 overflow-hidden max-h-64 overflow-y-auto">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedTeacherId(null);
+                              setIsTeacherDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                              !selectedTeacherId
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span>Tüm Öğretmenler</span>
+                            {!selectedTeacherId && (
+                              <Check
+                                className="w-4 h-4 text-blue-600"
+                                weight="bold"
+                              />
+                            )}
+                          </button>
+                          <div className="border-t border-gray-100" />
+                          {teachers.map((teacher) => (
+                            <button
+                              key={teacher.user_id}
+                              type="button"
+                              onClick={() => {
+                                setSelectedTeacherId(teacher.user_id);
+                                setIsTeacherDropdownOpen(false);
+                              }}
+                              className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                                selectedTeacherId === teacher.user_id
+                                  ? "bg-blue-50 text-blue-700"
+                                  : "text-gray-700 hover:bg-gray-50"
+                              }`}
+                            >
+                              <span>
+                                {teacher.display_name || teacher.email}
+                              </span>
+                              {selectedTeacherId === teacher.user_id && (
+                                <Check
+                                  className="w-4 h-4 text-blue-600"
+                                  weight="bold"
+                                />
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Active/Old Filter */}
                   <div className="relative">
                     <button
                       type="button"
@@ -234,6 +359,113 @@ export default function AdminClassesPage() {
                       </>
                     )}
                   </div>
+
+                  {/* Sort Filter - Only for admin */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                      className="pl-9 pr-8 py-2 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-white hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer min-w-[180px] flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-2">
+                        <SortAscending
+                          className="w-4 h-4 text-gray-400"
+                          weight="regular"
+                        />
+                        <span>
+                          {sortBy === "conversations"
+                            ? "Mesaj Sayısı"
+                            : sortBy === "name"
+                            ? "İsme Göre"
+                            : "Son Mesaj Tarihine Göre"}
+                        </span>
+                      </div>
+                      <CaretDown
+                        className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
+                          isSortDropdownOpen ? "rotate-180" : ""
+                        }`}
+                        weight="bold"
+                      />
+                    </button>
+
+                    {/* Sort Dropdown Menu */}
+                    {isSortDropdownOpen && (
+                      <>
+                        {/* Backdrop */}
+                        <div
+                          className="fixed inset-0 z-10"
+                          onClick={() => {
+                            setIsSortDropdownOpen(false);
+                          }}
+                        />
+                        {/* Dropdown Options */}
+                        <div className="absolute top-full right-0 mt-2 bg-white rounded-xl border-2 border-gray-200 shadow-lg z-20 overflow-hidden min-w-[200px]">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSortBy("conversations");
+                              setIsSortDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                              sortBy === "conversations"
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span>Mesaj Sayısı</span>
+                            {sortBy === "conversations" && (
+                              <Check
+                                className="w-4 h-4 text-blue-600"
+                                weight="bold"
+                              />
+                            )}
+                          </button>
+                          <div className="border-t border-gray-100" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSortBy("name");
+                              setIsSortDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                              sortBy === "name"
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span>İsme Göre</span>
+                            {sortBy === "name" && (
+                              <Check
+                                className="w-4 h-4 text-blue-600"
+                                weight="bold"
+                              />
+                            )}
+                          </button>
+                          <div className="border-t border-gray-100" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSortBy("date");
+                              setIsSortDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                              sortBy === "date"
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span>Son Mesaj Tarihi</span>
+                            {sortBy === "date" && (
+                              <Check
+                                className="w-4 h-4 text-blue-600"
+                                weight="bold"
+                              />
+                            )}
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               )}
 
@@ -251,52 +483,51 @@ export default function AdminClassesPage() {
               )}
             </div>
 
-            {/* Classes List */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-              {/* Skeleton Loaders */}
-              {loading && (
-                <>
-                  {/* Skeleton Card 1 */}
-                  <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)]">
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gray-200 rounded-xl animate-pulse"></div>
-                        <div className="flex-1">
-                          <div className="h-4 bg-gray-200 rounded animate-pulse mb-2 w-20"></div>
-                          <div className="h-3 bg-gray-200 rounded animate-pulse w-24"></div>
-                        </div>
-                        <div className="w-5 h-5 bg-gray-200 rounded animate-pulse"></div>
+            {/* Skeleton Loaders */}
+            {loading && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                {/* Skeleton Card 1 */}
+                <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)]">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-gray-200 rounded-xl animate-pulse"></div>
+                      <div className="flex-1">
+                        <div className="h-4 bg-gray-200 rounded animate-pulse mb-2 w-20"></div>
+                        <div className="h-3 bg-gray-200 rounded animate-pulse w-24"></div>
                       </div>
-                      <div className="flex items-center gap-3 ml-15">
-                        <div className="h-3 bg-gray-200 rounded animate-pulse w-16"></div>
-                        <div className="h-3 bg-gray-200 rounded animate-pulse w-20"></div>
-                      </div>
+                      <div className="w-5 h-5 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    <div className="flex items-center gap-3 ml-15">
+                      <div className="h-3 bg-gray-200 rounded animate-pulse w-16"></div>
+                      <div className="h-3 bg-gray-200 rounded animate-pulse w-20"></div>
                     </div>
                   </div>
+                </div>
 
-                  {/* Skeleton Card 2 */}
-                  <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)]">
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gray-200 rounded-xl animate-pulse"></div>
-                        <div className="flex-1">
-                          <div className="h-4 bg-gray-200 rounded animate-pulse mb-2 w-16"></div>
-                          <div className="h-3 bg-gray-200 rounded animate-pulse w-20"></div>
-                        </div>
-                        <div className="w-5 h-5 bg-gray-200 rounded animate-pulse"></div>
-                      </div>
-                      <div className="flex items-center gap-3 ml-15">
-                        <div className="h-3 bg-gray-200 rounded animate-pulse w-16"></div>
+                {/* Skeleton Card 2 */}
+                <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)]">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-gray-200 rounded-xl animate-pulse"></div>
+                      <div className="flex-1">
+                        <div className="h-4 bg-gray-200 rounded animate-pulse mb-2 w-16"></div>
                         <div className="h-3 bg-gray-200 rounded animate-pulse w-20"></div>
                       </div>
+                      <div className="w-5 h-5 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    <div className="flex items-center gap-3 ml-15">
+                      <div className="h-3 bg-gray-200 rounded animate-pulse w-16"></div>
+                      <div className="h-3 bg-gray-200 rounded animate-pulse w-20"></div>
                     </div>
                   </div>
-                </>
-              )}
+                </div>
+              </div>
+            )}
 
-              {/* Actual Classes - Only show when not loading */}
-              {!loading && filteredClasses.length === 0 && (
-                <div className="bg-white/80 rounded-2xl p-8 border border-gray-200 shadow-sm text-center">
+            {/* Empty State - Show centered when no classes found */}
+            {!loading && filteredClasses.length === 0 && (
+              <div className="flex justify-center items-center min-h-[400px]">
+                <div className="bg-white/80 rounded-2xl p-8 border border-gray-200 shadow-sm text-center max-w-md">
                   <div className="w-16 h-16 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center">
                     <BookOpen className="w-8 h-8 text-gray-400" weight="bold" />
                   </div>
@@ -315,111 +546,126 @@ export default function AdminClassesPage() {
                       : "Henüz sınıf bulunmuyor."}
                   </p>
                 </div>
-              )}
+              </div>
+            )}
 
-              {/* Classes Cards */}
-              {!loading &&
-                filteredClasses.map((classItem) => (
-                  <Link
-                    key={classItem.id}
-                    href={`/admin/class?id=${classItem.id}`}
-                    className="block"
-                  >
-                    <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.1)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.1)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out">
-                      <div className="flex flex-col gap-3">
-                        {/* First row: Icon + Class Name + Right arrow */}
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center">
-                            <BookOpen
-                              className="w-6 h-6 text-white"
-                              weight="bold"
-                            />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-gray-800">
-                              {classItem.name}
-                            </h3>
-                            <div className="flex items-center gap-3 mt-1">
-                              <div className="flex items-center gap-1">
-                                <Users
-                                  className="w-4 h-4 text-gray-400"
-                                  weight="regular"
-                                />
-                                <span className="text-sm text-gray-500">
-                                  {classItem.student_count} öğrenci
-                                </span>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <ChatCircle
-                                  className="w-4 h-4 text-gray-400"
-                                  weight="regular"
-                                />
-                                <span className="text-sm text-gray-500">
-                                  {classItem.conversation_count} konuşma
-                                </span>
+            {/* Classes List */}
+            {!loading && filteredClasses.length > 0 && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                {/* Classes Cards */}
+                {!loading &&
+                  filteredClasses.map((classItem) => (
+                    <Link
+                      key={classItem.id}
+                      href={`/admin/class?id=${classItem.id}`}
+                      className="block"
+                    >
+                      <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.1)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.1)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out">
+                        <div className="flex flex-col gap-3">
+                          {/* First row: Icon + Class Name + Right arrow */}
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center">
+                              <BookOpen
+                                className="w-6 h-6 text-white"
+                                weight="bold"
+                              />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-gray-800">
+                                {classItem.name}
+                              </h3>
+                              <div className="flex items-center gap-3 mt-1">
+                                <div className="flex items-center gap-1">
+                                  <Users
+                                    className="w-4 h-4 text-gray-400"
+                                    weight="regular"
+                                  />
+                                  <span className="text-sm text-gray-500">
+                                    {classItem.student_count} öğrenci
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <ChatCircle
+                                    className="w-4 h-4 text-gray-400"
+                                    weight="regular"
+                                  />
+                                  <span className="text-sm text-gray-500">
+                                    {classItem.conversation_count} konuşma
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="text-blue-500">
-                            <CaretRight className="w-5 h-5" weight="regular" />
+                            <div className="text-blue-500">
+                              <CaretRight
+                                className="w-5 h-5"
+                                weight="regular"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))}
 
-              {/* Other Students Card - Only for admin */}
-              {!loading &&
-                isAdmin &&
-                otherStudentsStats &&
-                otherStudentsStats.student_count > 0 && (
-                  <Link href="/admin/class?id=other-students" className="block">
-                    <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.1)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.1)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out">
-                      <div className="flex flex-col gap-3">
-                        {/* First row: Icon + Class Name + Right arrow */}
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center">
-                            <BookOpen
-                              className="w-6 h-6 text-white"
-                              weight="bold"
-                            />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-gray-800">
-                              Diğer Öğrenciler
-                            </h3>
-                            <div className="flex items-center gap-3 mt-1">
-                              <div className="flex items-center gap-1">
-                                <Users
-                                  className="w-4 h-4 text-gray-400"
-                                  weight="regular"
-                                />
-                                <span className="text-sm text-gray-500">
-                                  {otherStudentsStats.student_count} öğrenci
-                                </span>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <ChatCircle
-                                  className="w-4 h-4 text-gray-400"
-                                  weight="regular"
-                                />
-                                <span className="text-sm text-gray-500">
-                                  {otherStudentsStats.conversation_count}{" "}
-                                  konuşma
-                                </span>
+                {/* Other Students Card - Only for admin and when no teacher filter is selected */}
+                {!loading &&
+                  isAdmin &&
+                  !selectedTeacherId &&
+                  otherStudentsStats &&
+                  otherStudentsStats.student_count > 0 && (
+                    <Link
+                      href="/admin/class?id=other-students"
+                      className="block"
+                    >
+                      <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.1)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.1)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out">
+                        <div className="flex flex-col gap-3">
+                          {/* First row: Icon + Class Name + Right arrow */}
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center">
+                              <BookOpen
+                                className="w-6 h-6 text-white"
+                                weight="bold"
+                              />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-gray-800">
+                                Diğer Öğrenciler
+                              </h3>
+                              <div className="flex items-center gap-3 mt-1">
+                                <div className="flex items-center gap-1">
+                                  <Users
+                                    className="w-4 h-4 text-gray-400"
+                                    weight="regular"
+                                  />
+                                  <span className="text-sm text-gray-500">
+                                    {otherStudentsStats.student_count} öğrenci
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <ChatCircle
+                                    className="w-4 h-4 text-gray-400"
+                                    weight="regular"
+                                  />
+                                  <span className="text-sm text-gray-500">
+                                    {otherStudentsStats.conversation_count}{" "}
+                                    konuşma
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="text-blue-500">
-                            <CaretRight className="w-5 h-5" weight="regular" />
+                            <div className="text-blue-500">
+                              <CaretRight
+                                className="w-5 h-5"
+                                weight="regular"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                )}
-            </div>
+                    </Link>
+                  )}
+              </div>
+            )}
           </div>
         </div>
       </div>

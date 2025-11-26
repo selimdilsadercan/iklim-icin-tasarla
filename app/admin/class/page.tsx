@@ -11,6 +11,13 @@ import AdminAppBar from "@/components/AdminAppBar";
 import AdminSidebar from "@/components/AdminSidebar";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import {
+  Calendar,
+  CaretDown,
+  Check,
+  Funnel,
+  SortAscending,
+} from "@phosphor-icons/react";
 
 function ClassDetailPageContent() {
   const { user } = useAuth();
@@ -24,6 +31,78 @@ function ClassDetailPageContent() {
   const [error, setError] = useState<string | null>(null);
   const [className, setClassName] = useState<string>("Sınıf");
   const [retryCount, setRetryCount] = useState(0);
+
+  // Date filter state
+  type DateFilterType = "all" | "today" | "thisWeek" | "thisMonth" | "custom";
+  const [dateFilter, setDateFilter] = useState<DateFilterType>("all");
+  const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
+  const [customStartDate, setCustomStartDate] = useState<string>("");
+  const [customEndDate, setCustomEndDate] = useState<string>("");
+
+  // Sort state
+  type SortType = "conversations" | "name" | "date";
+  const [sortBy, setSortBy] = useState<SortType>("conversations");
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+
+  // Helper function to get date range based on filter type
+  const getDateRange = (
+    filterType: DateFilterType
+  ): { startDate: string | null; endDate: string | null } => {
+    const now = new Date();
+    let startDate: Date | null = null;
+    let endDate: Date | null = null;
+
+    switch (filterType) {
+      case "today":
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        endDate = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+          23,
+          59,
+          59,
+          999
+        );
+        break;
+      case "thisWeek":
+        const dayOfWeek = now.getDay();
+        const diff = now.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1); // Monday
+        startDate = new Date(now.getFullYear(), now.getMonth(), diff);
+        startDate.setHours(0, 0, 0, 0);
+        endDate = new Date(now);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      case "thisMonth":
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        endDate = new Date(
+          now.getFullYear(),
+          now.getMonth() + 1,
+          0,
+          23,
+          59,
+          59,
+          999
+        );
+        break;
+      case "custom":
+        if (customStartDate && customEndDate) {
+          startDate = new Date(customStartDate);
+          startDate.setHours(0, 0, 0, 0);
+          endDate = new Date(customEndDate);
+          endDate.setHours(23, 59, 59, 999);
+        }
+        break;
+      case "all":
+      default:
+        return { startDate: null, endDate: null };
+    }
+
+    return {
+      startDate: startDate ? startDate.toISOString() : null,
+      endDate: endDate ? endDate.toISOString() : null,
+    };
+  };
 
   const fetchStudents = async (isRetry = false) => {
     if (!user || !classId) {
@@ -44,7 +123,13 @@ function ClassDetailPageContent() {
         classStudents = await TeacherClassesService.getOtherStudents();
         setClassName("Diğer Öğrenciler");
       } else {
-        classStudents = await TeacherClassesService.getClassStudents(classId);
+        const { startDate, endDate } = getDateRange(dateFilter);
+        classStudents = await TeacherClassesService.getClassStudents(
+          classId,
+          startDate,
+          endDate,
+          sortBy
+        );
         // Get class name from the first student's data or use a default
         if (classStudents.length > 0) {
           setClassName(classStudents[0].class_name || "Sınıf");
@@ -72,7 +157,7 @@ function ClassDetailPageContent() {
 
   useEffect(() => {
     fetchStudents();
-  }, [user, classId]);
+  }, [user, classId, dateFilter, customStartDate, customEndDate, sortBy]);
 
   // Handle page visibility changes to refresh data when tab becomes active
   useEffect(() => {
@@ -171,38 +256,15 @@ function ClassDetailPageContent() {
                 </div>
               )}
 
-              {/* Search Input */}
-              <div className="mb-6">
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg
-                      className="h-5 w-5 text-gray-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                  </div>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Öğrenci ara (isim veya email)..."
-                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery("")}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    >
+              {/* Filters Section */}
+              <div className="mb-6 flex flex-col gap-4">
+                {/* All Filters in One Row */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  {/* Search Input */}
+                  <div className="flex-1 relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <svg
-                        className="h-5 w-5 text-gray-400 hover:text-gray-600"
+                        className="h-5 w-5 text-gray-400"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -211,13 +273,335 @@ function ClassDetailPageContent() {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                         />
                       </svg>
+                    </div>
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Öğrenci ara (isim veya email)..."
+                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                    />
+                    {searchQuery && (
+                      <button
+                        onClick={() => setSearchQuery("")}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      >
+                        <svg
+                          className="h-5 w-5 text-gray-400 hover:text-gray-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Sort Filter */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                      className="pl-9 pr-8 py-2 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-white hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer min-w-[180px] flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-2">
+                        <SortAscending
+                          className="w-4 h-4 text-gray-400"
+                          weight="regular"
+                        />
+                        <span>
+                          {sortBy === "conversations"
+                            ? "Mesaj Sayısı"
+                            : sortBy === "name"
+                            ? "İsme Göre"
+                            : "Tarihe Göre"}
+                        </span>
+                      </div>
+                      <CaretDown
+                        className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
+                          isSortDropdownOpen ? "rotate-180" : ""
+                        }`}
+                        weight="bold"
+                      />
                     </button>
+
+                    {/* Sort Dropdown Menu */}
+                    {isSortDropdownOpen && (
+                      <>
+                        {/* Backdrop */}
+                        <div
+                          className="fixed inset-0 z-10"
+                          onClick={() => {
+                            setIsSortDropdownOpen(false);
+                          }}
+                        />
+                        {/* Dropdown Options */}
+                        <div className="absolute top-full right-0 mt-2 bg-white rounded-xl border-2 border-gray-200 shadow-lg z-20 overflow-hidden min-w-[200px]">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSortBy("conversations");
+                              setIsSortDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                              sortBy === "conversations"
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span>Mesaj Sayısı</span>
+                            {sortBy === "conversations" && (
+                              <Check
+                                className="w-4 h-4 text-blue-600"
+                                weight="bold"
+                              />
+                            )}
+                          </button>
+                          <div className="border-t border-gray-100" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSortBy("name");
+                              setIsSortDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                              sortBy === "name"
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span>İsme Göre</span>
+                            {sortBy === "name" && (
+                              <Check
+                                className="w-4 h-4 text-blue-600"
+                                weight="bold"
+                              />
+                            )}
+                          </button>
+                          <div className="border-t border-gray-100" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSortBy("date");
+                              setIsSortDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                              sortBy === "date"
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span>Tarihe Göre</span>
+                            {sortBy === "date" && (
+                              <Check
+                                className="w-4 h-4 text-blue-600"
+                                weight="bold"
+                              />
+                            )}
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Date Filter - Only show for regular classes, not "other-students" */}
+                  {classId !== "other-students" && (
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setIsDateDropdownOpen(!isDateDropdownOpen)
+                        }
+                        className="pl-9 pr-8 py-2 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-white hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer min-w-[180px] flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Calendar
+                            className="w-4 h-4 text-gray-400"
+                            weight="regular"
+                          />
+                          <span>
+                            {dateFilter === "all"
+                              ? "Tüm Zamanlar"
+                              : dateFilter === "today"
+                              ? "Bugün"
+                              : dateFilter === "thisWeek"
+                              ? "Bu Hafta"
+                              : dateFilter === "thisMonth"
+                              ? "Bu Ay"
+                              : "Özel Aralık"}
+                          </span>
+                        </div>
+                        <CaretDown
+                          className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
+                            isDateDropdownOpen ? "rotate-180" : ""
+                          }`}
+                          weight="bold"
+                        />
+                      </button>
+
+                      {/* Date Filter Dropdown Menu */}
+                      {isDateDropdownOpen && (
+                        <>
+                          {/* Backdrop */}
+                          <div
+                            className="fixed inset-0 z-10"
+                            onClick={() => {
+                              setIsDateDropdownOpen(false);
+                            }}
+                          />
+                          {/* Dropdown Options */}
+                          <div className="absolute top-full right-0 mt-2 bg-white rounded-xl border-2 border-gray-200 shadow-lg z-20 overflow-hidden min-w-[200px]">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setDateFilter("all");
+                                setIsDateDropdownOpen(false);
+                              }}
+                              className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                                dateFilter === "all"
+                                  ? "bg-blue-50 text-blue-700"
+                                  : "text-gray-700 hover:bg-gray-50"
+                              }`}
+                            >
+                              <span>Tüm Zamanlar</span>
+                              {dateFilter === "all" && (
+                                <Check
+                                  className="w-4 h-4 text-blue-600"
+                                  weight="bold"
+                                />
+                              )}
+                            </button>
+                            <div className="border-t border-gray-100" />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setDateFilter("today");
+                                setIsDateDropdownOpen(false);
+                              }}
+                              className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                                dateFilter === "today"
+                                  ? "bg-blue-50 text-blue-700"
+                                  : "text-gray-700 hover:bg-gray-50"
+                              }`}
+                            >
+                              <span>Bugün</span>
+                              {dateFilter === "today" && (
+                                <Check
+                                  className="w-4 h-4 text-blue-600"
+                                  weight="bold"
+                                />
+                              )}
+                            </button>
+                            <div className="border-t border-gray-100" />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setDateFilter("thisWeek");
+                                setIsDateDropdownOpen(false);
+                              }}
+                              className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                                dateFilter === "thisWeek"
+                                  ? "bg-blue-50 text-blue-700"
+                                  : "text-gray-700 hover:bg-gray-50"
+                              }`}
+                            >
+                              <span>Bu Hafta</span>
+                              {dateFilter === "thisWeek" && (
+                                <Check
+                                  className="w-4 h-4 text-blue-600"
+                                  weight="bold"
+                                />
+                              )}
+                            </button>
+                            <div className="border-t border-gray-100" />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setDateFilter("thisMonth");
+                                setIsDateDropdownOpen(false);
+                              }}
+                              className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                                dateFilter === "thisMonth"
+                                  ? "bg-blue-50 text-blue-700"
+                                  : "text-gray-700 hover:bg-gray-50"
+                              }`}
+                            >
+                              <span>Bu Ay</span>
+                              {dateFilter === "thisMonth" && (
+                                <Check
+                                  className="w-4 h-4 text-blue-600"
+                                  weight="bold"
+                                />
+                              )}
+                            </button>
+                            <div className="border-t border-gray-100" />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setDateFilter("custom");
+                                setIsDateDropdownOpen(false);
+                              }}
+                              className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                                dateFilter === "custom"
+                                  ? "bg-blue-50 text-blue-700"
+                                  : "text-gray-700 hover:bg-gray-50"
+                              }`}
+                            >
+                              <span>Özel Aralık</span>
+                              {dateFilter === "custom" && (
+                                <Check
+                                  className="w-4 h-4 text-blue-600"
+                                  weight="bold"
+                                />
+                              )}
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
+
+              {/* Custom Date Picker - Always show when custom range is selected */}
+              {dateFilter === "custom" && (
+                <div className="mb-6 p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Başlangıç Tarihi
+                      </label>
+                      <input
+                        type="date"
+                        value={customStartDate}
+                        onChange={(e) => setCustomStartDate(e.target.value)}
+                        className="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Bitiş Tarihi
+                      </label>
+                      <input
+                        type="date"
+                        value={customEndDate}
+                        onChange={(e) => setCustomEndDate(e.target.value)}
+                        min={customStartDate}
+                        className="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Students List */}
               <div className="space-y-3">
@@ -332,23 +716,37 @@ function ClassDetailPageContent() {
                             {student.email}
                           </p>
                           {student.total_conversations > 0 && (
-                            <div className="flex items-center gap-1 mt-1">
-                              <svg
-                                className="w-3 h-3 text-blue-500"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                                />
-                              </svg>
-                              <span className="text-xs text-blue-600 font-medium">
-                                {student.total_conversations} konuşma
-                              </span>
+                            <div className="flex items-center gap-2 mt-1 flex-wrap">
+                              <div className="flex items-center gap-1">
+                                <svg
+                                  className="w-3 h-3 text-blue-500"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                                  />
+                                </svg>
+                                <span className="text-xs text-blue-600 font-medium">
+                                  {student.total_conversations} konuşma
+                                </span>
+                              </div>
+                              {student.last_message_date && (
+                                <span className="text-xs text-gray-500">
+                                  • Son mesaj:{" "}
+                                  {new Date(
+                                    student.last_message_date
+                                  ).toLocaleDateString("tr-TR", {
+                                    day: "2-digit",
+                                    month: "2-digit",
+                                    year: "numeric",
+                                  })}
+                                </span>
+                              )}
                             </div>
                           )}
                         </div>
