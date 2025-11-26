@@ -1,8 +1,5 @@
--- SQL function to get students for a specific class
--- This function returns student information for a given class
--- Includes class name and conversation counts with chat bots
-
 DROP FUNCTION IF EXISTS get_class_students;
+
 CREATE FUNCTION get_class_students(class_id_param UUID)
 RETURNS TABLE (
   user_id UUID,
@@ -36,5 +33,6 @@ AS $$
   LEFT JOIN chat_history ch ON ch.user_id = ur.user_id
   WHERE ur.class_id = class_id_param
   AND ur.role = 'student'
-  GROUP BY ur.user_id, au.email, ur.display_name, ur.role, c.name;
+  GROUP BY ur.user_id, au.email, ur.display_name, ur.role, c.name
+  ORDER BY total_conversations DESC;
 $$;

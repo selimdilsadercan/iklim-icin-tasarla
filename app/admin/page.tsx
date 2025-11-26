@@ -3,10 +3,26 @@
 import { useState, useEffect } from "react";
 import { AdminProtectedRoute } from "@/components/auth/AdminProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
-import { TeacherClassesService } from "@/lib/teacher-classes-service";
+import {
+  DashboardStatsService,
+  BotDistribution,
+  MessageTrend,
+} from "@/lib/dashboard-stats-service";
 import AdminAppBar from "@/components/AdminAppBar";
 import AdminSidebar from "@/components/AdminSidebar";
-import Link from "next/link";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Legend,
+  Tooltip,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 
 interface AdminStats {
   totalClasses: number;
@@ -15,12 +31,14 @@ interface AdminStats {
 }
 
 export default function AdminHomePage() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, isAdmin, isTeacher } = useAuth();
   const [stats, setStats] = useState<AdminStats>({
     totalClasses: 0,
     totalStudents: 0,
-    totalInteractions: 0
+    totalInteractions: 0,
   });
+  const [botDistribution, setBotDistribution] = useState<BotDistribution[]>([]);
+  const [messageTrend, setMessageTrend] = useState<MessageTrend[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
@@ -36,34 +54,44 @@ export default function AdminHomePage() {
         setLoading(true);
         setError(null);
       }
-      
-      // Fetch classes and calculate stats
-      const classes = await TeacherClassesService.getTeacherClassesByUid(user.id);
-      let totalStudents = 0;
-      
-      // Calculate total students across all classes
-      for (const classItem of classes) {
-        totalStudents += classItem.student_count;
+
+      // Fetch dashboard stats using the new SQL function
+      const dashboardStats = await DashboardStatsService.getDashboardStats(
+        user.id
+      );
+
+      if (dashboardStats) {
+        setStats({
+          totalClasses: dashboardStats.total_classes,
+          totalStudents: dashboardStats.total_students,
+          totalInteractions: dashboardStats.total_conversations,
+        });
+      } else {
+        // Fallback to zero values if no stats returned
+        setStats({
+          totalClasses: 0,
+          totalStudents: 0,
+          totalInteractions: 0,
+        });
       }
 
-      // For now, we'll use placeholder data for interactions
-      // In a real app, you'd fetch this from your analytics/stats service
-      const totalInteractions = 2952; // This would come from your chat/analytics data
+      // Fetch bot distribution
+      const botDist = await DashboardStatsService.getBotDistribution(user.id);
+      setBotDistribution(botDist);
 
-      setStats({
-        totalClasses: classes.length,
-        totalStudents: totalStudents,
-        totalInteractions: totalInteractions
-      });
+      // Fetch message trend (last 30 days)
+      const trend = await DashboardStatsService.getMessageTrend(user.id, 30);
+      setMessageTrend(trend);
+
       setRetryCount(0); // Reset retry count on success
     } catch (err) {
-      console.error('Error fetching admin stats:', err);
-      setError('İstatistikler yüklenirken bir hata oluştu');
-      
+      console.error("Error fetching admin stats:", err);
+      setError("İstatistikler yüklenirken bir hata oluştu");
+
       // Auto-retry logic
       if (retryCount < 3) {
         console.log(`Retrying fetchStats, attempt ${retryCount + 1}`);
-        setRetryCount(prev => prev + 1);
+        setRetryCount((prev) => prev + 1);
         setTimeout(() => fetchStats(true), 2000 * (retryCount + 1)); // Exponential backoff
       }
     } finally {
@@ -90,14 +118,14 @@ export default function AdminHomePage() {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden && user && !authLoading) {
-        console.log('Page became visible, refreshing stats');
+        console.log("Page became visible, refreshing stats");
         fetchStats();
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [user, authLoading]);
 
@@ -105,9 +133,9 @@ export default function AdminHomePage() {
   useEffect(() => {
     if (!authLoading && user && loading) {
       const timeout = setTimeout(() => {
-        console.log('Loading timeout - stopping loading state');
+        console.log("Loading timeout - stopping loading state");
         setLoading(false);
-        setError('Yükleme zaman aşımına uğradı. Lütfen sayfayı yenileyin.');
+        setError("Yükleme zaman aşımına uğradı. Lütfen sayfayı yenileyin.");
       }, 15000); // 15 second timeout
 
       return () => clearTimeout(timeout);
@@ -119,17 +147,19 @@ export default function AdminHomePage() {
       <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
         <AdminAppBar currentPage="overview" />
         <AdminSidebar currentPage="overview" />
-        
+
         {/* Main Content with responsive layout */}
         <div className="lg:ml-64 px-6 pb-24 lg:pb-8 pt-8 min-h-screen">
-          <div className="max-w-sm lg:max-w-4xl mx-auto">
+          <div className="max-w-sm lg:max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center mb-8">
               <h1 className="text-2xl font-bold text-gray-800 mb-2">
                 Kontrol Paneli Genel Bakışı
               </h1>
               <p className="text-gray-600">
-                Yönetici paneli ve sistem istatistikleri
+                {isAdmin
+                  ? "Yönetici paneli ve sistem istatistikleri"
+                  : "Öğretmen paneli ve sistem istatistikleri"}
               </p>
             </div>
 
@@ -178,12 +208,24 @@ export default function AdminHomePage() {
                   <div className="bg-white/80 rounded-2xl p-6 border border-gray-200 shadow-sm">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                        <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        <svg
+                          className="w-6 h-6 text-blue-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                          />
                         </svg>
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-sm font-medium text-gray-600">Sınıflar</h3>
+                        <h3 className="text-sm font-medium text-gray-600">
+                          Sınıflar
+                        </h3>
                         <div className="text-2xl font-bold text-gray-900">
                           {stats.totalClasses}
                         </div>
@@ -195,12 +237,24 @@ export default function AdminHomePage() {
                   <div className="bg-white/80 rounded-2xl p-6 border border-gray-200 shadow-sm">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                        <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                        <svg
+                          className="w-6 h-6 text-blue-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                          />
                         </svg>
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-sm font-medium text-gray-600">Öğrenciler</h3>
+                        <h3 className="text-sm font-medium text-gray-600">
+                          Öğrenciler
+                        </h3>
                         <div className="text-2xl font-bold text-gray-900">
                           {stats.totalStudents}
                         </div>
@@ -212,12 +266,24 @@ export default function AdminHomePage() {
                   <div className="bg-white/80 rounded-2xl p-6 border border-gray-200 shadow-sm">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                        <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        <svg
+                          className="w-6 h-6 text-blue-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                          />
                         </svg>
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-sm font-medium text-gray-600">Toplam Etkileşimler</h3>
+                        <h3 className="text-sm font-medium text-gray-600">
+                          Toplam Mesajlar
+                        </h3>
                         <div className="text-2xl font-bold text-gray-900">
                           {stats.totalInteractions.toLocaleString()}
                         </div>
@@ -232,7 +298,7 @@ export default function AdminHomePage() {
             {error && (
               <div className="mb-6 p-4 bg-red-100 border border-red-300 rounded-lg">
                 <p className="text-red-700 text-sm">{error}</p>
-                <button 
+                <button
                   onClick={() => fetchStats()}
                   className="mt-2 px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
                 >
@@ -241,31 +307,157 @@ export default function AdminHomePage() {
               </div>
             )}
 
-            {/* Quick Actions */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">Hızlı İşlemler</h2>
-              
-              {/* Classes Link */}
-              <Link href="/admin/classes" className="block">
-                <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center">
-                      <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-800">Sınıflarım</h3>
-                      <p className="text-sm text-gray-600">Sınıfları görüntüle ve yönet</p>
-                    </div>
-                    <div className="text-blue-500">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
+            {/* Charts Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Message Trend Chart */}
+              <div className="bg-white/80 rounded-2xl p-6 border border-gray-200 shadow-sm">
+                <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                  Mesaj Trendi
+                </h2>
+                <p className="text-sm text-gray-600 mb-6">
+                  Son 30 günde öğrencilerinizin günlük mesaj sayısı
+                </p>
+                {loading ? (
+                  <div className="h-64 flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
                   </div>
-                </div>
-              </Link>
+                ) : messageTrend.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart
+                      data={messageTrend as any}
+                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                      <XAxis
+                        dataKey="date"
+                        stroke="#6b7280"
+                        tick={{ fill: "#6b7280", fontSize: 12 }}
+                        tickFormatter={(value) => {
+                          const date = new Date(value);
+                          return `${date.getDate()}/${date.getMonth() + 1}`;
+                        }}
+                      />
+                      <YAxis
+                        stroke="#6b7280"
+                        tick={{ fill: "#6b7280", fontSize: 12 }}
+                      />
+                      <Tooltip
+                        formatter={(value: number) => [
+                          `${value} mesaj`,
+                          "Mesaj Sayısı",
+                        ]}
+                        labelFormatter={(label) => {
+                          const date = new Date(label);
+                          const dayName = date.toLocaleDateString("tr-TR", {
+                            weekday: "long",
+                          });
+                          const dateStr = date.toLocaleDateString("tr-TR", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          });
+                          return `${dateStr}, ${dayName}`;
+                        }}
+                        contentStyle={{
+                          backgroundColor: "#fff",
+                          border: "1px solid #e5e7eb",
+                          borderRadius: "8px",
+                        }}
+                        labelStyle={{
+                          color: "#1f2937",
+                          fontWeight: "500",
+                          marginBottom: "4px",
+                        }}
+                        itemStyle={{
+                          color: "#3b82f6",
+                        }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="message_count"
+                        stroke="#3b82f6"
+                        strokeWidth={2}
+                        dot={{ fill: "#3b82f6", r: 4 }}
+                        isAnimationActive={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-64 flex items-center justify-center text-gray-500">
+                    <p>Henüz mesaj verisi bulunmuyor</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Bot Distribution Chart */}
+              <div className="bg-white/80 rounded-2xl p-6 border border-gray-200 shadow-sm">
+                <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                  Bot Dağılımı
+                </h2>
+                <p className="text-sm text-gray-600 mb-4">
+                  Öğrencilerinizin en çok hangi botlarla konuştuğunu
+                  görüntüleyin
+                </p>
+                {loading ? (
+                  <div className="h-64 flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                  </div>
+                ) : botDistribution.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={botDistribution as any}
+                        cx="50%"
+                        cy="45%"
+                        labelLine={false}
+                        label={(entry: any) =>
+                          `${entry.bot_name}: ${entry.percentage}%`
+                        }
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="conversation_count"
+                        isAnimationActive={false}
+                      >
+                        {botDistribution.map((entry, index) => {
+                          const colors = [
+                            "#10b981", // Green for Yaprak
+                            "#3b82f6", // Blue for Robi
+                            "#f59e0b", // Orange for Buğday
+                            "#8b5cf6", // Purple for Damla
+                          ];
+                          return (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={colors[entry.bot_index] || "#94a3b8"}
+                            />
+                          );
+                        })}
+                      </Pie>
+                      <Tooltip
+                        formatter={(
+                          value: number,
+                          name: string,
+                          props: any
+                        ) => [
+                          `${value} konuşma (${props.payload.percentage}%)`,
+                          props.payload.bot_name,
+                        ]}
+                      />
+                      <Legend
+                        formatter={(value, entry: any) =>
+                          `${entry.payload.bot_name}: ${entry.payload.percentage}%`
+                        }
+                        wrapperStyle={{ fontSize: "12px" }}
+                        iconSize={10}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-64 flex items-center justify-center text-gray-500">
+                    <p>Henüz konuşma verisi bulunmuyor</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

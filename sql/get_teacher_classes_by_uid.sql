@@ -1,14 +1,11 @@
--- SQL function to get classes for a specific teacher by UID
--- This function takes a teacher UID as parameter and returns all classes associated with that teacher
--- If the user's role is "admin", returns all classes
--- Includes student count and total conversation count for each class
-
 DROP FUNCTION IF EXISTS get_teacher_classes_by_uid;
+
 CREATE FUNCTION get_teacher_classes_by_uid(teacher_uid UUID)
 RETURNS TABLE (
   id UUID,
   name TEXT,
   created_at TIMESTAMPTZ,
+  is_active BOOLEAN,
   student_count BIGINT,
   conversation_count BIGINT
 ) 
@@ -19,6 +16,7 @@ AS $$
     c.id, 
     c.name, 
     c.created_at,
+    c.is_active,
     COALESCE(COUNT(DISTINCT ur.user_id), 0) as student_count,
     COALESCE(COUNT(DISTINCT ch.id), 0) as conversation_count
   FROM classes c
@@ -32,6 +30,6 @@ AS $$
        WHERE admin_check.user_id = teacher_uid 
        AND admin_check.role = 'admin'
      )
-  GROUP BY c.id, c.name, c.created_at
-  ORDER BY c.created_at;
+  GROUP BY c.id, c.name, c.created_at, c.is_active
+  ORDER BY conversation_count DESC;
 $$;
