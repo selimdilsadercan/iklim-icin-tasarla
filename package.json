@@ -28,7 +28,7 @@
     "@tailwindcss/typography": "^0.5.18",
     "country-flag-icons": "^1.5.21",
     "lucide-react": "^0.542.0",
-    "next": "15.5.2",
+    "next": "15.5.7",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-markdown": "^10.1.0",
