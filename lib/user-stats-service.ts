@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { formatTurkishRelativeDate } from './turkish-date-formatter';
 
 export interface UserBotStats {
   bot_index: number;
@@ -65,19 +66,19 @@ export class UserStatsService {
       return {
         yaprak: {
           totalConversations: stats.yaprak?.total_conversations || 0,
-          lastActive: stats.yaprak?.last_active || 'Hiç aktif değil'
+          lastActive: formatTurkishRelativeDate(stats.yaprak?.last_active || 'Hiç aktif değil')
         },
         robi: {
           totalConversations: stats.robi?.total_conversations || 0,
-          lastActive: stats.robi?.last_active || 'Hiç aktif değil'
+          lastActive: formatTurkishRelativeDate(stats.robi?.last_active || 'Hiç aktif değil')
         },
         bugday: {
           totalConversations: stats.bugday?.total_conversations || 0,
-          lastActive: stats.bugday?.last_active || 'Hiç aktif değil'
+          lastActive: formatTurkishRelativeDate(stats.bugday?.last_active || 'Hiç aktif değil')
         },
         damla: {
           totalConversations: stats.damla?.total_conversations || 0,
-          lastActive: stats.damla?.last_active || 'Hiç aktif değil'
+          lastActive: formatTurkishRelativeDate(stats.damla?.last_active || 'Hiç aktif değil')
         }
       };
     } catch (error) {

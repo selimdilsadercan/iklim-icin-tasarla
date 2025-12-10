@@ -7,6 +7,7 @@ import {
   TeacherClassesService,
   ClassStudent,
 } from "@/lib/teacher-classes-service";
+import { StudentService } from "@/lib/student-service";
 import AdminAppBar from "@/components/AdminAppBar";
 import AdminSidebar from "@/components/AdminSidebar";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -237,6 +238,95 @@ function ClassDetailPageContent() {
                 <h1 className="text-xl font-bold text-gray-800">{className}</h1>
                 <p className="text-sm text-gray-600">Sınıf Öğrencileri</p>
               </div>
+              
+              {/* Download Buttons */}
+              {students.length > 0 && (
+                <div className="flex gap-2">
+                  <button
+                    onClick={async () => {
+                      setLoading(true);
+                      try {
+                        const { startDate, endDate } = getDateRange(dateFilter);
+                        await StudentService.downloadClassConversationsAsZip(
+                          students,
+                          'csv',
+                          className,
+                          startDate,
+                          endDate
+                        );
+                      } catch (error) {
+                        console.error('Error downloading CSV:', error);
+                        setError('İndirme sırasında bir hata oluştu');
+                      } finally {
+                        setLoading(false);
+                      }
+                    }}
+                    disabled={loading}
+                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-xs font-medium hover:bg-gray-200 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    CSV
+                  </button>
+                  
+                  <button
+                    onClick={async () => {
+                      setLoading(true);
+                      try {
+                        const { startDate, endDate } = getDateRange(dateFilter);
+                        await StudentService.downloadClassConversationsAsZip(
+                          students,
+                          'json',
+                          className,
+                          startDate,
+                          endDate
+                        );
+                      } catch (error) {
+                        console.error('Error downloading JSON:', error);
+                        setError('İndirme sırasında bir hata oluştu');
+                      } finally {
+                        setLoading(false);
+                      }
+                    }}
+                    disabled={loading}
+                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-xs font-medium hover:bg-gray-200 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    JSON
+                  </button>
+                  
+                  <button
+                    onClick={async () => {
+                      setLoading(true);
+                      try {
+                        const { startDate, endDate } = getDateRange(dateFilter);
+                        await StudentService.downloadClassConversationsAsZip(
+                          students,
+                          'txt',
+                          className,
+                          startDate,
+                          endDate
+                        );
+                      } catch (error) {
+                        console.error('Error downloading TXT:', error);
+                        setError('İndirme sırasında bir hata oluştu');
+                      } finally {
+                        setLoading(false);
+                      }
+                    }}
+                    disabled={loading}
+                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-xs font-medium hover:bg-gray-200 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    TXT
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
