@@ -24,6 +24,7 @@ const eslintConfig = [
       "no-binary": "off",
       "@typescript-eslint/no-unused-ts-expect-error": "off",
       "@typescript-eslint/ban-ts-comment": "off",
+      "prefer-const": "off"
     },
   },
 ];
