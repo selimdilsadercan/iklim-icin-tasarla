@@ -38,7 +38,7 @@ function StudentDetailPageContent() {
   
   const [studentDetail, setStudentDetail] = useState<StudentDetail | null>(null);
   const [selectedBot, setSelectedBot] = useState<number | null | "all">(null);
-  const [selectedFormat, setSelectedFormat] = useState<'csv' | 'json' | 'txt'>('csv');
+  const [selectedFormat, setSelectedFormat] = useState<'csv' | 'json' | 'txt' | 'xlsx'>('xlsx');
   const [conversationScope, setConversationScope] = useState<'all' | 'student'>('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -445,6 +445,20 @@ function StudentDetailPageContent() {
                     <div className="lg:col-span-3">
                       <h3 className="text-sm font-medium text-gray-700 mb-2">İndir</h3>
                       <div className="flex gap-2">
+                        {/* XLSX Download - FIRST */}
+                        <button
+                          onClick={() => {
+                            setSelectedFormat('xlsx');
+                            handleDownload();
+                          }}
+                          className="px-3 py-1.5 bg-green-600 text-white rounded text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1"
+                        >
+                          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                          XLSX
+                        </button>
+                        
                         {/* CSV Download */}
                         <button
                           onClick={() => {

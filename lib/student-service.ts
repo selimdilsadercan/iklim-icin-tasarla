@@ -1,6 +1,7 @@
 import { supabase } from './supabase';
 import { Database } from './supabase-types';
 import JSZip from 'jszip';
+import * as XLSX from 'xlsx';
 
 // Types for student data
 export interface StudentMessage {
@@ -324,7 +325,7 @@ export class StudentService {
    */
   static downloadConversation(
     messages: StudentMessage[], 
-    format: 'csv' | 'json' | 'txt',
+    format: 'csv' | 'json' | 'txt' | 'xlsx',
     includeOnlyUser: boolean = false
   ): void {
     let filteredMessages = messages;
@@ -346,6 +347,9 @@ export class StudentService {
       case 'txt':
         this.downloadTXT(filteredMessages, filename);
         break;
+      case 'xlsx':
+        this.downloadXLSX(filteredMessages, filename);
+        break;
     }
   }
 
@@ -354,7 +358,7 @@ export class StudentService {
    */
   static downloadAllBotsConversation(
     botInteractions: StudentBotInteraction[],
-    format: 'csv' | 'json' | 'txt',
+    format: 'csv' | 'json' | 'txt' | 'xlsx',
     includeOnlyUser: boolean = false,
     studentName: string
   ): void {
@@ -371,6 +375,9 @@ export class StudentService {
         break;
       case 'txt':
         this.downloadAllBotsTXT(botInteractions, filename, includeOnlyUser);
+        break;
+      case 'xlsx':
+        this.downloadAllBotsXLSX(botInteractions, filename, includeOnlyUser);
         break;
     }
   }
@@ -470,7 +477,7 @@ export class StudentService {
    */
   static async downloadClassConversationsAsZip(
     students: Array<{ user_id: string; display_name: string | null; email: string }>,
-    format: 'csv' | 'json' | 'txt',
+    format: 'csv' | 'json' | 'txt' | 'xlsx',
     className: string,
     startDate: string | null = null,
     endDate: string | null = null
@@ -538,6 +545,11 @@ export class StudentService {
               fileContent = this.generateAllBotsTXTContent(botInteractions, false);
               fileExtension = 'txt';
               break;
+            case 'xlsx':
+              // For XLSX, we need to generate as blob instead of string
+              const xlsxBlob = this.generateAllBotsXLSXBlob(botInteractions, false);
+              zip.file(`${safeStudentName}.xlsx`, xlsxBlob);
+              continue; // Skip the string-based file addition below
           }
 
           // Add file to ZIP with encoding
@@ -693,5 +705,106 @@ export class StudentService {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  }
+
+  // XLSX Download Methods
+  private static downloadXLSX(messages: StudentMessage[], filename: string): void {
+    const wb = XLSX.utils.book_new();
+    
+    const data = messages.map(msg => ({
+      'Tarih': new Date(msg.created_at || '').toLocaleDateString('tr-TR'),
+      'Saat': new Date(msg.created_at || '').toLocaleTimeString('tr-TR'),
+      'Kullanıcı': msg.is_user ? 'Öğrenci' : 'Bot',
+      'Mesaj': msg.message
+    }));
+    
+    const ws = XLSX.utils.json_to_sheet(data);
+    
+    // Set column widths
+    ws['!cols'] = [
+      { wch: 12 }, // Date
+      { wch: 10 }, // Time
+      { wch: 10 }, // User
+      { wch: 80 }  // Message
+    ];
+    
+    XLSX.utils.book_append_sheet(wb, ws, 'Konuşmalar');
+    XLSX.writeFile(wb, `${filename}.xlsx`);
+  }
+
+  private static downloadAllBotsXLSX(botInteractions: StudentBotInteraction[], filename: string, includeOnlyUser: boolean): void {
+    const wb = XLSX.utils.book_new();
+    
+    botInteractions.forEach(bot => {
+      const messages = includeOnlyUser 
+        ? bot.conversations.filter(msg => msg.is_user)
+        : bot.conversations;
+      
+      if (messages.length === 0) return;
+      
+      const data = messages.map(msg => ({
+        'Bot': bot.bot_name,
+        'Tarih': new Date(msg.created_at || '').toLocaleDateString('tr-TR'),
+        'Saat': new Date(msg.created_at || '').toLocaleTimeString('tr-TR'),
+        'Kullanıcı': msg.is_user ? 'Öğrenci' : 'Bot',
+        'Mesaj': msg.message
+      }));
+      
+      const ws = XLSX.utils.json_to_sheet(data);
+      
+      // Set column widths
+      ws['!cols'] = [
+        { wch: 12 }, // Bot
+        { wch: 12 }, // Date
+        { wch: 10 }, // Time
+        { wch: 10 }, // User
+        { wch: 80 }  // Message
+      ];
+      
+      // Sanitize sheet name (max 31 chars, no special chars)
+      const sheetName = bot.bot_name.substring(0, 31).replace(/[\\/*?[\]:]/g, '');
+      XLSX.utils.book_append_sheet(wb, ws, sheetName);
+    });
+    
+    XLSX.writeFile(wb, `${filename}.xlsx`);
+  }
+
+  private static generateAllBotsXLSXBlob(botInteractions: StudentBotInteraction[], includeOnlyUser: boolean): Blob {
+    const wb = XLSX.utils.book_new();
+    
+    botInteractions.forEach(bot => {
+      const messages = includeOnlyUser 
+        ? bot.conversations.filter(msg => msg.is_user)
+        : bot.conversations;
+      
+      if (messages.length === 0) return;
+      
+      const data = messages.map(msg => ({
+        'Bot': bot.bot_name,
+        'Tarih': new Date(msg.created_at || '').toLocaleDateString('tr-TR'),
+        'Saat': new Date(msg.created_at || '').toLocaleTimeString('tr-TR'),
+        'Kullanıcı': msg.is_user ? 'Öğrenci' : 'Bot',
+        'Mesaj': msg.message
+      }));
+      
+      const ws = XLSX.utils.json_to_sheet(data);
+      
+      // Set column widths
+      ws['!cols'] = [
+        { wch: 12 }, // Bot
+        { wch: 12 }, // Date
+        { wch: 10 }, // Time
+        { wch: 10 }, // User
+        { wch: 80 }  // Message
+      ];
+      
+      // Sanitize sheet name (max 31 chars, no special chars)
+      const sheetName = bot.bot_name.substring(0, 31).replace(/[\\/*?[\]:]/g, '');
+      XLSX.utils.book_append_sheet(wb, ws, sheetName);
+    });
+    
+    // Generate buffer and convert to blob
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    return new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   }
 }
