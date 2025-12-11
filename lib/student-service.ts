@@ -480,7 +480,8 @@ export class StudentService {
     format: 'csv' | 'json' | 'txt' | 'xlsx',
     className: string,
     startDate: string | null = null,
-    endDate: string | null = null
+    endDate: string | null = null,
+    selectedBotIndex: number | null = null
   ): Promise<void> {
     try {
       const zip = new JSZip();
@@ -498,13 +499,20 @@ export class StudentService {
 
           if (messages.length === 0) continue;
 
+          // Filter by bot if selectedBotIndex is specified
+          const filteredMessages = selectedBotIndex !== null
+            ? messages.filter(msg => msg.bot_index === selectedBotIndex)
+            : messages;
+
+          if (filteredMessages.length === 0) continue;
+
           // Group messages by bot
-          const botIndices = [...new Set(messages.map(msg => msg.bot_index))];
+          const botIndices = [...new Set(filteredMessages.map(msg => msg.bot_index))];
           const botNames = ['yaprak', 'robi', 'bugday', 'damla'];
           const botInteractions: StudentBotInteraction[] = [];
 
           for (const botIndex of botIndices) {
-            const botMessages = messages.filter(msg => msg.bot_index === botIndex);
+            const botMessages = filteredMessages.filter(msg => msg.bot_index === botIndex);
             if (botMessages.length > 0) {
               botInteractions.push({
                 bot_index: botIndex,
@@ -574,7 +582,14 @@ export class StudentService {
       const dateRange = startDate && endDate 
         ? `_${startDate.split('T')[0]}_${endDate.split('T')[0]}`
         : '';
-      const zipFilename = `${safeClassName}_tum_ogrenciler${dateRange}_${timestamp}.zip`;
+      
+      // Add bot name to filename if specific bot is selected
+      const botNames = ['yaprak', 'robi', 'bugday', 'damla'];
+      const botSuffix = selectedBotIndex !== null 
+        ? `_${botNames[selectedBotIndex] || 'bot'}_`
+        : '_tum_botlar_';
+      
+      const zipFilename = `${safeClassName}${botSuffix}ogrenciler${dateRange}_${timestamp}.zip`;
       
       const url = URL.createObjectURL(zipBlob);
       const link = document.createElement('a');

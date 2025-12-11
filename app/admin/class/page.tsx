@@ -45,6 +45,10 @@ function ClassDetailPageContent() {
   const [sortBy, setSortBy] = useState<SortType>("conversations");
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
+  // Bot selection state
+  const [selectedBotIndex, setSelectedBotIndex] = useState<number | null>(null); // null = Tümü
+  const [isBotDropdownOpen, setIsBotDropdownOpen] = useState(false);
+
   // Helper function to get date range based on filter type
   const getDateRange = (
     filterType: DateFilterType
@@ -239,9 +243,74 @@ function ClassDetailPageContent() {
                 <p className="text-sm text-gray-600">Sınıf Öğrencileri</p>
               </div>
               
-              {/* Download Buttons */}
               {students.length > 0 && (
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
+                  {/* Bot Selector */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsBotDropdownOpen(!isBotDropdownOpen)}
+                      className="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 rounded text-xs font-medium hover:bg-gray-50 transition-colors flex items-center gap-2 min-w-[100px] justify-between"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        {selectedBotIndex !== null && (
+                          <div className={`w-2 h-2 rounded-full ${
+                            selectedBotIndex === 0 ? 'bg-green-500' :
+                            selectedBotIndex === 1 ? 'bg-blue-500' :
+                            selectedBotIndex === 2 ? 'bg-yellow-500' :
+                            selectedBotIndex === 3 ? 'bg-cyan-500' : 'bg-gray-500'
+                          }`} />
+                        )}
+                        <span>
+                          {selectedBotIndex === null ? "Tüm Botlar" : 
+                           selectedBotIndex === 0 ? "Yaprak" :
+                           selectedBotIndex === 1 ? "Robi" :
+                           selectedBotIndex === 2 ? "Buğday" :
+                           selectedBotIndex === 3 ? "Damla" : "Bot"}
+                        </span>
+                      </div>
+                      <CaretDown className={`w-3 h-3 transition-transform ${isBotDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {isBotDropdownOpen && (
+                      <>
+                        <div className="fixed inset-0 z-10" onClick={() => setIsBotDropdownOpen(false)} />
+                        <div className="absolute top-full right-0 mt-1 bg-white rounded-lg border border-gray-200 shadow-lg z-20 min-w-[140px] overflow-hidden py-1">
+                          <button
+                            onClick={() => {
+                              setSelectedBotIndex(null);
+                              setIsBotDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-xs font-medium hover:bg-gray-50 flex items-center gap-2 ${selectedBotIndex === null ? 'bg-blue-50 text-blue-700' : 'text-gray-700'}`}
+                          >
+                            <span>Tüm Botlar</span>
+                            {selectedBotIndex === null && <Check className="w-3 h-3 ml-auto text-blue-600" />}
+                          </button>
+                          {[
+                            { id: 0, name: 'Yaprak', color: 'bg-green-500' },
+                            { id: 1, name: 'Robi', color: 'bg-blue-500' },
+                            { id: 2, name: 'Buğday', color: 'bg-yellow-500' },
+                            { id: 3, name: 'Damla', color: 'bg-cyan-500' }
+                          ].map((bot) => (
+                            <button
+                              key={bot.id}
+                              onClick={() => {
+                                setSelectedBotIndex(bot.id);
+                                setIsBotDropdownOpen(false);
+                              }}
+                              className={`w-full px-3 py-2 text-left text-xs font-medium hover:bg-gray-50 flex items-center gap-2 ${selectedBotIndex === bot.id ? 'bg-blue-50 text-blue-700' : 'text-gray-700'}`}
+                            >
+                              <div className={`w-2 h-2 rounded-full ${bot.color}`} />
+                              <span>{bot.name}</span>
+                              {selectedBotIndex === bot.id && <Check className="w-3 h-3 ml-auto text-blue-600" />}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  
+                  <div className="w-px h-6 bg-gray-300 mx-1" /> {/* Divider */}
+
                   {/* XLSX Download - FIRST */}
                   <button
                     onClick={async () => {
@@ -253,7 +322,8 @@ function ClassDetailPageContent() {
                           'xlsx',
                           className,
                           startDate,
-                          endDate
+                          endDate,
+                          selectedBotIndex
                         );
                       } catch (error) {
                         console.error('Error downloading XLSX:', error);
@@ -276,13 +346,14 @@ function ClassDetailPageContent() {
                     onClick={async () => {
                       setLoading(true);
                       try {
-                        const { startDate, endDate } = getDateRange(dateFilter);
+                      const { startDate, endDate } = getDateRange(dateFilter);
                         await StudentService.downloadClassConversationsAsZip(
                           students,
                           'csv',
                           className,
                           startDate,
-                          endDate
+                          endDate,
+                          selectedBotIndex
                         );
                       } catch (error) {
                         console.error('Error downloading CSV:', error);
@@ -304,13 +375,14 @@ function ClassDetailPageContent() {
                     onClick={async () => {
                       setLoading(true);
                       try {
-                        const { startDate, endDate } = getDateRange(dateFilter);
+                      const { startDate, endDate } = getDateRange(dateFilter);
                         await StudentService.downloadClassConversationsAsZip(
                           students,
                           'json',
                           className,
                           startDate,
-                          endDate
+                          endDate,
+                          selectedBotIndex
                         );
                       } catch (error) {
                         console.error('Error downloading JSON:', error);
@@ -332,13 +404,14 @@ function ClassDetailPageContent() {
                     onClick={async () => {
                       setLoading(true);
                       try {
-                        const { startDate, endDate } = getDateRange(dateFilter);
+                      const { startDate, endDate } = getDateRange(dateFilter);
                         await StudentService.downloadClassConversationsAsZip(
                           students,
                           'txt',
                           className,
                           startDate,
-                          endDate
+                          endDate,
+                          selectedBotIndex
                         );
                       } catch (error) {
                         console.error('Error downloading TXT:', error);
