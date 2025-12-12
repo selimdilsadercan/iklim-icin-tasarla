@@ -16,6 +16,7 @@ import {
   Calendar,
   CaretDown,
   Check,
+  ChatCircle,
   Funnel,
   SortAscending,
 } from "@phosphor-icons/react";
@@ -48,6 +49,22 @@ function ClassDetailPageContent() {
   // Bot selection state
   const [selectedBotIndex, setSelectedBotIndex] = useState<number | null>(null); // null = Tümü
   const [isBotDropdownOpen, setIsBotDropdownOpen] = useState(false);
+
+  // Message count filter state
+  type MessageCountFilterType = "all" | "min10" | "min20" | "min50";
+  const [messageCountFilter, setMessageCountFilter] = useState<MessageCountFilterType>("all");
+  const [isMessageCountDropdownOpen, setIsMessageCountDropdownOpen] = useState(false);
+
+  // Helper function to get minimum message count based on filter
+  const getMinMessageCount = (filterType: MessageCountFilterType): number => {
+    switch (filterType) {
+      case "min10": return 10;
+      case "min20": return 20;
+      case "min50": return 50;
+      case "all":
+      default: return 0;
+    }
+  };
 
   // Helper function to get date range based on filter type
   const getDateRange = (
@@ -199,8 +216,15 @@ function ClassDetailPageContent() {
     }
   }, [loading]);
 
-  // Filter students based on search query
+  // Filter students based on search query and message count
+  const minMessageCount = getMinMessageCount(messageCountFilter);
   const filteredStudents = students.filter((student) => {
+    // First apply message count filter
+    if (student.total_conversations < minMessageCount) {
+      return false;
+    }
+    
+    // Then apply search filter
     if (!searchQuery.trim()) {
       return true;
     }
@@ -318,7 +342,7 @@ function ClassDetailPageContent() {
                       try {
                         const { startDate, endDate } = getDateRange(dateFilter);
                         await StudentService.downloadClassConversationsAsZip(
-                          students,
+                          filteredStudents,
                           'xlsx',
                           className,
                           startDate,
@@ -348,7 +372,7 @@ function ClassDetailPageContent() {
                       try {
                       const { startDate, endDate } = getDateRange(dateFilter);
                         await StudentService.downloadClassConversationsAsZip(
-                          students,
+                          filteredStudents,
                           'csv',
                           className,
                           startDate,
@@ -377,7 +401,7 @@ function ClassDetailPageContent() {
                       try {
                       const { startDate, endDate } = getDateRange(dateFilter);
                         await StudentService.downloadClassConversationsAsZip(
-                          students,
+                          filteredStudents,
                           'json',
                           className,
                           startDate,
@@ -406,7 +430,7 @@ function ClassDetailPageContent() {
                       try {
                       const { startDate, endDate } = getDateRange(dateFilter);
                         await StudentService.downloadClassConversationsAsZip(
-                          students,
+                          filteredStudents,
                           'txt',
                           className,
                           startDate,
@@ -595,6 +619,136 @@ function ClassDetailPageContent() {
                           >
                             <span>Tarihe Göre</span>
                             {sortBy === "date" && (
+                              <Check
+                                className="w-4 h-4 text-blue-600"
+                                weight="bold"
+                              />
+                            )}
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Message Count Filter */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setIsMessageCountDropdownOpen(!isMessageCountDropdownOpen)}
+                      className="pl-9 pr-8 py-2 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-white hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer min-w-[180px] flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-2">
+                        <ChatCircle
+                          className="w-4 h-4 text-gray-400"
+                          weight="regular"
+                        />
+                        <span>
+                          {messageCountFilter === "all"
+                            ? "Mesaj Sayısı"
+                            : messageCountFilter === "min10"
+                            ? "En Az 10 Mesaj"
+                            : messageCountFilter === "min20"
+                            ? "En Az 20 Mesaj"
+                            : "En Az 50 Mesaj"}
+                        </span>
+                      </div>
+                      <CaretDown
+                        className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
+                          isMessageCountDropdownOpen ? "rotate-180" : ""
+                        }`}
+                        weight="bold"
+                      />
+                    </button>
+
+                    {/* Message Count Dropdown Menu */}
+                    {isMessageCountDropdownOpen && (
+                      <>
+                        {/* Backdrop */}
+                        <div
+                          className="fixed inset-0 z-10"
+                          onClick={() => {
+                            setIsMessageCountDropdownOpen(false);
+                          }}
+                        />
+                        {/* Dropdown Options */}
+                        <div className="absolute top-full right-0 mt-2 bg-white rounded-xl border-2 border-gray-200 shadow-lg z-20 overflow-hidden min-w-[200px]">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setMessageCountFilter("all");
+                              setIsMessageCountDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                              messageCountFilter === "all"
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span>Tüm Mesaj Sayıları</span>
+                            {messageCountFilter === "all" && (
+                              <Check
+                                className="w-4 h-4 text-blue-600"
+                                weight="bold"
+                              />
+                            )}
+                          </button>
+                          <div className="border-t border-gray-100" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setMessageCountFilter("min10");
+                              setIsMessageCountDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                              messageCountFilter === "min10"
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span>En Az 10 Mesaj</span>
+                            {messageCountFilter === "min10" && (
+                              <Check
+                                className="w-4 h-4 text-blue-600"
+                                weight="bold"
+                              />
+                            )}
+                          </button>
+                          <div className="border-t border-gray-100" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setMessageCountFilter("min20");
+                              setIsMessageCountDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                              messageCountFilter === "min20"
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span>En Az 20 Mesaj</span>
+                            {messageCountFilter === "min20" && (
+                              <Check
+                                className="w-4 h-4 text-blue-600"
+                                weight="bold"
+                              />
+                            )}
+                          </button>
+                          <div className="border-t border-gray-100" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setMessageCountFilter("min50");
+                              setIsMessageCountDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors duration-150 flex items-center justify-between ${
+                              messageCountFilter === "min50"
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            <span>En Az 50 Mesaj</span>
+                            {messageCountFilter === "min50" && (
                               <Check
                                 className="w-4 h-4 text-blue-600"
                                 weight="bold"
