@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase, onAuthStateChange } from "@/lib/supabase";
 import { UserRoleService } from "@/lib/user-role-service";
@@ -14,11 +20,11 @@ interface AuthContextType {
   isTeacher: boolean;
   signUp: (
     email: string,
-    password: string
+    password: string,
   ) => Promise<{ data: any; error: any }>;
   signIn: (
     email: string,
-    password: string
+    password: string,
   ) => Promise<{ data: any; error: any }>;
   signOut: () => Promise<{ error: any }>;
   refreshUserRole: () => Promise<void>;
@@ -43,6 +49,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [userRole, setUserRole] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isTeacher, setIsTeacher] = useState(false);
+
+  // useRef ile mevcut kullanıcı ID'sini takip et.
+  // Closure içindeki callback'ler her zaman güncel değere erişebilir.
+  const currentUserIdRef = useRef<string | null>(null);
 
   // Function to fetch user role (simplified)
   const fetchUserRole = async (userId: string) => {
@@ -79,6 +89,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       } = await supabase.auth.getSession();
       setSession(session);
       setUser(session?.user ?? null);
+      currentUserIdRef.current = session?.user?.id ?? null;
 
       // Check localStorage for cached role first
       if (session?.user) {
@@ -101,6 +112,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const {
       data: { subscription },
     } = onAuthStateChange(async (event, session) => {
+      console.log(
+        "AuthContext: Auth state changed:",
+        event,
+        "current ref:",
+        currentUserIdRef.current,
+      );
+
+      // Tab değişiminde Supabase aynı kullanıcı için tekrar SIGNED_IN veya
+      // TOKEN_REFRESHED event'i fırlatır. useRef ile güncel user ID'yi kontrol
+      // ediyoruz (closure problemi olmadan). Kullanıcı aynıysa skip et.
+      if (
+        (event === "TOKEN_REFRESHED" || event === "SIGNED_IN") &&
+        session?.user?.id === currentUserIdRef.current &&
+        currentUserIdRef.current !== null
+      ) {
+        console.log("AuthContext: Same user, skipping state update for", event);
+        return;
+      }
+
+      // Ref'i güncelle
+      currentUserIdRef.current = session?.user?.id ?? null;
+
       setSession(session);
       setUser(session?.user ?? null);
 

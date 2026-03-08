@@ -33,7 +33,7 @@ export default function AdminClassesPage() {
   const [filterType, setFilterType] = useState<FilterType>("active");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedTeacherId, setSelectedTeacherId] = useState<string | null>(
-    null
+    null,
   );
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [isTeacherDropdownOpen, setIsTeacherDropdownOpen] = useState(false);
@@ -74,7 +74,7 @@ export default function AdminClassesPage() {
         isAdmin && selectedTeacherId ? selectedTeacherId : user.id;
       const teacherClasses = await TeacherClassesService.getTeacherClassesByUid(
         teacherIdToFetch,
-        isAdmin ? sortBy : "conversations"
+        isAdmin ? sortBy : "conversations",
       );
       // SQL already sorts by conversation_count DESC, so we can use the data as-is
       setClasses(teacherClasses);
@@ -115,21 +115,6 @@ export default function AdminClassesPage() {
   useEffect(() => {
     fetchClasses();
   }, [user, selectedTeacherId, sortBy]);
-
-  // Handle page visibility changes to refresh data when tab becomes active
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && user) {
-        console.log("Page became visible, refreshing classes");
-        fetchClasses();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [user]);
 
   // Timeout mechanism to prevent infinite loading
   useEffect(() => {
@@ -204,7 +189,7 @@ export default function AdminClassesPage() {
                         <span>
                           {selectedTeacherId
                             ? teachers.find(
-                                (t) => t.user_id === selectedTeacherId
+                                (t) => t.user_id === selectedTeacherId,
                               )?.display_name || "Öğretmen Seçin"
                             : "Tüm Öğretmenler"}
                         </span>
@@ -376,8 +361,8 @@ export default function AdminClassesPage() {
                           {sortBy === "conversations"
                             ? "Mesaj Sayısı"
                             : sortBy === "name"
-                            ? "İsme Göre"
-                            : "Son Mesaj Tarihine Göre"}
+                              ? "İsme Göre"
+                              : "Son Mesaj Tarihine Göre"}
                         </span>
                       </div>
                       <CaretDown

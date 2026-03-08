@@ -44,9 +44,8 @@ function TeacherDetailPageContent() {
       setTeacher(foundTeacher || null);
 
       // Fetch teacher's classes
-      const teacherClasses = await TeacherClassesService.getTeacherClassesByUid(
-        teacherId
-      );
+      const teacherClasses =
+        await TeacherClassesService.getTeacherClassesByUid(teacherId);
       setClasses(teacherClasses);
       setRetryCount(0); // Reset retry count on success
     } catch (err) {
@@ -66,21 +65,6 @@ function TeacherDetailPageContent() {
 
   useEffect(() => {
     fetchTeacherData();
-  }, [user, isAdmin, teacherId]);
-
-  // Handle page visibility changes to refresh data when tab becomes active
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && user && isAdmin && teacherId) {
-        console.log("Page became visible, refreshing teacher data");
-        fetchTeacherData();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
   }, [user, isAdmin, teacherId]);
 
   // Redirect if no teacherId

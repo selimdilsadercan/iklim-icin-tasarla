@@ -52,23 +52,29 @@ function ClassDetailPageContent() {
 
   // Message count filter state
   type MessageCountFilterType = "all" | "min10" | "min20" | "min50";
-  const [messageCountFilter, setMessageCountFilter] = useState<MessageCountFilterType>("all");
-  const [isMessageCountDropdownOpen, setIsMessageCountDropdownOpen] = useState(false);
+  const [messageCountFilter, setMessageCountFilter] =
+    useState<MessageCountFilterType>("all");
+  const [isMessageCountDropdownOpen, setIsMessageCountDropdownOpen] =
+    useState(false);
 
   // Helper function to get minimum message count based on filter
   const getMinMessageCount = (filterType: MessageCountFilterType): number => {
     switch (filterType) {
-      case "min10": return 10;
-      case "min20": return 20;
-      case "min50": return 50;
+      case "min10":
+        return 10;
+      case "min20":
+        return 20;
+      case "min50":
+        return 50;
       case "all":
-      default: return 0;
+      default:
+        return 0;
     }
   };
 
   // Helper function to get date range based on filter type
   const getDateRange = (
-    filterType: DateFilterType
+    filterType: DateFilterType,
   ): { startDate: string | null; endDate: string | null } => {
     const now = new Date();
     let startDate: Date | null = null;
@@ -84,7 +90,7 @@ function ClassDetailPageContent() {
           23,
           59,
           59,
-          999
+          999,
         );
         break;
       case "thisWeek":
@@ -104,7 +110,7 @@ function ClassDetailPageContent() {
           23,
           59,
           59,
-          999
+          999,
         );
         break;
       case "custom":
@@ -150,7 +156,7 @@ function ClassDetailPageContent() {
           classId,
           startDate,
           endDate,
-          sortBy
+          sortBy,
         );
         // Get class name from the first student's data or use a default
         if (classStudents.length > 0) {
@@ -181,21 +187,6 @@ function ClassDetailPageContent() {
     fetchStudents();
   }, [user, classId, dateFilter, customStartDate, customEndDate, sortBy]);
 
-  // Handle page visibility changes to refresh data when tab becomes active
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && user && classId) {
-        console.log("Page became visible, refreshing students");
-        fetchStudents();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [user, classId]);
-
   // Redirect if no classId
   useEffect(() => {
     if (!classId) {
@@ -223,7 +214,7 @@ function ClassDetailPageContent() {
     if (student.total_conversations < minMessageCount) {
       return false;
     }
-    
+
     // Then apply search filter
     if (!searchQuery.trim()) {
       return true;
@@ -266,7 +257,7 @@ function ClassDetailPageContent() {
                 <h1 className="text-xl font-bold text-gray-800">{className}</h1>
                 <p className="text-sm text-gray-600">Sınıf Öğrencileri</p>
               </div>
-              
+
               {students.length > 0 && (
                 <div className="flex items-center gap-2">
                   {/* Bot Selector */}
@@ -277,43 +268,63 @@ function ClassDetailPageContent() {
                     >
                       <div className="flex items-center gap-1.5">
                         {selectedBotIndex !== null && (
-                          <div className={`w-2 h-2 rounded-full ${
-                            selectedBotIndex === 0 ? 'bg-green-500' :
-                            selectedBotIndex === 1 ? 'bg-blue-500' :
-                            selectedBotIndex === 2 ? 'bg-yellow-500' :
-                            selectedBotIndex === 3 ? 'bg-cyan-500' : 'bg-gray-500'
-                          }`} />
+                          <div
+                            className={`w-2 h-2 rounded-full ${
+                              selectedBotIndex === 0
+                                ? "bg-green-500"
+                                : selectedBotIndex === 1
+                                  ? "bg-blue-500"
+                                  : selectedBotIndex === 2
+                                    ? "bg-yellow-500"
+                                    : selectedBotIndex === 3
+                                      ? "bg-cyan-500"
+                                      : "bg-gray-500"
+                            }`}
+                          />
                         )}
                         <span>
-                          {selectedBotIndex === null ? "Tüm Botlar" : 
-                           selectedBotIndex === 0 ? "Yaprak" :
-                           selectedBotIndex === 1 ? "Robi" :
-                           selectedBotIndex === 2 ? "Buğday" :
-                           selectedBotIndex === 3 ? "Damla" : "Bot"}
+                          {selectedBotIndex === null
+                            ? "Tüm Botlar"
+                            : selectedBotIndex === 0
+                              ? "Yaprak"
+                              : selectedBotIndex === 1
+                                ? "Robi"
+                                : selectedBotIndex === 2
+                                  ? "Buğday"
+                                  : selectedBotIndex === 3
+                                    ? "Damla"
+                                    : "Bot"}
                         </span>
                       </div>
-                      <CaretDown className={`w-3 h-3 transition-transform ${isBotDropdownOpen ? 'rotate-180' : ''}`} />
+                      <CaretDown
+                        className={`w-3 h-3 transition-transform ${isBotDropdownOpen ? "rotate-180" : ""}`}
+                      />
                     </button>
 
                     {isBotDropdownOpen && (
                       <>
-                        <div className="fixed inset-0 z-10" onClick={() => setIsBotDropdownOpen(false)} />
+                        <div
+                          className="fixed inset-0 z-10"
+                          onClick={() => setIsBotDropdownOpen(false)}
+                        />
                         <div className="absolute top-full right-0 mt-1 bg-white rounded-lg border border-gray-200 shadow-lg z-20 min-w-[140px] overflow-hidden py-1">
                           <button
                             onClick={() => {
                               setSelectedBotIndex(null);
                               setIsBotDropdownOpen(false);
                             }}
-                            className={`w-full px-3 py-2 text-left text-xs font-medium hover:bg-gray-50 flex items-center gap-2 ${selectedBotIndex === null ? 'bg-blue-50 text-blue-700' : 'text-gray-700'}`}
+                            className={`w-full px-3 py-2 text-left text-xs font-medium hover:bg-gray-50 flex items-center gap-2 ${selectedBotIndex === null ? "bg-blue-50 text-blue-700" : "text-gray-700"}`}
                           >
                             <span>Tüm Botlar</span>
-                            {selectedBotIndex === null && <Check className="w-3 h-3 ml-auto text-blue-600" />}
+                            {selectedBotIndex === null && (
+                              <Check className="w-3 h-3 ml-auto text-blue-600" />
+                            )}
                           </button>
                           {[
-                            { id: 0, name: 'Yaprak', color: 'bg-green-500' },
-                            { id: 1, name: 'Robi', color: 'bg-blue-500' },
-                            { id: 2, name: 'Buğday', color: 'bg-yellow-500' },
-                            { id: 3, name: 'Damla', color: 'bg-cyan-500' }
+                            { id: 0, name: "Yaprak", color: "bg-green-500" },
+                            { id: 1, name: "Robi", color: "bg-blue-500" },
+                            { id: 2, name: "Buğday", color: "bg-yellow-500" },
+                            { id: 3, name: "Damla", color: "bg-cyan-500" },
                           ].map((bot) => (
                             <button
                               key={bot.id}
@@ -321,20 +332,22 @@ function ClassDetailPageContent() {
                                 setSelectedBotIndex(bot.id);
                                 setIsBotDropdownOpen(false);
                               }}
-                              className={`w-full px-3 py-2 text-left text-xs font-medium hover:bg-gray-50 flex items-center gap-2 ${selectedBotIndex === bot.id ? 'bg-blue-50 text-blue-700' : 'text-gray-700'}`}
+                              className={`w-full px-3 py-2 text-left text-xs font-medium hover:bg-gray-50 flex items-center gap-2 ${selectedBotIndex === bot.id ? "bg-blue-50 text-blue-700" : "text-gray-700"}`}
                             >
-                              <div className={`w-2 h-2 rounded-full ${bot.color}`} />
+                              <div
+                                className={`w-2 h-2 rounded-full ${bot.color}`}
+                              />
                               <span>{bot.name}</span>
-                              {selectedBotIndex === bot.id && <Check className="w-3 h-3 ml-auto text-blue-600" />}
+                              {selectedBotIndex === bot.id && (
+                                <Check className="w-3 h-3 ml-auto text-blue-600" />
+                              )}
                             </button>
                           ))}
                         </div>
                       </>
                     )}
                   </div>
-                  
                   <div className="w-px h-6 bg-gray-300 mx-1" /> {/* Divider */}
-
                   {/* XLSX Download - FIRST */}
                   <button
                     onClick={async () => {
@@ -343,15 +356,15 @@ function ClassDetailPageContent() {
                         const { startDate, endDate } = getDateRange(dateFilter);
                         await StudentService.downloadClassConversationsAsZip(
                           filteredStudents,
-                          'xlsx',
+                          "xlsx",
                           className,
                           startDate,
                           endDate,
-                          selectedBotIndex
+                          selectedBotIndex,
                         );
                       } catch (error) {
-                        console.error('Error downloading XLSX:', error);
-                        setError('İndirme sırasında bir hata oluştu');
+                        console.error("Error downloading XLSX:", error);
+                        setError("İndirme sırasında bir hata oluştu");
                       } finally {
                         setLoading(false);
                       }
@@ -359,29 +372,38 @@ function ClassDetailPageContent() {
                     disabled={loading}
                     className="px-3 py-1.5 bg-green-600 text-white rounded text-xs font-medium hover:bg-green-700 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
                     </svg>
                     XLSX
                   </button>
-                  
                   {/* CSV Download */}
                   <button
                     onClick={async () => {
                       setLoading(true);
                       try {
-                      const { startDate, endDate } = getDateRange(dateFilter);
+                        const { startDate, endDate } = getDateRange(dateFilter);
                         await StudentService.downloadClassConversationsAsZip(
                           filteredStudents,
-                          'csv',
+                          "csv",
                           className,
                           startDate,
                           endDate,
-                          selectedBotIndex
+                          selectedBotIndex,
                         );
                       } catch (error) {
-                        console.error('Error downloading CSV:', error);
-                        setError('İndirme sırasında bir hata oluştu');
+                        console.error("Error downloading CSV:", error);
+                        setError("İndirme sırasında bir hata oluştu");
                       } finally {
                         setLoading(false);
                       }
@@ -389,28 +411,37 @@ function ClassDetailPageContent() {
                     disabled={loading}
                     className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-xs font-medium hover:bg-gray-200 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
                     </svg>
                     CSV
                   </button>
-                  
                   <button
                     onClick={async () => {
                       setLoading(true);
                       try {
-                      const { startDate, endDate } = getDateRange(dateFilter);
+                        const { startDate, endDate } = getDateRange(dateFilter);
                         await StudentService.downloadClassConversationsAsZip(
                           filteredStudents,
-                          'json',
+                          "json",
                           className,
                           startDate,
                           endDate,
-                          selectedBotIndex
+                          selectedBotIndex,
                         );
                       } catch (error) {
-                        console.error('Error downloading JSON:', error);
-                        setError('İndirme sırasında bir hata oluştu');
+                        console.error("Error downloading JSON:", error);
+                        setError("İndirme sırasında bir hata oluştu");
                       } finally {
                         setLoading(false);
                       }
@@ -418,28 +449,37 @@ function ClassDetailPageContent() {
                     disabled={loading}
                     className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-xs font-medium hover:bg-gray-200 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
                     </svg>
                     JSON
                   </button>
-                  
                   <button
                     onClick={async () => {
                       setLoading(true);
                       try {
-                      const { startDate, endDate } = getDateRange(dateFilter);
+                        const { startDate, endDate } = getDateRange(dateFilter);
                         await StudentService.downloadClassConversationsAsZip(
                           filteredStudents,
-                          'txt',
+                          "txt",
                           className,
                           startDate,
                           endDate,
-                          selectedBotIndex
+                          selectedBotIndex,
                         );
                       } catch (error) {
-                        console.error('Error downloading TXT:', error);
-                        setError('İndirme sırasında bir hata oluştu');
+                        console.error("Error downloading TXT:", error);
+                        setError("İndirme sırasında bir hata oluştu");
                       } finally {
                         setLoading(false);
                       }
@@ -447,8 +487,18 @@ function ClassDetailPageContent() {
                     disabled={loading}
                     className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-xs font-medium hover:bg-gray-200 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
                     </svg>
                     TXT
                   </button>
@@ -539,8 +589,8 @@ function ClassDetailPageContent() {
                           {sortBy === "conversations"
                             ? "Mesaj Sayısı"
                             : sortBy === "name"
-                            ? "İsme Göre"
-                            : "Tarihe Göre"}
+                              ? "İsme Göre"
+                              : "Tarihe Göre"}
                         </span>
                       </div>
                       <CaretDown
@@ -634,7 +684,11 @@ function ClassDetailPageContent() {
                   <div className="relative">
                     <button
                       type="button"
-                      onClick={() => setIsMessageCountDropdownOpen(!isMessageCountDropdownOpen)}
+                      onClick={() =>
+                        setIsMessageCountDropdownOpen(
+                          !isMessageCountDropdownOpen,
+                        )
+                      }
                       className="pl-9 pr-8 py-2 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-white hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer min-w-[180px] flex items-center justify-between"
                     >
                       <div className="flex items-center gap-2">
@@ -646,10 +700,10 @@ function ClassDetailPageContent() {
                           {messageCountFilter === "all"
                             ? "Mesaj Sayısı"
                             : messageCountFilter === "min10"
-                            ? "En Az 10 Mesaj"
-                            : messageCountFilter === "min20"
-                            ? "En Az 20 Mesaj"
-                            : "En Az 50 Mesaj"}
+                              ? "En Az 10 Mesaj"
+                              : messageCountFilter === "min20"
+                                ? "En Az 20 Mesaj"
+                                : "En Az 50 Mesaj"}
                         </span>
                       </div>
                       <CaretDown
@@ -779,12 +833,12 @@ function ClassDetailPageContent() {
                             {dateFilter === "all"
                               ? "Tüm Zamanlar"
                               : dateFilter === "today"
-                              ? "Bugün"
-                              : dateFilter === "thisWeek"
-                              ? "Bu Hafta"
-                              : dateFilter === "thisMonth"
-                              ? "Bu Ay"
-                              : "Özel Aralık"}
+                                ? "Bugün"
+                                : dateFilter === "thisWeek"
+                                  ? "Bu Hafta"
+                                  : dateFilter === "thisMonth"
+                                    ? "Bu Ay"
+                                    : "Özel Aralık"}
                           </span>
                         </div>
                         <CaretDown
@@ -1086,7 +1140,7 @@ function ClassDetailPageContent() {
                                 <span className="text-xs text-gray-500">
                                   • Son mesaj:{" "}
                                   {new Date(
-                                    student.last_message_date
+                                    student.last_message_date,
                                   ).toLocaleDateString("tr-TR", {
                                     day: "2-digit",
                                     month: "2-digit",

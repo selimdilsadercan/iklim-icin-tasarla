@@ -57,7 +57,7 @@ export default function AdminHomePage() {
 
       // Fetch dashboard stats using the new SQL function
       const dashboardStats = await DashboardStatsService.getDashboardStats(
-        user.id
+        user.id,
       );
 
       if (dashboardStats) {
@@ -112,21 +112,6 @@ export default function AdminHomePage() {
     }
 
     fetchStats();
-  }, [user, authLoading]);
-
-  // Handle page visibility changes to refresh data when tab becomes active
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && user && !authLoading) {
-        console.log("Page became visible, refreshing stats");
-        fetchStats();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
   }, [user, authLoading]);
 
   // Fallback: if auth loading is done but we're still in loading state for too long, stop loading
@@ -437,7 +422,7 @@ export default function AdminHomePage() {
                         formatter={(
                           value: number,
                           name: string,
-                          props: any
+                          props: any,
                         ) => [
                           `${value} konuşma (${props.payload.percentage}%)`,
                           props.payload.bot_name,

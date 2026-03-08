@@ -54,21 +54,6 @@ export default function TeachersPage() {
     fetchTeachers();
   }, [user, isAdmin]);
 
-  // Handle page visibility changes to refresh data when tab becomes active
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && user && isAdmin) {
-        console.log("Page became visible, refreshing teachers");
-        fetchTeachers();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [user, isAdmin]);
-
   // Timeout mechanism to prevent infinite loading
   useEffect(() => {
     if (loading) {
