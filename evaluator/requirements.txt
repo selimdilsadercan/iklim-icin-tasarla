@@ -1,0 +1,11 @@
+pandas
+numpy
+anthropic
+scikit-learn
+openpyxl
+ipykernel
+python-dotenv
+tqdm
+fastapi
+uvicorn
+python-multipart

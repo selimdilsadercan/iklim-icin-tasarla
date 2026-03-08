@@ -1,52 +1,11 @@
 {
-  "name": "iklim-icin-tasarla",
-  "version": "0.1.0",
+  "name": "iklim-monorepo",
+  "version": "1.0.0",
   "private": true,
-  "type": "module",
+  "description": "İklim Eval Monorepo - Evaluator (Python), Backend (Encore), Frontend",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start",
-    "ios": "next build --turbopack && npx cap sync && npx cap open ios",
-    "increment-version": "node scripts/increment-version.ts",
-    "mobile": "npm run increment-version && next build --turbopack && npx cap sync && npm run apk",
-    "apk": "cd android && gradlew.bat assembleDebug && gradlew.bat bundleRelease && cd .. && npm run open-aab",
-    "open-apk": "start android\\app\\build\\outputs\\apk\\debug",
-    "aab": "npm run increment-version && cd android && gradlew.bat bundleRelease && cd ..",
-    "open-aab": "start android\\app\\build\\outputs\\bundle\\release",
-    "clean": "cd android && gradlew.bat clean"
-  },
-  "dependencies": {
-    "@capacitor/android": "^7.4.3",
-    "@capacitor/app": "^7.1.0",
-    "@capacitor/cli": "^7.4.3",
-    "@capacitor/core": "^7.4.3",
-    "@capacitor/ios": "^7.4.3",
-    "@capacitor/status-bar": "^7.0.3",
-    "@phosphor-icons/react": "^2.1.10",
-    "@supabase/supabase-js": "^2.57.4",
-    "@tailwindcss/typography": "^0.5.18",
-    "country-flag-icons": "^1.5.21",
-    "jszip": "^3.10.1",
-    "lucide-react": "^0.542.0",
-    "next": "15.5.7",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "react-markdown": "^10.1.0",
-    "recharts": "^3.5.0",
-    "remark-gfm": "^4.0.1",
-    "xlsx": "^0.18.5"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.2",
-    "tailwindcss": "^4",
-    "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "dev": "cd frontend && npm run dev",
+    "backend": "cd backend && encore run",
+    "eval": "cd evaluator && npm run eval --"
   }
 }
