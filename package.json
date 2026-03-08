@@ -1,6 +1,6 @@
 {
   "name": "iklim-monorepo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "İklim Eval Monorepo - Evaluator (Python), Backend (Encore), Frontend",
   "scripts": {
