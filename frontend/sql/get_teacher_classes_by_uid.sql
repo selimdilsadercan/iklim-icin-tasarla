@@ -2,7 +2,9 @@ DROP FUNCTION IF EXISTS get_teacher_classes_by_uid;
 
 CREATE FUNCTION get_teacher_classes_by_uid(
   teacher_uid UUID,
-  sort_by TEXT DEFAULT 'conversations'
+  sort_by TEXT DEFAULT 'conversations',
+  filter_start_date TIMESTAMPTZ DEFAULT NULL,
+  filter_end_date TIMESTAMPTZ DEFAULT NULL
 )
 RETURNS TABLE (
   id UUID,
@@ -28,6 +30,8 @@ AS $$
   LEFT JOIN teacher_classes tc ON tc.class_id = c.id
   LEFT JOIN user_roles ur ON ur.class_id = c.id AND ur.role = 'student'
   LEFT JOIN chat_history ch ON ch.user_id = ur.user_id
+    AND (filter_start_date IS NULL OR ch.created_at >= filter_start_date)
+    AND (filter_end_date IS NULL OR ch.created_at <= filter_end_date)
   WHERE tc.teacher_id = teacher_uid 
      OR EXISTS (
        SELECT 1 

@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 // Supabase bağlantı bilgileri (Doğrudan tanımlanmış)
 const SUPABASE_URL = "https://drvycatabyudymagulio.supabase.co";
 const SUPABASE_SERVICE_ROLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IjpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRydnljYXRhYnl1ZHltYWd1bGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ1MDk0NTMsImV4cCI6MjA2MDA4NTQ1M30.I4cnGn8QekLIBxnTphcho4GGpLD2gRwysySumxgYEOY";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRydnljYXRhYnl1ZHltYWd1bGlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ1MDk0NTMsImV4cCI6MjA2MDA4NTQ1M30.I4cnGn8QekLIBxnTphcho4GGpLD2gRwysySumxgYEOY";
 
 /**
  * Supabase istemcisini başlatır.

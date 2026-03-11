@@ -1,4 +1,5 @@
 import { supabase } from "./supabase";
+import { apiRequest } from "./api";
 
 export interface TeacherClass {
   id: string;
@@ -51,28 +52,40 @@ export class TeacherClassesService {
    * Get all classes for the current teacher
    */
   static async getTeacherClasses(): Promise<TeacherClass[]> {
-    const { data, error } = await supabase.rpc("get_teacher_classes");
-
-    if (error) {
+    try {
+      const data = await apiRequest<{ classes: any[] }>("/batch/classes"); // Path updated
+      return data.classes || [];
+    } catch (error) {
       console.error("Error fetching teacher classes:", error);
       throw new Error("Failed to fetch teacher classes");
     }
-
-    return data || [];
   }
 
   /**
    * Get all classes for a specific teacher by UID
    * @param sortBy - Sort type: 'conversations' (default), 'name', or 'date'
+   * @param startDate - Optional start date for filtering conversation counts
+   * @param endDate - Optional end date for filtering conversation counts
    */
   static async getTeacherClassesByUid(
     teacherUid: string,
-    sortBy: "conversations" | "name" | "date" = "conversations"
+    sortBy: "conversations" | "name" | "date" = "conversations",
+    startDate?: string | null,
+    endDate?: string | null
   ): Promise<TeacherClass[]> {
-    const { data, error } = await supabase.rpc("get_teacher_classes_by_uid", {
+    const rpcParams: any = {
       teacher_uid: teacherUid,
       sort_by: sortBy,
-    });
+    };
+
+    if (startDate) {
+      rpcParams.filter_start_date = startDate;
+    }
+    if (endDate) {
+      rpcParams.filter_end_date = endDate + "T23:59:59.999Z";
+    }
+
+    const { data, error } = await supabase.rpc("get_teacher_classes_by_uid", rpcParams);
 
     if (error) {
       console.error("Error fetching teacher classes by UID:", error);
@@ -83,7 +96,7 @@ export class TeacherClassesService {
   }
 
   /**
-   * Get students for a specific class
+   * Get students for a specific class (moved to Encore)
    * @param sortBy - Sort type: 'conversations' (default), 'name', or 'date'
    */
   static async getClassStudents(
@@ -91,20 +104,9 @@ export class TeacherClassesService {
     startDate?: string | null,
     endDate?: string | null,
     sortBy: "conversations" | "name" | "date" = "conversations"
-  ): Promise<ClassStudent[]> {
-    const { data, error } = await supabase.rpc("get_class_students", {
-      class_id_param: classId,
-      start_date: startDate || null,
-      end_date: endDate || null,
-      sort_by: sortBy,
-    });
-
-    if (error) {
-      console.error("Error fetching class students:", error);
-      throw new Error("Failed to fetch class students");
-    }
-
-    return data || [];
+  ): Promise<any[]> {
+    const data = await apiRequest<{ students: any[] }>(`/batch/classes/${classId}/students`); // Path updated
+    return data.students || [];
   }
 
   /**

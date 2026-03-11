@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Page enum for active state
-export type AdminPageType = "overview" | "classes" | "teachers" | "profile";
+export type AdminPageType = "overview" | "classes" | "teachers" | "profile" | "batch";
 
 // Admin navigation items configuration
 const getAdminNavigationItems = (t: any, isAdmin: boolean) => [
@@ -66,6 +66,26 @@ const getAdminNavigationItems = (t: any, isAdmin: boolean) => [
                 strokeLinejoin="round"
                 strokeWidth={2}
                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+          ),
+        },
+        {
+          href: "/admin/batch",
+          page: "batch" as AdminPageType,
+          label: "Batch",
+          icon: (
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.641.32a.5.5 0 01-.436 0l-.641-.32a6 6 0 00-3.86-.517l-2.387.477a2 2 0 00-1.022.547V18a2 2 0 002 2h12a2 2 0 002-2v-2.572zM12 11V3.5l3 3m-3-3l-3 3"
               />
             </svg>
           ),

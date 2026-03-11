@@ -9,6 +9,7 @@ import {
   OtherStudentsStats,
   Teacher,
 } from "@/lib/teacher-classes-service";
+import { BatchService } from "@/lib/batch-service";
 import AdminAppBar from "@/components/AdminAppBar";
 import AdminSidebar from "@/components/AdminSidebar";
 import Link from "next/link";
@@ -21,6 +22,11 @@ import {
   Funnel,
   Check,
   SortAscending,
+  ChartBar,
+  X,
+  Play,
+  Spinner,
+  Calendar,
 } from "@phosphor-icons/react";
 
 type FilterType = "active" | "old";
@@ -45,6 +51,21 @@ export default function AdminClassesPage() {
   type SortType = "conversations" | "name" | "date";
   const [sortBy, setSortBy] = useState<SortType>("conversations");
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+
+  // Batch analysis selection mode
+  const [isAnalysisMode, setIsAnalysisMode] = useState(false);
+  const [selectedClassIds, setSelectedClassIds] = useState<Set<string>>(new Set());
+  const [isCreatingBatch, setIsCreatingBatch] = useState(false);
+
+  // Smart date selector
+  type DatePreset = "all" | "today" | "thisWeek" | "thisMonth" | "custom";
+  const [datePreset, setDatePreset] = useState<DatePreset>("all");
+  const [customStartDate, setCustomStartDate] = useState("2024-01-01");
+  const [customEndDate, setCustomEndDate] = useState(
+    new Date().toISOString().split("T")[0],
+  );
+  const [isDatePresetOpen, setIsDatePresetOpen] = useState(false);
+  const [isLoadingCounts, setIsLoadingCounts] = useState(false);
 
   const fetchTeachers = async () => {
     if (!isAdmin) return;
@@ -72,9 +93,15 @@ export default function AdminClassesPage() {
       // If admin selected a teacher, fetch that teacher's classes, otherwise fetch current user's classes
       const teacherIdToFetch =
         isAdmin && selectedTeacherId ? selectedTeacherId : user.id;
+
+      // Tarih filtresini hesapla (analiz modunda)
+      const dateRange = isAnalysisMode && datePreset !== "all" ? getDateRange() : null;
+
       const teacherClasses = await TeacherClassesService.getTeacherClassesByUid(
         teacherIdToFetch,
         isAdmin ? sortBy : "conversations",
+        dateRange?.startDate || null,
+        dateRange?.endDate || null,
       );
       // SQL already sorts by conversation_count DESC, so we can use the data as-is
       setClasses(teacherClasses);
@@ -116,6 +143,19 @@ export default function AdminClassesPage() {
     fetchClasses();
   }, [user, selectedTeacherId, sortBy]);
 
+  // Re-fetch with date filter when analysis mode date changes
+  useEffect(() => {
+    if (isAnalysisMode) {
+      setIsLoadingCounts(true);
+      fetchClasses().finally(() => setIsLoadingCounts(false));
+    }
+  }, [datePreset, customStartDate, customEndDate]);
+
+  // Re-fetch when analysis mode toggled (to reset or apply date filter)
+  useEffect(() => {
+    fetchClasses();
+  }, [isAnalysisMode]);
+
   // Timeout mechanism to prevent infinite loading
   useEffect(() => {
     if (loading) {
@@ -151,6 +191,92 @@ export default function AdminClassesPage() {
 
   const filteredClasses = getFilteredClasses();
 
+  // Compute actual start/end dates from preset
+  const getDateRange = (): { startDate: string; endDate: string } => {
+    const today = new Date();
+    const todayStr = today.toISOString().split("T")[0];
+
+    switch (datePreset) {
+      case "today":
+        return { startDate: todayStr, endDate: todayStr };
+      case "thisWeek": {
+        const weekStart = new Date(today);
+        weekStart.setDate(today.getDate() - today.getDay() + 1);
+        return { startDate: weekStart.toISOString().split("T")[0], endDate: todayStr };
+      }
+      case "thisMonth": {
+        const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+        return { startDate: monthStart.toISOString().split("T")[0], endDate: todayStr };
+      }
+      case "custom":
+        return { startDate: customStartDate, endDate: customEndDate };
+      case "all":
+      default:
+        return { startDate: "2020-01-01", endDate: todayStr };
+    }
+  };
+
+  const datePresetLabel = () => {
+    switch (datePreset) {
+      case "all": return "Tüm Zamanlar";
+      case "today": return "Bugün";
+      case "thisWeek": return "Bu Hafta";
+      case "thisMonth": return "Bu Ay";
+      case "custom": return "Özel Aralık";
+    }
+  };
+
+  const toggleClassSelection = (classId: string) => {
+    setSelectedClassIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(classId)) {
+        next.delete(classId);
+      } else {
+        next.add(classId);
+      }
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedClassIds.size === filteredClasses.length) {
+      setSelectedClassIds(new Set());
+    } else {
+      setSelectedClassIds(new Set(filteredClasses.map((c) => c.id)));
+    }
+  };
+
+  const handleStartBatchAnalysis = async () => {
+    if (selectedClassIds.size === 0) return;
+
+    setIsCreatingBatch(true);
+    try {
+      const { startDate, endDate } = getDateRange();
+
+      for (const classId of selectedClassIds) {
+        const students = await TeacherClassesService.getClassStudents(classId);
+        const studentIds = students.map((s: any) => s.user_id);
+
+        if (studentIds.length === 0) continue;
+
+        await BatchService.createJob({
+          studentIds,
+          startDate,
+          endDate,
+        });
+      }
+
+      alert(`${selectedClassIds.size} sınıf için analiz işleri başlatıldı!`);
+      setSelectedClassIds(new Set());
+      setIsAnalysisMode(false);
+    } catch (error) {
+      console.error("Batch analysis error:", error);
+      alert("Analiz başlatılırken hata oluştu!");
+    } finally {
+      setIsCreatingBatch(false);
+    }
+  };
+
   return (
     <AdminProtectedRoute>
       <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
@@ -172,6 +298,22 @@ export default function AdminClassesPage() {
               {/* Filter Section - Only show for admin users */}
               {isAdmin && (
                 <div className="flex justify-center gap-4 mb-6 flex-wrap">
+                  {/* Analysis Mode Toggle */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsAnalysisMode(!isAnalysisMode);
+                      if (isAnalysisMode) setSelectedClassIds(new Set());
+                    }}
+                    className={`pl-3 pr-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer flex items-center gap-2 ${
+                      isAnalysisMode
+                        ? "bg-blue-600 text-white border-2 border-blue-600 hover:bg-blue-700"
+                        : "bg-white/90 backdrop-blur-sm border-2 border-gray-200 text-gray-700 hover:bg-white hover:border-blue-400"
+                    }`}
+                  >
+                    <ChartBar className="w-4 h-4" weight="bold" />
+                    <span>{isAnalysisMode ? "Seçimi İptal Et" : "Analiz Seç"}</span>
+                  </button>
                   {/* Teacher Filter */}
                   <div className="relative">
                     <button
@@ -540,56 +682,89 @@ export default function AdminClassesPage() {
                 {/* Classes Cards */}
                 {!loading &&
                   filteredClasses.map((classItem) => (
-                    <Link
-                      key={classItem.id}
-                      href={`/admin/class?id=${classItem.id}`}
-                      className="block"
-                    >
-                      <div className="bg-white/80 rounded-2xl p-5 border border-gray-200 shadow-[0_4px_0_0_rgba(0,0,0,0.1)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.1)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.1)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out">
-                        <div className="flex flex-col gap-3">
-                          {/* First row: Icon + Class Name + Right arrow */}
-                          <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center">
-                              <BookOpen
-                                className="w-6 h-6 text-white"
-                                weight="bold"
-                              />
-                            </div>
-                            <div className="flex-1">
-                              <h3 className="font-semibold text-gray-800">
-                                {classItem.name}
-                              </h3>
-                              <div className="flex items-center gap-3 mt-1">
-                                <div className="flex items-center gap-1">
-                                  <Users
-                                    className="w-4 h-4 text-gray-400"
-                                    weight="regular"
-                                  />
-                                  <span className="text-sm text-gray-500">
-                                    {classItem.student_count} öğrenci
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                  <ChatCircle
-                                    className="w-4 h-4 text-gray-400"
-                                    weight="regular"
-                                  />
-                                  <span className="text-sm text-gray-500">
-                                    {classItem.conversation_count} konuşma
-                                  </span>
+                    <div key={classItem.id} className="relative">
+                      {/* Checkbox overlay in analysis mode */}
+                      {isAnalysisMode && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleClassSelection(classItem.id);
+                          }}
+                          className="absolute top-3 left-3 z-10 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all duration-150"
+                          style={{
+                            backgroundColor: selectedClassIds.has(classItem.id) ? '#2563eb' : 'white',
+                            borderColor: selectedClassIds.has(classItem.id) ? '#2563eb' : '#d1d5db',
+                          }}
+                        >
+                          {selectedClassIds.has(classItem.id) && (
+                            <Check className="w-4 h-4 text-white" weight="bold" />
+                          )}
+                        </button>
+                      )}
+                      <Link
+                        href={isAnalysisMode ? "#" : `/admin/class?id=${classItem.id}`}
+                        className="block"
+                        onClick={(e) => {
+                          if (isAnalysisMode) {
+                            e.preventDefault();
+                            toggleClassSelection(classItem.id);
+                          }
+                        }}
+                      >
+                        <div className={`bg-white/80 rounded-2xl p-5 border-2 shadow-[0_4px_0_0_rgba(0,0,0,0.1)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.1)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.1)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out ${
+                          isAnalysisMode && selectedClassIds.has(classItem.id)
+                            ? "border-blue-500 bg-blue-50/50"
+                            : "border-gray-200"
+                        }`}>
+                          <div className="flex flex-col gap-3">
+                            {/* First row: Icon + Class Name + Right arrow */}
+                            <div className={`flex items-center gap-3 ${isAnalysisMode ? "ml-7" : ""}`}>
+                              <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center">
+                                <BookOpen
+                                  className="w-6 h-6 text-white"
+                                  weight="bold"
+                                />
+                              </div>
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-gray-800">
+                                  {classItem.name}
+                                </h3>
+                                <div className="flex items-center gap-3 mt-1">
+                                  <div className="flex items-center gap-1">
+                                    <Users
+                                      className="w-4 h-4 text-gray-400"
+                                      weight="regular"
+                                    />
+                                    <span className="text-sm text-gray-500">
+                                      {classItem.student_count} öğrenci
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-1">
+                                    <ChatCircle
+                                      className="w-4 h-4 text-gray-400"
+                                      weight="regular"
+                                    />
+                                    <span className="text-sm text-gray-500">
+                                      {isLoadingCounts ? "..." : classItem.conversation_count} konuşma
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="text-blue-500">
-                              <CaretRight
-                                className="w-5 h-5"
-                                weight="regular"
-                              />
+                              {!isAnalysisMode && (
+                                <div className="text-blue-500">
+                                  <CaretRight
+                                    className="w-5 h-5"
+                                    weight="regular"
+                                  />
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
+                      </Link>
+                    </div>
                   ))}
 
                 {/* Other Students Card - Only for admin and when no teacher filter is selected */}
@@ -653,6 +828,143 @@ export default function AdminClassesPage() {
             )}
           </div>
         </div>
+
+        {/* Floating Analysis Action Bar */}
+        {isAnalysisMode && (
+          <div className="fixed bottom-0 left-0 right-0 lg:left-64 z-40 p-4">
+            <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-2xl border border-gray-200 p-4">
+              <div className="flex flex-col md:flex-row items-center gap-4">
+                {/* Info */}
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <ChartBar className="w-5 h-5 text-blue-600" weight="bold" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-gray-800">
+                      {selectedClassIds.size} sınıf seçildi
+                    </p>
+                    <button
+                      type="button"
+                      onClick={toggleSelectAll}
+                      className="text-xs text-blue-600 hover:underline"
+                    >
+                      {selectedClassIds.size === filteredClasses.length ? "Tümünü kaldır" : "Tümünü seç"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Smart Date Selector */}
+                <div className="flex items-center gap-2 flex-1">
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setIsDatePresetOpen(!isDatePresetOpen)}
+                      className="pl-3 pr-8 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-white hover:border-blue-400 transition-all flex items-center gap-2 min-w-[160px]"
+                    >
+                      <Calendar className="w-4 h-4 text-gray-400" weight="regular" />
+                      <span>{datePresetLabel()}</span>
+                      <CaretDown
+                        className={`w-3 h-3 text-gray-400 absolute right-2 transition-transform ${isDatePresetOpen ? "rotate-180" : ""}`}
+                        weight="bold"
+                      />
+                    </button>
+
+                    {isDatePresetOpen && (
+                      <>
+                        <div
+                          className="fixed inset-0 z-50"
+                          onClick={() => setIsDatePresetOpen(false)}
+                        />
+                        <div className="absolute bottom-full left-0 mb-2 bg-white rounded-xl border-2 border-gray-200 shadow-lg z-[60] overflow-hidden min-w-[180px]">
+                          {(["all", "today", "thisWeek", "thisMonth", "custom"] as DatePreset[]).map((preset) => {
+                            const labels: Record<DatePreset, string> = {
+                              all: "Tüm Zamanlar",
+                              today: "Bugün",
+                              thisWeek: "Bu Hafta",
+                              thisMonth: "Bu Ay",
+                              custom: "Özel Aralık",
+                            };
+                            return (
+                              <button
+                                key={preset}
+                                type="button"
+                                onClick={() => {
+                                  setDatePreset(preset);
+                                  setIsDatePresetOpen(false);
+                                }}
+                                className={`w-full px-3 py-2 text-left text-sm font-medium transition-colors flex items-center justify-between border-b border-gray-50 last:border-b-0 ${
+                                  datePreset === preset
+                                    ? "bg-blue-50 text-blue-700"
+                                    : "text-gray-700 hover:bg-gray-50"
+                                }`}
+                              >
+                                <span>{labels[preset]}</span>
+                                {datePreset === preset && (
+                                  <Check className="w-4 h-4 text-blue-600" weight="bold" />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Custom date inputs - only when custom is selected */}
+                  {datePreset === "custom" && (
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="date"
+                        value={customStartDate}
+                        onChange={(e) => setCustomStartDate(e.target.value)}
+                        className="bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 outline-none w-32"
+                      />
+                      <span className="text-gray-400 text-xs">—</span>
+                      <input
+                        type="date"
+                        value={customEndDate}
+                        onChange={(e) => setCustomEndDate(e.target.value)}
+                        className="bg-gray-50 border border-gray-200 rounded-lg px-2 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 outline-none w-32"
+                      />
+                    </div>
+                  )}
+
+                  {/* Loading indicator */}
+                  {isLoadingCounts && (
+                    <Spinner className="w-4 h-4 text-blue-500 animate-spin" />
+                  )}
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedClassIds(new Set());
+                      setIsAnalysisMode(false);
+                    }}
+                    className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-xl transition-all"
+                  >
+                    İptal
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleStartBatchAnalysis}
+                    disabled={isCreatingBatch || selectedClassIds.size === 0}
+                    className="bg-blue-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isCreatingBatch ? (
+                      <Spinner className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Play weight="fill" className="w-4 h-4" />
+                    )}
+                    Analizi Başlat
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AdminProtectedRoute>
   );
