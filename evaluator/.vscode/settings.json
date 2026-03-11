@@ -1,0 +1,6 @@
+{
+    "python.defaultInterpreterPath": "/home/meral/Desktop/iklim-icin-tasarla/evaluator/venv/bin/python",
+    "python.analysis.extraPaths": [
+        "./evaluator"
+    ]
+}
