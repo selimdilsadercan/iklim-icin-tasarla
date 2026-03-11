@@ -14,7 +14,7 @@ services:
   ngrok:
     image: ngrok/ngrok:latest
     container_name: iklim_ngrok
-    command: http evaluator:8000
+    command: http evaluator:8000 --domain=chamois-rich-grossly.ngrok-free.app
     environment:
       - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
     ports:
