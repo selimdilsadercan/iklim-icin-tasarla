@@ -1,7 +1,7 @@
 -- Supabase SQL RPC Fonksiyonu: Belirli bir batch işinin mesajlarını getirir.
 -- Bu scripti Supabase SQL Editor'da çalıştırarak fonksiyonu oluşturabilirsiniz.
 
-CREATE OR REPLACE FUNCTION get_job_messages(p_job_id UUID)
+CREATE OR REPLACE FUNCTION get_job_messages(p_job_id TEXT)
 RETURNS TABLE (
     id UUID,
     student_id UUID,
@@ -13,17 +13,20 @@ RETURNS TABLE (
 DECLARE
     v_config JSONB;
     v_student_ids UUID[];
+    v_job_id UUID;
 BEGIN
+    v_job_id := p_job_id::UUID;
+
     -- 1. İş konfigürasyonunu al
-    SELECT config INTO v_config FROM public.batch_jobs WHERE id = p_job_id;
+    SELECT config INTO v_config FROM public.batch_jobs WHERE id = v_job_id;
     
     IF v_config IS NULL THEN
         RETURN;
     END IF;
 
-    -- 2. Student ID listesini UUID dizisine çevir
+    -- 2. Student ID listesini UUID dizisine çevir (Her birini UUID'ye cast et)
     v_student_ids := ARRAY(
-        SELECT jsonb_array_elements_text(v_config->'student_ids')::UUID
+        SELECT (x::TEXT)::UUID FROM jsonb_array_elements_text(v_config->'student_ids') AS x
     );
 
     -- 3. Mesajları getir (student_chat_messages_view üzerinden)

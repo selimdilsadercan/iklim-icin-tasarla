@@ -1,4 +1,4 @@
-import { api } from "encore.dev/api";
+import { api, APIError, ErrCode } from "encore.dev/api";
 import { supabase } from "../db/supabase";
 
 interface CreateJobParams {
@@ -50,7 +50,9 @@ export const createJob = api(
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
     return data;
   },
 );
@@ -84,7 +86,9 @@ export const claimPendingJob = api(
       .select()
       .single();
 
-    if (updateError) throw updateError;
+    if (updateError) {
+      throw new APIError(ErrCode.Internal, updateError.message);
+    }
     return { job: updatedJob };
   },
 );
@@ -110,7 +114,9 @@ export const updateJobStatus = api(
       })
       .eq("id", params.id);
 
-    if (error) throw error;
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
     return { success: true };
   },
 );
@@ -137,7 +143,9 @@ export const submitEvaluation = api(
       },
     ]);
 
-    if (error) throw error;
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
     return { success: true };
   },
 );
@@ -161,23 +169,33 @@ interface JobMessage {
 export const getJobMessages = api(
   { expose: true, method: "GET", path: "/batch/jobs/:id/messages" },
   async ({ id }: { id: string }): Promise<JobMessagesResponse> => {
-    // Supabase RPC fonksiyonunu çağırıyoruz
-    const { data, error } = await supabase.rpc("get_job_messages", {
-      p_job_id: id,
-    });
+    try {
+      // Supabase RPC fonksiyonunu çağırıyoruz
+      const { data, error } = await supabase.rpc("get_job_messages", {
+        p_job_id: id,
+      });
 
-    if (error) throw error;
+      if (error) {
+        throw new APIError(
+          ErrCode.Internal,
+          `Database error: ${error.message}`
+        );
+      }
 
-    const messages: JobMessage[] = (data || []).map((m: any) => ({
-      id: m.id,
-      user_id: m.student_id,
-      message: m.message,
-      is_user: m.is_user,
-      created_at: m.created_at,
-      display_name: m.display_name || "Bilinmeyen Öğrenci",
-    }));
+      const messages: JobMessage[] = (data || []).map((m: any) => ({
+        id: m.id,
+        user_id: m.student_id,
+        message: m.message,
+        is_user: m.is_user,
+        created_at: m.created_at,
+        display_name: m.display_name || "Bilinmeyen Öğrenci",
+      }));
 
-    return { messages };
+      return { messages };
+    } catch (e: any) {
+      if (e instanceof APIError) throw e;
+      throw new APIError(ErrCode.Internal, e.message || "Bilinmeyen bir hata oluştu");
+    }
   },
 );
 
@@ -193,7 +211,9 @@ export const listJobs = api(
       .order("created_at", { ascending: false })
       .limit(50);
 
-    if (error) throw error;
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
     return { jobs: data || [] };
   },
 );
@@ -226,7 +246,9 @@ export const deleteJob = api(
       .delete()
       .eq("id", params.id);
 
-    if (error) throw error;
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
     return { success: true };
   },
 );
@@ -308,7 +330,9 @@ export const updateJob = api(
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
     return data;
   },
 );

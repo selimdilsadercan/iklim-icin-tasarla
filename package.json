@@ -8,4 +8,4 @@
     "encore": "cd backend && encore run",
     "eval": "cd evaluator && npm run eval --"
   }
-}
+}   
