@@ -72,4 +72,20 @@ export class BatchService {
   static async getWorkerStatus(): Promise<{ worker_running: boolean }> {
     return apiRequest<{ worker_running: boolean }>("/batch/worker/status", "GET");
   }
-}
+
+  /**
+   * Bir öğrencinin mesaj değerlendirmelerini getirir.
+   */
+  static async getStudentEvaluations(studentId: string): Promise<any[]> {
+    const data = await apiRequest<{ evaluations: any[] }>(`/batch/evaluations/student/${studentId}`, "GET");
+    return data.evaluations || [];
+  }
+
+  /**
+   * Bir öğrencinin genel raporlarını getirir.
+   */
+  static async getStudentReports(studentId: string): Promise<any[]> {
+    const data = await apiRequest<{ reports: any[] }>(`/batch/reports/student/${studentId}`, "GET");
+    return data.reports || [];
+  }
+} 

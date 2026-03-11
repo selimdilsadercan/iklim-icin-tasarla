@@ -219,6 +219,53 @@ export const submitEvaluation = api(
   },
 );
 
+/**
+ * Bir öğrencinin tüm mesaj değerlendirmelerini getirir (RPC).
+ */
+export const getStudentEvaluations = api(
+  { expose: true, method: "GET", path: "/batch/evaluations/student/:studentId" },
+  async ({ studentId }: { studentId: string }): Promise<{ evaluations: any[] }> => {
+    try {
+      const { data, error } = await supabase.rpc("get_student_evaluations", {
+        p_student_id: studentId,
+      });
+
+      if (error) {
+        throw new APIError(ErrCode.Internal, `Database error: ${error.message}`);
+      }
+
+      return { evaluations: data || [] };
+    } catch (e: any) {
+      if (e instanceof APIError) throw e;
+      throw new APIError(ErrCode.Internal, e.message || "Bilinmeyen bir hata oluştu");
+    }
+  },
+);
+
+/**
+ * Bir öğrencinin tüm raporlarını getirir (RPC).
+ */
+export const getStudentReports = api(
+  { expose: true, method: "GET", path: "/batch/reports/student/:studentId" },
+  async ({ studentId }: { studentId: string }): Promise<{ reports: any[] }> => {
+    try {
+      const { data, error } = await supabase.rpc("get_student_reports", {
+        p_student_id: studentId,
+      });
+
+      if (error) {
+        throw new APIError(ErrCode.Internal, `Database error: ${error.message}`);
+      }
+
+      return { reports: data || [] };
+    } catch (e: any) {
+      if (e instanceof APIError) throw e;
+      throw new APIError(ErrCode.Internal, e.message || "Bilinmeyen bir hata oluştu");
+    }
+  },
+);
+
+
 interface JobMessagesResponse {
   messages: JobMessage[];
 }
