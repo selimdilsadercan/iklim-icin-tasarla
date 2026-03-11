@@ -161,44 +161,20 @@ interface JobMessage {
 export const getJobMessages = api(
   { expose: true, method: "GET", path: "/batch/jobs/:id/messages" },
   async ({ id }: { id: string }): Promise<JobMessagesResponse> => {
-    // 1. İş konfigürasyonunu al
-    const { data: job, error: jobError } = await supabase
-      .from("batch_jobs")
-      .select("config")
-      .eq("id", id)
-      .single();
-
-    if (jobError) throw jobError;
-    if (!job) throw new Error("İş bulunamadı");
-
-    const { student_ids, start_date, end_date } = job.config;
-
-    // 2. Mesajları ve öğrenci isimlerini getir
-    // Not: chat_history'den mesajları, user_roles'dan isimleri çekiyoruz.
-    const { data, error } = await supabase
-      .from("chat_history")
-      .select(`
-        id,
-        user_id,
-        message,
-        is_user,
-        created_at,
-        user_roles!inner(display_name)
-      `)
-      .in("user_id", student_ids)
-      .gte("created_at", start_date)
-      .lte("created_at", end_date)
-      .order("created_at", { ascending: true });
+    // Supabase RPC fonksiyonunu çağırıyoruz
+    const { data, error } = await supabase.rpc("get_job_messages", {
+      p_job_id: id,
+    });
 
     if (error) throw error;
 
     const messages: JobMessage[] = (data || []).map((m: any) => ({
       id: m.id,
-      user_id: m.user_id,
+      user_id: m.student_id,
       message: m.message,
       is_user: m.is_user,
       created_at: m.created_at,
-      display_name: m.user_roles?.display_name || "Bilinmeyen Öğrenci"
+      display_name: m.display_name || "Bilinmeyen Öğrenci",
     }));
 
     return { messages };
