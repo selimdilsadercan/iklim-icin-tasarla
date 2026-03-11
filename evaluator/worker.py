@@ -12,7 +12,7 @@ from tqdm import tqdm
 load_dotenv()
 
 # Configuration
-BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:4000")
+BACKEND_URL = os.environ.get("BACKEND_URL", "https://staging-iklim-bu6i.encr.app")
 
 def run_worker_loop():
     print(f"🔄 Worker döngüsü başlatıldı. Backend: {BACKEND_URL}")
