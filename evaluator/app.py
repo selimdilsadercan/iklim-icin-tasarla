@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks
 from fastapi.responses import JSONResponse
 import shutil
 import os
@@ -21,13 +20,27 @@ app = FastAPI(
 )
 
 # Servis bileşenlerini tek seferde başlat (Performans için)
-extractor = FeatureExtractor()
+basic_terms, advanced_terms = DataHandler.load_knowledge_components()
+extractor = FeatureExtractor(basic_terms=basic_terms, advanced_terms=advanced_terms)
 scorer = Scorer()
 reporter = ReportGenerator(scorer)
 
 @app.get("/")
 def read_root():
-    return {"status": "online", "message": "Iklim-Eval API çalışıyor. Analiz için /analyze endpoint'ini kullanın."}
+    return {"status": "online", "message": "Iklim-Eval API çalışıyor.", "worker_running": worker_running}
+
+worker_running = False
+
+@app.post("/worker/start")
+async def start_worker(background_tasks: BackgroundTasks):
+    global worker_running
+    if worker_running:
+        return {"status": "already_running"}
+    
+    from worker import run_worker_loop
+    background_tasks.add_task(run_worker_loop)
+    worker_running = True
+    return {"status": "started"}
 
 @app.post("/analyze")
 async def analyze_csv(file: UploadFile = File(...)):

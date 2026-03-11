@@ -58,4 +58,18 @@ export class BatchService {
   }): Promise<BatchJob> {
     return apiRequest<BatchJob>(`/batch/jobs/${id}`, "PATCH", params);
   }
+
+  /**
+   * Worker'ı başlatır.
+   */
+  static async startWorker(): Promise<{ status: string }> {
+    return apiRequest<{ status: string }>("/batch/worker/start", "POST");
+  }
+
+  /**
+   * Worker durumunu sorgular.
+   */
+  static async getWorkerStatus(): Promise<{ worker_running: boolean }> {
+    return apiRequest<{ worker_running: boolean }>("/batch/worker/status", "GET");
+  }
 }

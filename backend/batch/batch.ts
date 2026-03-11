@@ -56,12 +56,13 @@ export const createJob = api(
 );
 
 /**
- * Evaluator (Python) için bekleyen bir işi getirir.
+ * Evaluator (Python) için bekleyen bir işi getirir ve "running" durumuna çeker (Atomik Claim).
  */
-export const getPendingJob = api(
-  { expose: true, method: "GET", path: "/batch/jobs/pending" },
+export const claimPendingJob = api(
+  { expose: true, method: "POST", path: "/batch/jobs/claim" },
   async (): Promise<GetPendingJobResponse> => {
-    const { data, error } = await supabase
+    // 1. Bekleyen en eski işi bul
+    const { data: job, error: fetchError } = await supabase
       .from("batch_jobs")
       .select("*")
       .eq("status", "pending")
@@ -69,8 +70,22 @@ export const getPendingJob = api(
       .limit(1)
       .maybeSingle();
 
-    if (error) throw error;
-    return { job: data };
+    if (fetchError) throw fetchError;
+    if (!job) return { job: null };
+
+    // 2. İşin durumunu "running" olarak güncelle
+    const { data: updatedJob, error: updateError } = await supabase
+      .from("batch_jobs")
+      .update({ 
+        status: "running",
+        updated_at: new Date().toISOString() 
+      })
+      .eq("id", job.id)
+      .select()
+      .single();
+
+    if (updateError) throw updateError;
+    return { job: updatedJob };
   },
 );
 
@@ -124,6 +139,69 @@ export const submitEvaluation = api(
 
     if (error) throw error;
     return { success: true };
+  },
+);
+
+interface JobMessagesResponse {
+  messages: JobMessage[];
+}
+
+interface JobMessage {
+  id: string;
+  user_id: string;
+  message: string;
+  is_user: boolean;
+  created_at: string;
+  display_name: string | null;
+}
+
+/**
+ * Belirli bir iş kapsamındaki tüm öğrenci mesajlarını getirir.
+ */
+export const getJobMessages = api(
+  { expose: true, method: "GET", path: "/batch/jobs/:id/messages" },
+  async ({ id }: { id: string }): Promise<JobMessagesResponse> => {
+    // 1. İş konfigürasyonunu al
+    const { data: job, error: jobError } = await supabase
+      .from("batch_jobs")
+      .select("config")
+      .eq("id", id)
+      .single();
+
+    if (jobError) throw jobError;
+    if (!job) throw new Error("İş bulunamadı");
+
+    const { student_ids, start_date, end_date } = job.config;
+
+    // 2. Mesajları ve öğrenci isimlerini getir
+    // Not: chat_history'den mesajları, user_roles'dan isimleri çekiyoruz.
+    const { data, error } = await supabase
+      .from("chat_history")
+      .select(`
+        id,
+        user_id,
+        message,
+        is_user,
+        created_at,
+        user_roles!inner(display_name)
+      `)
+      .in("user_id", student_ids)
+      .gte("created_at", start_date)
+      .lte("created_at", end_date)
+      .order("created_at", { ascending: true });
+
+    if (error) throw error;
+
+    const messages: JobMessage[] = (data || []).map((m: any) => ({
+      id: m.id,
+      user_id: m.user_id,
+      message: m.message,
+      is_user: m.is_user,
+      created_at: m.created_at,
+      display_name: m.user_roles?.display_name || "Bilinmeyen Öğrenci"
+    }));
+
+    return { messages };
   },
 );
 
@@ -183,6 +261,41 @@ interface UpdateJobParams {
   startDate?: string;
   endDate?: string;
 }
+
+const EVALUATOR_URL = "https://chamois-rich-grossly.ngrok-free.app";
+
+/**
+ * Python Evaluator Worker'ını başlatır.
+ */
+export const startWorker = api(
+  { expose: true, method: "POST", path: "/batch/worker/start" },
+  async (): Promise<{ status: string }> => {
+    try {
+      const response = await fetch(`${EVALUATOR_URL}/worker/start`, {
+        method: "POST"
+      });
+      return (await response.json()) as { status: string };
+    } catch (e) {
+      throw new Error("Evaluator servisine erişilemedi. Lütfen servisin çalıştığından emin olun.");
+    }
+  },
+);
+
+/**
+ * Python Evaluator Worker durumunu sorgular.
+ */
+export const getWorkerStatus = api(
+  { expose: true, method: "GET", path: "/batch/worker/status" },
+  async (): Promise<{ worker_running: boolean }> => {
+    try {
+      const response = await fetch(`${EVALUATOR_URL}/`);
+      const data = (await response.json()) as { worker_running: boolean };
+      return { worker_running: data.worker_running };
+    } catch (e) {
+       return { worker_running: false };
+    }
+  },
+);
 
 /**
  * Pending durumdaki bir işin konfigürasyonunu günceller.
