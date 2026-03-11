@@ -2,6 +2,7 @@
 import os
 import argparse
 import json
+import sys
 from dotenv import load_dotenv
 from pathlib import Path
 from tqdm import tqdm
@@ -12,6 +13,16 @@ from engine.scorer import Scorer
 from reports.generator import ReportGenerator
 
 # .env dosyasını yükle
+def _configure_console_encoding() -> None:
+    # Avoid Windows codepage crashes when help/log strings contain Turkish chars.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except Exception:
+                pass
+
+_configure_console_encoding()
 load_dotenv()
 
 def main():
