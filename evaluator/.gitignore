@@ -2,5 +2,5 @@
 venv
 testvenv
 __pycache__
-analysis_results
+analysis_results/*
 .tmp*

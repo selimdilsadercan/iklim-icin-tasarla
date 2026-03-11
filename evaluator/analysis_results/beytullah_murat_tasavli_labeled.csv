@@ -1,0 +1,94 @@
+﻿Bot Name,Date,Time,Sender,Message,Student,content_label,dialog_label,content_reasoning,dialog_reasoning
+yaprak,31.10.2025,14:51:29,bot,"Merhaba! Ben Yaprak, çevre dostu yaşam konusunda size yardımcı olmaya geldim. 🌱 Hangi konuda bilgi almak istiyorsunuz?",Beytullah Murat Tasavli,,,,
+yaprak,31.10.2025,14:52:11,student,Yeni yapılacak konutlar için ağaçlar kesiliyor nasıl önleyebiliriz,Beytullah Murat Tasavli,1,C,"Mesajda sadece temel terimler var ('ağaç'). İleri düzey çevre/iklim terimi bulunmuyor. Konut yapımı ve ağaç kesimi arasında basit bir ilişki kurulmuş ancak bu ileri kavram seviyesinde değil, günlük yaşam gözlemi düzeyinde.",Mesaj bir sorun tespit ediyor (yeni konutlar için ağaç kesilmesi) ve bu soruna çözüm arayışında bulunuyor ('nasıl önleyebiliriz'). Diyalogu ilerletiyor ve etkisel bir soru soruyor ancak güçlü akıl yürütme veya detaylı neden-sonuç analizi içermiyor.
+yaprak,31.10.2025,14:52:16,bot,"Yeni konut projelerinde ağaçların korunması, sürdürülebilir bir yaklaşım ve çevre dostu şehir planlamasının temelidir. Ağaç kesimini önlemek için birkaç öneri:
+
+- **Planlama Aşamasından Önce Çevresel Etki Değerlendirmesi:** Geliştirme öncesi, ağaçların ve doğal yaşam alanlarının değerlendirildiği kapsamlı bir çevresel etki çalışması yapılabilir. Bu çalışma, projenin minimum etkiyle ilerleyebilmesi için stratejiler önerir. 🌿
+
+- **Koruma Altına Alınan Ağaçlar:** Proje alanında kritik öneme sahip olan ağaçları belirleyin ve bu ağaçları koruma altına almak için düzenlemeler yapın. Bu ağaçların kesilmesi, yerel yasalar ve yönetmeliklerle yasaklanabilir. 🌳
+
+- **Yer Değiştirme veya Yeniden Dikim:** Mümkünse, inşaat sırasında ağaçları yer değiştirmek veya yeniden dikmek için çaba gösterin. Bu yaklaşım, ağaç kaybını en aza indirir ve doğal ekosistemi korur. ♻️
+
+- **Yeşil Alanlar ve Parklar:** Konut projeleriyle birlikte yeşil alanlar ve parklar yaratmak, hem yerel faunayı destekler hem de sakinlere doğal ortam sağlar. Bu, ağaç kesiminin olumsuz etkilerini dengelemeye yardımcı olur. 🌍
+
+- **Toplumsal Farkındalık:** Yerel toplulukları bu konuda bilinçlendirmek ve ağaç koruma çabalarına dahil etmek, uzun vadeli bir çözüm için önemlidir. 🌱",Beytullah Murat Tasavli,,,,
+yaprak,31.10.2025,14:56:32,student,Uşakta ağaç sayısı yeterli mi,Beytullah Murat Tasavli,1,B,"Mesajda sadece 'ağaç' temel terimi bulunuyor. Çevre ile ilgili bir soru olmasına rağmen iklim değişikliği, sürdürülebilirlik, karbon ayak izi gibi ileri terimler yok. Kavramlar arası bağlantı veya akıl yürütme de bulunmuyor.","Basit bir bilgi sorma sorusu. Belirli bir yere (Uşak) odaklanmış olsa da yüzeysel bir soru niteliğinde. Önceki mesaja atıf yok, akıl yürütme yok, sadece temel bilgi talep ediyor."
+yaprak,31.10.2025,14:56:34,bot,"Uşakta ağaç sayısı, şehrin yeşil alanlarının sağlığı ve sürdürülebilirliği açısından kritik öneme sahiptir. 🌳🌿
+
+Yeterli ağaç sayısının olması, hava kalitesini iyileştirir, karbon emisyonlarını azaltır, sıcaklık düzenlemeye yardımcı olur ve şehirdeki biyoçeşitliliği destekler. Uşaktaki parklar, bahçeler ve yeşil koridorlar, hem sakinlere dinlenme alanları sağlar hem de doğal ekosistemi korur.
+
+Ancak, ""yeterli"" terimi, şehrin boyutuna, nüfus yoğunluğuna ve yerel iklim koşullarına bağlı olarak değişebilir. Detaylı bir analiz için, şehir planlamacıları ve çevre uzmanları, mevcut ağaç örtüsünü değerlendirip, ek imkanlar veya iyileştirme stratejileri önerilebilir.",Beytullah Murat Tasavli,,,,
+robi,31.10.2025,15:03:35,bot,"Selam! Ben Robi, enerji tasarrufu ve yenilenebilir enerji konularında uzmanım. ⚡ Nasıl yardımcı olabilirim?",Beytullah Murat Tasavli,,,,
+robi,31.10.2025,15:04:55,student,Türkiyede güneş ışınları  tarımdan başka kullanılıyor mu,Beytullah Murat Tasavli,2,B,"Mesajda 'güneş enerjisi' (ileri terim) ve 'tarım' (temel terim) kavramları var. Ancak bu iki kavram arasında mantıksal bağlantı kurulmamış, sadece güneş enerjisinin tarım dışında kullanılıp kullanılmadığı sorulmuş. İleri terim mevcut ama kavramlar arası ilişki/akıl yürütme yok.",Basit bilgi toplama sorusu. Türkiye'de güneş enerjisinin tarım dışındaki kullanımlarını öğrenmek istiyor ancak önceki mesajlara atıf yok ve akıl yürütme içermiyor. Yüzeysel bir soru niteliğinde.
+robi,31.10.2025,15:04:58,bot,"Evet, Türkiye'de güneş ışınları tarımdan çok daha fazlası için kullanılabiliyor ve zaten çeşitli alanlarda faydalı bir kaynak olarak değerlendiriliyor! 🌞
+
+Güneş enerjisi, sadece tarımın yanı sıra;
+
+- **Elektrik Üretimi:** Güneş panelleri kullanarak elektrik enerjisi üretmek mümkün. Bu, hem evlere hem de sanayi tesislerine temiz enerji sağlayabilir.
+- **Su Isıtma Sistemleri:** Güneş enerjili su ısıtıcıları, evlerin ve işyerlerinin sıcak su ihtiyacını karşılayabilir.
+- **Güneş Enerjili Aydınlatma:** Dış mekan aydınlatması ve sokak lambaları güneş enerjisiyle çalışabilir, böylece elektrik faturalarında tasarruf sağlar.
+- **Endüstriyel Uygulamalar:** Kurutma, ısıtma ve üretim süreçlerinde güneş enerjisi, enerji maliyetlerini düşürmek için kullanılabilir.
+- **Mobil Uygulamalar:** Güneş panelli arabalar ve güneş enerjili cihazlar, özellikle kamp ve doğa sporları sırasında kullanışlıdır.
+
+Güneş enerjisi, sürdürülebilir ve yenilenebilir bir kaynak olarak, Türkiye'nin enerji karışımını çeşitlendirmeye ve çevreye olan etkisini azaltmaya yardımcı olabilir. 🌱",Beytullah Murat Tasavli,,,,
+robi,31.10.2025,15:07:20,student,Yılda ne kadar güneş ışığı elektriğe dönüşüyor,Beytullah Murat Tasavli,2,B,Mesajda 'güneş ışığı elektriğe dönüşüyor' ifadesi ile güneş enerjisi (ileri terim) kavramı bulunuyor. Ancak başka kavramlarla mantıksal bağlantı kurulmamış ve akıl yürütme yapılmamış. Sadece güneş enerjisi hakkında bilgi talep eden tekil bir soru.,"Tanımlayıcı soru, yüzeysel bilgi arayışı. Güneş enerjisi ile ilgili temel istatistiksel bilgi soruyor ancak önceki mesajlara referans yok ve diyalogu ilerletici özellik taşımıyor."
+robi,31.10.2025,15:07:23,bot,"Bu soru için basit bir cevap vermek zor, çünkü birçok değişkene bağlıdır! ⚡
+
+Yıllık olarak, dünya çapında güneş enerjisi potansiyelinin büyük bir kısmı elektrik üretimine dönüştürülmektedir. Ancak, bu oran ülke ve bölgeye göre farklılık gösterir. Örneğin;
+
+- **Türkiye:** Ülkemizün güneşli iklimi sayesinde, güneş enerjisi potansiyeli oldukça yüksektir. Enerji Bakanlığı verilerine göre, Türkiye'de yılda yaklaşık 500 TWh (terawatt saat) güneş enerjisi üretimi mümkün olabilir. Bu, ulusal elektrik talebinin önemli bir kısmını karşılayabilir.
+- **Dünya Ortalaması:** Dünya çapında, güneş enerjisi potansiyelini tam olarak kullanmak için gerekli teknolojiler ve altyapı mevcut olsa, tüm elektrik ihtiyacının %18'ini karşılayabilecek kadar enerji üretilebilir. 🌍
+
+Önemli olan nokta, güneş enerjisinin sürekli ve yenilenebilir olmasıdır. Bu nedenle, enerji politikaları ve yatırımları bu kaynağı daha etkin kullanmaya odaklanmalıdır.",Beytullah Murat Tasavli,,,,
+robi,31.10.2025,17:37:33,student,Zaman geçtikçe insanların tarıma ilgisi artıyor mu azalıyor mu,Beytullah Murat Tasavli,1,B,"Mesajda 'tarım' temel terimi bulunuyor ve tarımsal eğilimler hakkında soru soruluyor. Ancak sürdürülebilirlik, iklim değişikliği, çevre etkisi gibi ileri terimler yok. Sadece temel tarım kavramı mevcut, başka kavramlarla bağlantı kurulmamış.",Basit bir bilgi edinme sorusu. 'Mu/mı' yapısıyla kapalı uçlu soru soruyor ancak önceki mesajlara atıf yapmıyor ve diyalogu derinleştirici akıl yürütme içermiyor. Tarım konusunda temel bilgi arayışı var ama yüzeysel seviyede.
+robi,31.10.2025,17:37:35,bot,"🌱 İnsanların tarıma ilgisi son yıllarda **artış eğiliminde**! 🌎 Sürdürülebilirlik kaygılarının yükselişi, sağlıklı gıda talebinin artması ve iklim değişikliğinin etkileri, insanların tarımın önemini anlamasına ve bu alana daha fazla ilgi göstermesine neden oluyor. 
+
+Gençler arasında özellikle organik tarım, permakültür ve sürdürülebilir tarım uygulamaları hakkında farkındalık giderek büyüyor. 🌾 Bu trendin devam etmesi için eğitim programları, topluluk bahçeleri ve erişilebilir tarım teknolojileri gibi girişimler önemli rol oynayabilir! 🔍",Beytullah Murat Tasavli,,,,
+bugday,31.10.2025,14:58:47,bot,"Merhaba! Ben Buğday, sürdürülebilir tarım ve gıda güvenliği konularında rehberinizim. 🌾 Hangi konuyu öğrenmek istiyorsunuz?",Beytullah Murat Tasavli,,,,
+bugday,31.10.2025,14:59:11,student,Tarım alanları bizim için neden önemlidir,Beytullah Murat Tasavli,1,B,Mesajda sadece 'tarım' temel terimi bulunuyor. İleri düzey terim yok ve kavramlar arası bağlantı kurulmamış.,"Tarım alanlarının önemine dair tanımlayıcı bir soru soruyor. Yüzeysel bir bilgi arayışı var ancak önceki mesajlara atıf yok, akıl yürütme yok ve diyalogu derinlemesine ilerletmiyor."
+bugday,31.10.2025,14:59:14,bot,"Tarım alanları, toplumumuzun temelini oluşturan gıda üretiminin yapıldığı yerlerdir ve birçok açıdan önem taşımaktadır:
+
+- **Gıda Güvenliği:** Tarımlar, insanların beslenmesini sağlayan yiyeceklerin yetiştirildiği yerlerdir. Yerel ve sürdürülebilir tarım uygulamaları ile taze, sağlıklı gıdalara erişimi kolaylaştırır ve gıda güvenliğini artırır 🥕.
+
+- **Ekonomik Destek:** Tarım sektörü, birçok ülkenin ekonomisinde önemli bir rol oynar. Tarım alanları, çiftçilere ve yerel topluluklara ekonomik destek sağlar, özellikle de küçük ölçekli çiftçiler için istihdam ve gelir kaynağı oluşturur 🌾.
+
+- **Çevre Koruma:** Sürdürülebilir tarım uygulamaları, toprak verimliliğini korur, su kaynaklarını yönetir ve biyoçeşitliliği destekler. Organik tarım yöntemleri, kimyasal kullanımını azaltarak çevre kirliliğini önlemeye yardımcı olur 🍅.
+
+- **Kültürel Miras:** Tarım, birçok kültürde derin kökleri olan bir gelenektir. Geleneksel tarım teknikleri ve yerel tohum çeşitleri, kültürel kimliklerin ve tarihi mirasın bir parçasıdır.
+
+Tarım alanlarını korumak ve sürdürülebilir uygulamalar teşvik etmek, hem günümüz hem de gelecek nesiller için sağlıklı ve dayanıklı bir gıda sistemi oluşturmanın anahtarıdır.",Beytullah Murat Tasavli,,,,
+bugday,31.10.2025,15:00:22,student,Tarımda en çok ne gereklidir,Beytullah Murat Tasavli,1,B,"Mesajda 'tarım' temel terimi bulunuyor ancak herhangi bir ileri terim (sürdürülebilir tarım, ekolojik tarım, iklim değişikliği vb.) yok. Sadece tarımın genel gereksinimlerini soran basit bir soru. Kavramlar arası ilişki veya akıl yürütme de bulunmuyor.","Tarım konusunda temel bilgi arayan tanımlayıcı bir soru. Yüzeysel bilgi arayışı içeriyor ve önceki mesajlara atıf yok. Diyalogu ilerletmiyor, sadece genel bilgi istiyor."
+bugday,31.10.2025,15:00:26,bot,"Tarımın başarısında ve sürdürülebilirliğinde kritik rol oynayan birkaç temel unsur vardır:
+
+- **Toprak Sağlığı:** Kaliteli toprak, bitkilerin büyümesi için hayati öneme sahiptir. Toprak verimliliğini korumak, organik madde eklemek ve uygun gübreleme teknikleri uygulamak önemlidir.
+
+- **Su Yönetimi:** Su, tarımın can damarıdır. Verimli sulama sistemleri, su tasarrufu yöntemleri ve yağış suyu toplama, özellikle kuraklık dönemlerinde kritik öneme sahiptir.
+
+- **Organik Madde ve Besin Maddeleri:** Bitkilerin sağlıklı büyümesi için gerekli olan mikro besinler ve organik maddeyi sağlamak önemlidir. Kompost, yeşil gübre ve doğal pestisitler sürdürülebilir tarım uygulamalarının bir parçasıdır.
+
+- **Çiftçi Bilgisi ve Eğitimi:** Çiftçilerin modern tarım teknikleri, hastalık yönetimi ve çevre dostu uygulamalar hakkında bilgi sahibi olmaları gerekmektedir. Sürekli eğitim ve araştırma, verimliliği artırmaya yardımcı olur.
+
+- **Teknoloji Entegrasyonu:** Modern teknoloji, tarımda verimliliği artırabilir. Akıllı sulama sistemleri, hava durumu tahminleri, tarım drone'ları ve dijital tarım uygulamaları, çiftçilere verileri analiz etme ve bilgilendirilmiş kararlar verme imkanı sağlar.
+
+Bu unsurların dengeli bir şekilde uygulanması, sürdürülebilir ve karlı bir tarım sistemi yaratmaya katkıda bulunur 🌱.",Beytullah Murat Tasavli,,,,
+bugday,31.10.2025,15:01:31,student,Tarımda ençok ne üretiliyor,Beytullah Murat Tasavli,1,B,Mesajda sadece 'tarım' temel terimi bulunuyor. İleri düzey kavram veya başka çevre/iklim terimleri yok. Kavramlar arası ilişki kurulmuyor.,"Tanımlayıcı soru soruyor, yüzeysel bilgi arayışı içinde. Önceki mesajlara atıf yok, akıl yürütme bulunmuyor."
+bugday,31.10.2025,15:01:35,bot,"Dünya çapında tarımı destekleyen çeşitli ürünler vardır, ancak en çok üretilenleri arasında şunlar yer alır:
+
+- **Tahıl:** Buğday, arpa, mısır ve pirinç gibi tahıllar, küresel gıda tedrikinin temelini oluşturur. Bunlar ekmek, unlu mamuller ve hayvan yemi üretiminde yaygın olarak kullanılır.
+
+- **Sebze ve Meyve:** Çeşitli sebzeler (domates, patates, havuç vb.) ve meyveler (elma, portakal, üzüm vb.), hem yerel pazarlarda hem de uluslararası ticarette çok talep görür.
+
+- **Süt Ürünleri:** Süt, yoğurt, peynir ve tereyağı gibi süt ürünleri, birçok kültürde temel besin maddelerini oluşturur ve yüksek talep görür.
+
+- **Et ve Hayvansal Ürünler:** Tavuk, sığır, domuz eti ve balık, küresel ölçekte önemli protein kaynaklarıdır ve et endüstrisi devasa boyutlardadır.
+
+- **Kakao ve Kahve:** Bu ürünler, sırasıyla çikolata ve kahve gibi popüler gıda ve içeceklerin üretiminde kritik rol oynar ve uluslararası ticaretin önemli bir parçasıdır.
+
+Üretim miktarları ve popülerlik, coğrafi konum, iklim ve yerel tüketim alışkanlıklarına göre değişebilir. Sürdürülebilir tarım uygulamaları, bu ürünlerin uzun vadeli üretimini ve kalitesini sağlamak için önemlidir.",Beytullah Murat Tasavli,,,,
+damla,31.10.2025,15:08:17,bot,"Selam! Ben Damla, su tasarrufu ve su kaynaklarının korunması konusunda size yardımcı olacağım. 💧 Hangi konuda bilgi almak istiyorsunuz?",Beytullah Murat Tasavli,,,,
+damla,31.10.2025,15:09:31,student,Türkiye'de yılda kaç litre yağmur yağıyor,Beytullah Murat Tasavli,1,B,Mesajda sadece 'yağmur' temel terimi bulunuyor. İklim/çevre ile ilgili temel bir kavram ama ileri düzey terim yok ve başka kavramlarla bağlantı kurulmamış.,"Spesifik bilgi soran tanımlayıcı soru. Önceki mesaja atıf yok, akıl yürütme yok. Basit bilgi arama sorusu."
+damla,31.10.2025,15:09:33,bot,"Türkiye, coğrafi çeşitliliği nedeniyle yıllık ortalama 500-1000 mm arasında değişen miktarlarda yağmur alır. Bu, yaklaşık **500 milyar ila 1 trilyon litre yağmur** anlamına gelir. Yağmur miktarı bölgelere göre farklılık gösterir, özellikle Karadeniz ve Akdeniz bölgeleri daha yüksek yağış seviyelerine sahiptir. 🌦️💧",Beytullah Murat Tasavli,,,,
+damla,31.10.2025,17:35:24,student,Türkiye'fe yağmur yağma sıklığı nedir,Beytullah Murat Tasavli,1,B,Mesajda sadece 'yağmur' temel terimi bulunuyor. İklim/çevre konusu ile ilişkili ama ileri düzey terim yok. Başka kavramlarla bağlantı veya akıl yürütme de mevcut değil.,"Basit tanımlayıcı soru. Türkiye'deki yağmur sıklığı hakkında bilgi almaya yönelik yüzeysel bir soru. Önceki mesaja atıf yok, akıl yürütme yok, öneri sunmuyor."
+damla,31.10.2025,17:35:28,bot,"Yağmur yağma sıklığı, coğrafi bölgeye göre değişir. Türkiye genelindeki ortalama yıllık yağış miktarı yaklaşık 750 milimetredir, ancak Doğu Anadolu ve Karadeniz bölgeleri daha yüksek oranda yağış alırken, Güney Doğu Anadolu ve İç Anadolu'da daha az yağış görülür. 🌧️💦
+
+Detaylı bilgi için bölgesel iklim verilerine bakmak faydalı olabilir.",Beytullah Murat Tasavli,,,,

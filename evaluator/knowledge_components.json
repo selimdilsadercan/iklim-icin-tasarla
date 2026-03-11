@@ -1,0 +1,191 @@
+{
+  "temel_duzey": {
+    "aciklama": "Çevre ve geri dönüşüm temel düzey terimleri",
+    "kategoriler": {
+      "cevre": {
+        "terimler": [
+          "çevre", "doğa", "hava", "su", "toprak", "bitki", "hayvan", "orman", "deniz", "göl", "nehir",
+          "hava durumu", "iklim", "çevre kirliliği", "hava kirliliği", "su kirliliği", "toprak kirliliği", "çevre temizliği",
+          "doğal kaynak", "yerel kaynak", "çevre dostu", "çevre sorunu",
+          "çevre sağlığı", "temiz çevre", "yeşil alan", "park", "ağaç", "çiçek",
+          "çevre kirlenmesi", "çevre tahribatı", "çevre bozulması", "çevre zararı",
+          "fabrika bacası", "egzoz dumanı", "çevre etkisi", "doğal sistem",
+          "çevre sorunu", "çevre temizliği", "çevre sağlığı",
+          "çevre dostu ürün", "çevre dostu teknoloji", "çevre dostu yaklaşım", "çevre dostu yaşam",
+          "yağmur", "kar", "dolu", "sıcaklık", "rüzgâr", "güneş", "bulut", "çöp", "kirlilik", "duman", "egzoz",
+          "meyve", "sebze", "bahçe", "yaprak", "kök",
+          "dere", "çay", "ırmak", "okyanus", "kıyı", "plaj", "kum", "kaya", "taş", "çamur", "toz", "sis",
+          "şimşek", "yıldırım", "gökkuşağı", "fırtına", "dalga", "buz", "ayaz", "serin", "ılık", "nem", "kurak",
+          "ot", "çimen", "böcek", "kuş", "balık", "kedi", "köpek", "evcil hayvan", "yabani hayvan",
+          "piknik", "kamp", "doğa yürüyüşü", "manzara", "yeşillik", "temiz hava", "pis koku", "gürültü",
+          "beton", "bina", "yol", "kaldırım", "araba", "kamyon", "çam ağacı", "papatya", "gül", "çalı"
+        ]
+      },
+      "geri_donusum": {
+        "terimler": [
+          "geri dönüşüm", "dönüştürme", "yeniden kullanım", "geri kazanım", "geri dönüşüm kutusu",
+          "plastik geri dönüşüm", "kağıt geri dönüşüm", "cam geri dönüşüm", "metal geri dönüşüm",
+          "geri dönüşüm tesisi", "geri dönüşüm merkezi", "geri dönüşüm projesi",
+          "geri dönüştürülebilir", "geri dönüşüm malzemesi", "geri dönüşüm kutusu",
+          "atık toplama", "atık ayrıştırma", "geri dönüşüm sembolü", "geri dönüşüm işareti",
+          "geri dönüşüm kampanyası", "geri dönüşüm bilinci", "geri dönüşüm eğitimi",
+          "plastik şişe", "kağıt", "cam şişe", "metal kutu", "geri dönüşüm kutusu",
+          "geri dönüşüm kutusuna atmak", "geri dönüştürmek", "yeniden kullanmak",
+          "plastik şişe geri dönüşüm", "cam geri dönüşüm", "kağıt geri dönüşüm", "metal geri dönüşüm",
+          "geri dönüşüm kutusuna koymak", "geri dönüşüm yapmak", "geri dönüşüm bilinci",
+          "geri dönüşüm alışkanlığı", "geri dönüşüm kültürü", "geri dönüşüm uygulaması",
+          "plastik", "cam", "metal", "pil", "kutu", "şişe", "atık", "çöp kutusu", "toplama", "hurda", "lastik",
+          "pet şişe", "kavanoz", "konserve kutusu", "teneke", "kola kutusu", "gazete", "dergi", "karton",
+          "mukavva", "koli", "kitap", "defter", "poşet", "naylon", "plastik kapak", "mavi kapak",
+          "ambalaj", "paket", "pipet", "plastik çatal", "plastik bıçak", "köpük tabak",
+          "eski kıyafet", "tekstil atığı", "eski ayakkabı", "oyuncak", "elektronik eşya", "kablo", "ampul",
+          "atık yağ", "kızartma yağı", "çöp poşeti", "çöp kamyonu", "çöpçü", "ayrıştırma", "temizlik",
+          "süpürme", "yıkama", "depozito"
+        ]
+      }
+    }
+  },
+  "ileri_duzey": {
+    "aciklama": "Atık azaltma, çevre okuryazarlığı, ekoloji, enerji verimliliği ve sürdürülebilirlik ileri düzey terimleri",
+    "kategoriler": {
+      "atik_azaltma": {
+        "terimler": [
+          "atık azaltma", "sıfır atık", "atık minimizasyonu", "atık önleme", "atık yönetimi",
+          "atık azaltma stratejisi", "atık azaltma programı", "atık azaltma politikası",
+          "gri su", "atık su yönetimi", "evsel atık", "endüstriyel atık", "organik atık",
+          "atık bertaraf", "atık işleme", "atık dönüşümü", "atık geri kazanımı",
+          "kompost", "organik gübre", "biyolojik atık", "atık ayrıştırma sistemi",
+          "atık azaltma teknolojisi", "atık azaltma uygulaması", "atık azaltma yöntemi",
+          "atık azaltma hedefi", "atık azaltma kampanyası", "atık azaltma bilinci",
+          "sıfır atık hareketi", "sıfır atık politikası", "sıfır atık uygulaması",
+          "atık önleme stratejisi", "atık minimizasyonu", "atık azaltma eğitimi",
+          "çamaşır suyu", "bulaşık suyu", "el yıkama suyu", "yüz yıkama suyu",
+          "evsel atık su", "atık su", "atık su arıtma", "atık su geri kazanımı", "atık su yeniden kullanımı",
+          "bahçe sulama", "araba yıkama", "atık su kullanımı", "atık su yönetimi sistemi",
+          "sıfır atık hedefi", "sıfır atık eğitimi", "sıfır atık bilinci", "sıfır atık kültürü",
+          "atık önleme", "atık minimizasyonu", "atık azaltma stratejisi", "atık azaltma planı",
+          "israfın önlenmesi", "dönüştürülebilirlik",
+          "döngüsel ekonomi", "ileri dönüşüm", "upcycling", "biyobozunur", "biodegradable",
+          "tek kullanımlık plastiklerin azaltılması", "mikroplastik kirliliği", "çöp sızıntı suyu",
+          "düzenli depolama", "landfill", "endüstriyel simbiyoz", "yaşam döngüsü analizi", "LCA",
+          "plastiksiz yaşam", "minimalizm", "atık hiyerarşisi", "azalt", "yeniden kullan", "geri dönüştür"
+        ]
+      },
+      "cevre_okuryazarligi": {
+        "terimler": [
+          "çevre okuryazarlığı", "çevre bilgisi", "çevre farkındalığı", "çevre eğitimi",
+          "çevre okuryazarı", "çevre bilinci", "çevre duyarlılığı", "çevre sorumluluğu", "iklim kanunu",
+          "çevre okuryazarlığı eğitimi", "çevre okuryazarlığı programı", "çevre okuryazarlığı seviyesi",
+          "çevresel sistem", "doğal sistem", "ekosistem anlayışı", "çevresel denge",
+          "çevresel etki", "çevresel sorun", "çevresel çözüm", "çevresel politika",
+          "çevresel farkındalık", "çevresel bilinç", "çevresel davranış", "çevresel karar",
+          "yeşil bina", "sürdürülebilir mimari", "yeşil bina hareketi", "yeşil bina tasarımı",
+          "enerji verimli bina", "su verimli bina", "düşük karbon ayak izi", "karbon ayak izi azaltma",
+          "çevresel sorumluluk", "çevresel etik", "çevresel değer", "çevresel yaklaşım",
+          "doğal sistem anlayışı", "ekosistem işleyişi", "çevresel denge", "çevresel sistem analizi",
+          "çevresel sorun analizi", "çevresel çözüm üretme", "çevresel karar verme",
+          "yeşil bina teknolojisi", "yeşil bina sertifikası", "yeşil bina standardı",
+          "kentsel sürdürülebilirlik", "yeşil bina avantajı", "yeşil bina faydası",
+          "çevresel etik değer", "çevresel sorumlu davranış", "çevresel bilinçli karar",
+          "sosyobilimsel konular", "sistem düşüncesi", "eleştirel düşünme", "sorumluluk alma",
+          "disiplinlerarası yaklaşım",
+          "ekolojik vatandaşlık", "gezegenin sınırları", "yeşil aklama", "greenwashing",
+          "iklim adaleti", "karbon okuryazarlığı", "çevresel etki değerlendirmesi", "ÇED"
+        ]
+      },
+      "ekoloji": {
+        "terimler": [
+          "yaşam alanı","atmosfer", "doğal yaşam", "canlı türü", "bitki örtüsü", "sistem", "canlı sistemleri",
+          "ekoloji", "ekolojik sistem", "ekolojik denge", "ekolojik döngü", "ekolojik süreç",
+          "ekosistem", "ekosistem hizmeti", "ekosistem sağlığı", "ekosistem yönetimi",
+          "biyoçeşitlilik", "biyolojik çeşitlilik", "tür çeşitliliği", "habitat", "habitat çeşitliliği",
+          "ekolojik ayak izi", "ekolojik etki", "ekolojik zarar", "ekolojik restorasyon",
+          "ekolojik koruma", "ekolojik sürdürülebilirlik", "ekolojik uyum", "ekolojik adaptasyon",
+          "ekolojik dönüşüm", "ekolojik geçiş", "ekolojik kriz", "ekolojik çözüm",
+          "ekolojik tarım", "organik tarım", "ekolojik denge", "ekolojik sistem",
+          "ekolojik bilinç", "ekolojik farkındalık", "ekolojik yaklaşım", "ekolojik düşünce",
+          "ekolojik planlama", "ekolojik tasarım", "ekolojik mimari", "ekolojik şehir",
+          "ekosistem dengesi", "ekosistem bozulması", "ekosistem restorasyonu", "ekosistem koruma",
+          "biyoçeşitlilik koruma", "biyoçeşitlilik kaybı", "tür koruma", "nesli tükenme", "habitat koruma",
+          "ekolojik ayak izi hesaplama", "ekolojik etki değerlendirme", "ekolojik zarar önleme",
+          "ekolojik restorasyon projesi", "ekolojik koruma alanı", "ekolojik sürdürülebilirlik planı",
+          "agroekoloji", "ekolojik tarım yöntemi", "ekolojik tarım uygulaması", "ekolojik tarım sistemi",
+          "besin zinciri", "popülasyon", "madde döngüsü", "karbon döngüsü", "su döngüsü",
+          "sera etkisi", "sera gazları", "karbondioksit", "CO2", "metan", "nitröz oksit", "ozon",
+          "küresel ısınma", "iklim değişikliği", "karbon ayak izi", "fosil yakıtlar", "biyokütle",
+          "endemik tür", "istilacı türler", "müsilaj", "deniz salyası", "erozyon", "kuraklık",
+          "iklim modelleri", "paleoklimatoloji", "dehidrasyon", "fotosentez",
+          "biyom", "biyosfer", "litosfer", "hidrosfer", "abiyotik faktörler", "biyotik faktörler",
+          "simbiyotik yaşam", "adaptasyon", "mutasyon", "doğal seleksiyon", "flora", "fauna",
+          "solunum", "fermantasyon", "azot döngüsü", "fosfor döngüsü", "okyanus asitlenmesi",
+          "permafrost", "donmuş toprak", "buzul erimesi", "ekosistem hizmetleri", "taşıma kapasitesi",
+          "karbon yutakları", "ısı adası etkisi", "albedo etkisi", "biyolojik birikim", "ekolojik niş", "süksesyon",
+		  "kirleticiler"
+        ]
+      },
+      "enerji_verimliligi": {
+        "terimler": [
+          "depolama", "verimlilik", "enerji bağımlılığı", "enerji bağımsızlığı", "enerji verimliliği", "enerji tasarrufu", "enerji verimli", "enerji optimizasyonu",
+          "enerji verimliliği programı", "enerji verimliliği politikası", "enerji verimliliği stratejisi",
+          "enerji tasarrufu önlemi", "enerji tasarrufu yöntemi", "enerji tasarrufu teknolojisi",
+          "enerji verimli cihaz", "enerji verimli aydınlatma", "enerji verimli bina",
+          "enerji verimli ulaşım", "enerji verimli üretim", "enerji verimli sistem",
+          "LED aydınlatma", "enerji tasarruflu ampul", "akıllı enerji yönetimi",
+          "enerji izleme sistemi", "enerji tüketimi azaltma", "enerji kullanım optimizasyonu",
+          "enerji verimliliği standardı", "enerji verimliliği sertifikası", "enerji performansı",
+          "enerji etkinliği", "enerji yönetimi", "enerji denetimi", "enerji analizi",
+          "yenilenebilir enerji", "temiz enerji", "sürdürülebilir enerji", "enerji dönüşümü",
+          "enerji verimliliği eylem planı", "enerji verimliliği hedefi", "enerji verimliliği projesi",
+          "enerji tasarrufu kampanyası", "enerji tasarrufu bilinci", "enerji tasarrufu alışkanlığı",
+          "elektrikli araç", "hibrit araç", "enerji verimli araç", "düşük karbonlu ulaşım",
+          "enerji verimli ısıtma", "enerji verimli soğutma", "enerji verimli klima",
+          "enerji verimli üretim süreci", "enerji verimli sanayi", "enerji verimli fabrika",
+          "enerji performans göstergesi", "enerji verimliliği ölçümü", "enerji verimliliği değerlendirme",
+          "güneş enerjisi", "rüzgar enerjisi", "hidroelektrik enerji", "jeotermal enerji",
+          "biyokütle enerjisi", "yenilenebilir enerji kaynağı", "temiz enerji teknolojisi",
+          "yenilenemeyen enerji", "fotovoltaik", "rüzgâr enerjisi türbin", "nükleer enerji",
+          "ısı yalıtımı", "kinetik enerji", "potansiyel enerji", "elektrikli araçlar", "hibrit araçlar",
+          "biyoyakıt", "biyodizel", "enerji okuryazarlığı",
+          "karbon nötr", "dekarbonizasyon", "enerji kimlik belgesi", "pasif ev", "akıllı şebeke",
+          "smart grid", "enerji depolama", "batarya teknolojileri", "yeşil hidrojen", "enerji yoğunluğu",
+          "ısı pompası", "kojenerasyon", "yenilenebilir enerji sertifikası", "karbon vergisi",
+          "enerji arz güvenliği", "off-grid", "şebeke bağımsız sistemler"
+        ]
+      },
+      "surdurulebilirlik": {
+        "terimler": [
+          "inovasyon", "su güvenliği", "sürdürülebilirlik", "sürdürülebilir", "sürdürülebilir kalkınma", "sürdürülebilir yaşam",
+          "sürdürülebilir tarım", "sürdürülebilir su yönetimi", "sürdürülebilir enerji",
+          "sürdürülebilir ulaşım", "sürdürülebilir şehir", "sürdürülebilir mimari",
+          "sürdürülebilir tüketim", "sürdürülebilir üretim", "sürdürülebilir kaynak yönetimi",
+          "sürdürülebilir çevre", "sürdürülebilir ekosistem", "sürdürülebilir sistem",
+          "sürdürülebilir politika", "sürdürülebilir strateji", "sürdürülebilir uygulama",
+          "sürdürülebilir gelecek", "sürdürülebilir nesil", "sürdürülebilir toplum",
+          "kentsel sürdürülebilirlik", "çevresel sürdürülebilirlik", "ekonomik sürdürülebilirlik",
+          "sosyal sürdürülebilirlik", "sürdürülebilir kaynak", "sürdürülebilir yönetim",
+          "sürdürülebilir tasarım", "sürdürülebilir teknoloji", "sürdürülebilir inovasyon",
+          "sürdürülebilir tarım uygulaması", "sürdürülebilir tarım yöntemi", "sürdürülebilir tarım sistemi",
+          "sürdürülebilir su yönetimi stratejisi", "sürdürülebilir su kullanımı", "sürdürülebilir su kaynağı",
+          "sürdürülebilir kalkınma hedefi", "sürdürülebilir kalkınma göstergesi", "sürdürülebilir kalkınma planı",
+          "sürdürülebilir yaşam tarzı", "sürdürülebilir yaşam biçimi", "sürdürülebilir yaşam alanı",
+          "sürdürülebilir şehir planlama", "sürdürülebilir şehir tasarımı", "sürdürülebilir şehir yönetimi",
+          "sürdürülebilir tüketim alışkanlığı", "sürdürülebilir tüketim modeli", "sürdürülebilir tüketim davranışı",
+          "sürdürülebilir üretim süreci", "sürdürülebilir üretim yöntemi", "sürdürülebilir üretim sistemi",
+          "sürdürülebilir kaynak kullanımı", "sürdürülebilir kaynak koruma", "sürdürülebilir kaynak yönetimi",
+          "çevre koruma", "sürdürülebilir çevre koruma", "sürdürülebilir çevre yönetimi", "sürdürülebilir çevre politikası",
+          "organik tarım", "iyi tarım uygulamaları", "damla sulama", "yağmur hasadı", "yeşil mimari",
+          "dikey tarım", "topraksız tarım", "hidroponik", "polikültür", "çoklu ekim", "monokültür", "tekli ekim",
+          "ekim nöbeti", "münavebe", "dönüşümlü ekim", "malçlama", "gıda güvenliği", "karbon yakalama",
+          "gölge topları", "su koruma", "gri su kullanımı", "obruk oluşumu", "bilinçsiz sulama", "hassas tarım",
+          "permakültür", "onarıcı tarım", "regenerative agriculture", "adil ticaret", "fair trade",
+          "yerel üretim", "mevsimsel beslenme", "yavaş gıda", "slow food", "ekoturizm", "yeşil şehirler",
+          "akıllı tarım", "IoT", "biyogüvenlik", "kuraklık direnci", "su ayak izi", "ekolojik ayak izi",
+          "yeşil çatı", "yağmur bahçesi", "sünger şehirler", "biyo-mimetik", "doğadan esinlenme",
+          "yeşil mutabakat", "green deal", "sürdürülebilir kalkınma amaçları", "SDGs", "kıtlık"
+        ]
+      }
+    }
+  }
+}
+
+

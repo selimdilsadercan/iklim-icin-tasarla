@@ -26,6 +26,8 @@ export default function BatchAdminPage() {
   const [classes, setClasses] = useState<TeacherClass[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [workerRunning, setWorkerRunning] = useState(false);
+  const [isStartingWorker, setIsStartingWorker] = useState(false);
 
   // Edit modal state
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -66,10 +68,24 @@ export default function BatchAdminPage() {
     }
   };
 
+  // Worker durumunu çekme
+  const fetchWorkerStatus = async () => {
+    try {
+      const { worker_running } = await BatchService.getWorkerStatus();
+      setWorkerRunning(worker_running);
+    } catch (error) {
+      console.error("Worker status fetch error:", error);
+    }
+  };
+
   useEffect(() => {
     fetchJobs();
     fetchClasses();
-    const interval = setInterval(fetchJobs, 5000);
+    fetchWorkerStatus();
+    const interval = setInterval(() => {
+      fetchJobs();
+      fetchWorkerStatus();
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -139,6 +155,20 @@ export default function BatchAdminPage() {
       alert("İş güncellenemedi!");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleStartWorker = async () => {
+    setIsStartingWorker(true);
+    try {
+      await BatchService.startWorker();
+      fetchWorkerStatus();
+      alert("Analiz Worker'ı başarıyla başlatıldı.");
+    } catch (error) {
+      console.error("Start worker error:", error);
+      alert("Worker başlatılamadı! Lütfen Evaluator servisinin (port 8000) açık olduğundan emin olun.");
+    } finally {
+      setIsStartingWorker(false);
     }
   };
 
@@ -221,7 +251,23 @@ export default function BatchAdminPage() {
             </div>
 
             {/* Actions Row */}
-            <div className="flex justify-end mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+              <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-2xl border border-gray-200">
+                <div className={`w-3 h-3 rounded-full ${workerRunning ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
+                <span className="text-sm font-medium text-gray-700">
+                  Analiz Worker: {workerRunning ? 'Çalışıyor' : 'Durduruldu'}
+                </span>
+                {!workerRunning && (
+                  <button
+                    onClick={handleStartWorker}
+                    disabled={isStartingWorker}
+                    className="ml-4 text-xs bg-gray-900 text-white px-3 py-1.5 rounded-lg hover:bg-black transition-all disabled:opacity-50"
+                  >
+                    {isStartingWorker ? 'Başlatılıyor...' : 'Şimdi Başlat'}
+                  </button>
+                )}
+              </div>
+
               <button
                 onClick={() => setIsModalOpen(true)}
                 className="w-full md:w-auto bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 hover:scale-[1.02] transition-all flex items-center justify-center gap-3"
