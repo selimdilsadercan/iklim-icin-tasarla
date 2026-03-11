@@ -1,0 +1,13 @@
+venv/
+testvenv/
+.tmp*/
+.tmp_run_*
+__pycache__/
+*.pyc
+.env
+.git/
+analysis_results/
+karaagac_ortaokulu*/
+climate_eval_colab.ipynb
+node_modules/
+.prettierrc

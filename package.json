@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "cd frontend && npm run dev",
     "backend": "cd backend && encore run",
-    "eval": "cd evaluator && npm run eval --"
+    "eval": "cd evaluator && npm run eval --",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
   }
 }

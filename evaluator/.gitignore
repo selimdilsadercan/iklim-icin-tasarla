@@ -1,2 +1,6 @@
 .env
 venv
+testvenv
+__pycache__
+analysis_results
+.tmp*
