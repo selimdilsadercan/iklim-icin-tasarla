@@ -183,7 +183,7 @@ export const getJobMessages = api(
       }
 
       const messages: JobMessage[] = (data || []).map((m: any) => ({
-        id: m.id,
+        id: m.msg_id,
         user_id: m.student_id,
         message: m.message,
         is_user: m.is_user,
