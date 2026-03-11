@@ -121,6 +121,75 @@ export const updateJobStatus = api(
   },
 );
 
+// ─── Öğrenci Raporu ───────────────────────────────────────────────
+
+interface StudentReportParams {
+  jobId: string;
+  studentId: string;
+  studentName: string;
+  overallScore: number;
+  stats: any;
+  llmEvaluation: any;
+}
+
+interface StudentReportResponse {
+  id: string;
+  job_id: string;
+  student_id: string;
+  student_name: string;
+  overall_score: number;
+  stats: any;
+  llm_evaluation: any;
+  created_at: string;
+}
+
+/**
+ * Öğrenci analiz raporunu kaydeder.
+ */
+export const submitStudentReport = api(
+  { expose: true, method: "POST", path: "/batch/student-report" },
+  async (params: StudentReportParams): Promise<{ success: boolean; id: string }> => {
+    const { data, error } = await supabase
+      .from("student_reports")
+      .insert([
+        {
+          job_id: params.jobId,
+          student_id: params.studentId,
+          student_name: params.studentName,
+          overall_score: params.overallScore,
+          stats: params.stats,
+          llm_evaluation: params.llmEvaluation,
+        },
+      ])
+      .select("id")
+      .single();
+
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
+    return { success: true, id: data.id };
+  },
+);
+
+/**
+ * Bir batch işine ait tüm öğrenci raporlarını getirir.
+ */
+export const getJobReports = api(
+  { expose: true, method: "GET", path: "/batch/jobs/:id/reports" },
+  async ({ id }: { id: string }): Promise<{ reports: StudentReportResponse[] }> => {
+    const { data, error } = await supabase
+      .from("student_reports")
+      .select("*")
+      .eq("job_id", id)
+      .order("student_name", { ascending: true });
+
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
+    return { reports: data || [] };
+  },
+);
+
 interface EvaluationResult {
   messageId: string;
   jobId: string;

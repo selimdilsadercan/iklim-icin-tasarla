@@ -37,8 +37,15 @@ async def start_worker(background_tasks: BackgroundTasks):
     if worker_running:
         return {"status": "already_running"}
     
-    from worker import run_worker_loop
-    background_tasks.add_task(run_worker_loop)
+    def _run():
+        global worker_running
+        try:
+            from worker import run_worker_loop
+            run_worker_loop()
+        finally:
+            worker_running = False
+    
+    background_tasks.add_task(_run)
     worker_running = True
     return {"status": "started"}
 

@@ -11,6 +11,7 @@ RETURNS TABLE (
     is_user BOOLEAN,
     created_at TIMESTAMPTZ,
     display_name TEXT
+    
 ) AS $$
 DECLARE
     v_config JSONB;
@@ -33,19 +34,20 @@ BEGIN
         SELECT (x::TEXT)::UUID FROM jsonb_array_elements_text(v_config->'student_ids') AS x
     );
 
-    -- 3. Mesajları getir (student_chat_messages_view üzerinden)
+    -- 3. Mesajları getir (chat_history + user_roles JOIN)
     RETURN QUERY
     SELECT 
-        m.id::UUID,
-        m.student_id::UUID,
-        m.message,
-        m.is_user,
-        m.created_at,
-        m.display_name::TEXT
-    FROM public.student_chat_messages_view m
-    WHERE m.student_id = ANY(v_student_ids)
-      AND m.created_at >= (v_config->>'start_date')::TIMESTAMPTZ
-      AND m.created_at <= (v_config->>'end_date')::TIMESTAMPTZ
-    ORDER BY m.created_at ASC;
+        ch.id AS msg_id,
+        ch.user_id AS student_id,
+        ch.message,
+        ch.is_user,
+        ch.created_at,
+        COALESCE(ur.display_name, 'Bilinmeyen Öğrenci')::TEXT AS display_name
+    FROM public.chat_history ch
+    LEFT JOIN public.user_roles ur ON ur.user_id = ch.user_id
+    WHERE ch.user_id = ANY(v_student_ids)
+      AND ch.created_at >= (v_config->>'start_date')::TIMESTAMPTZ
+      AND ch.created_at <= (v_config->>'end_date')::TIMESTAMPTZ
+    ORDER BY ch.created_at ASC;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
