@@ -16,10 +16,10 @@ BEGIN
         me.message_id,
         me.scores,
         me.feedback,
-        me.created_at
+        ch.created_at
     FROM public.message_evaluations me
     INNER JOIN public.chat_history ch ON ch.id = me.message_id
     WHERE ch.user_id = p_student_id::UUID
-    ORDER BY me.created_at DESC;
+    ORDER BY ch.created_at DESC;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
