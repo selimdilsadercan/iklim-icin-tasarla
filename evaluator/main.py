@@ -25,7 +25,8 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
     
     # Bileşenleri başlat
-    extractor = FeatureExtractor() # Varsayılan terimlerle
+    basic_terms, advanced_terms = DataHandler.load_knowledge_components()
+    extractor = FeatureExtractor(basic_terms=basic_terms, advanced_terms=advanced_terms)
     scorer = Scorer()
     reporter = ReportGenerator(scorer)
 

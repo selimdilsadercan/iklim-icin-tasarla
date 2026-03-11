@@ -55,3 +55,24 @@ class DataHandler:
                 "class": match.group(2).upper()
             }
         return {"school": "Bilinmiyor", "class": "Bilinmiyor"}
+
+    @staticmethod
+    def load_knowledge_components(file_path: str = "knowledge_components.json") -> Tuple[list, list]:
+        """JSON dosyasından temel ve ileri düzey terimleri yükler"""
+        import json
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                kc = json.load(f)
+            
+            basic_terms = []
+            for category in kc['temel_duzey']['kategoriler'].values():
+                basic_terms.extend(category['terimler'])
+            
+            advanced_terms = []
+            for category in kc['ileri_duzey']['kategoriler'].values():
+                advanced_terms.extend(category['terimler'])
+                
+            return list(set(basic_terms)), list(set(advanced_terms))
+        except Exception as e:
+            print(f"⚠️ Bilgi bileşenleri yüklenemedi, varsayılanlar kullanılacak: {e}")
+            return None, None
