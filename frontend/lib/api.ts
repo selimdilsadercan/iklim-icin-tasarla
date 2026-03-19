@@ -1,4 +1,9 @@
-const BACKEND_URL = "https://staging-iklim-bu6i.encr.app";
+const isLocalhost = typeof window !== "undefined" && 
+  (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+
+const BACKEND_URL = isLocalhost 
+  ? "http://localhost:4000" 
+  : "https://staging-iklim-bu6i.encr.app";
 
 export async function apiRequest<T>(
   path: string,

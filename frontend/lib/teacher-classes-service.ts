@@ -53,7 +53,7 @@ export class TeacherClassesService {
    */
   static async getTeacherClasses(): Promise<TeacherClass[]> {
     try {
-      const data = await apiRequest<{ classes: any[] }>("/batch/classes"); // Path updated
+      const data = await apiRequest<{ classes: any[] }>("/classes"); 
       return data.classes || [];
     } catch (error) {
       console.error("Error fetching teacher classes:", error);
@@ -96,7 +96,7 @@ export class TeacherClassesService {
   }
 
   /**
-   * Get students for a specific class (moved to Encore)
+   * Get students for a specific class (Encore Class Service)
    * @param sortBy - Sort type: 'conversations' (default), 'name', or 'date'
    */
   static async getClassStudents(
@@ -105,7 +105,11 @@ export class TeacherClassesService {
     endDate?: string | null,
     sortBy: "conversations" | "name" | "date" = "conversations"
   ): Promise<any[]> {
-    const data = await apiRequest<{ students: any[] }>(`/batch/classes/${classId}/students`); // Path updated
+    let queryParams = `?sortBy=${sortBy}`;
+    if (startDate) queryParams += `&startDate=${startDate}`;
+    if (endDate) queryParams += `&endDate=${endDate}`;
+
+    const data = await apiRequest<{ students: any[] }>(`/classes/${classId}/students${queryParams}`);
     return data.students || [];
   }
 
