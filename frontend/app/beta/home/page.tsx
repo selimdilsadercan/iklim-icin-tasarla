@@ -23,7 +23,7 @@ export default function BetaHomePage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-green-50 flex flex-col">
       <BetaBanner />
       <AppBar currentPage="home" />
       
@@ -40,35 +40,7 @@ export default function BetaHomePage() {
             </p>
           </div>
 
-          {/* Unified Beta Warning Card */}
-          <div className="mb-8 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <div className="flex items-start gap-3 mb-4">
-              <span className="text-yellow-600 text-lg">⚠️</span>
-              <div>
-                <h4 className="font-semibold text-yellow-800 mb-1">Beta Test Modu</h4>
-                <p className="text-yellow-700 text-sm">
-                  Bu modda tüm özellikler test edilebilir ancak veriler kaydedilmez. 
-                  Gerçek kullanım için hesap oluşturun.
-                </p>
-              </div>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={handleExitBeta}
-                className="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-              >
-                Çıkış
-              </button>
-              <button
-                onClick={() => router.push("/login")}
-                className="flex-1 bg-white hover:bg-gray-50 text-yellow-700 border border-yellow-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-              >
-                Giriş Yap
-              </button>
-            </div>
-          </div>
+
 
           {/* Character Assistants */}
           <div className="space-y-4">
