@@ -294,6 +294,40 @@ export default function LoginPage() {
                 </div>
               </button>
 
+              {/* OR Separator */}
+              <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-3 bg-white/50 text-gray-500 font-medium rounded-full">
+                    YA DA
+                  </span>
+                </div>
+              </div>
+              
+              {/* Beta Login Button */}
+              <button
+                type="button"
+                onClick={handleBetaMode}
+                className="group relative w-full bg-gradient-to-r from-gray-400 via-gray-500 to-gray-600 text-white font-bold py-3 px-4 rounded-2xl shadow-[0_4px_0_0_rgba(0,0,0,0.2)] hover:shadow-[0_2px_0_0_rgba(0,0,0,0.2)] active:shadow-[0_1px_0_0_rgba(0,0,0,0.2)] transform hover:translate-y-1 active:translate-y-2 transition-all duration-150 ease-out border-b-4 border-gray-700 hover:border-gray-600 active:border-gray-500 flex items-center justify-center gap-2"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.054.585l-1.335 1.335a1 1 0 00.707 1.707H19.66a1 1 0 00.707-1.707l-1.335-1.335zM12 11a4 4 0 100-8 4 4 0 000 8z"
+                  />
+                </svg>
+                <span className="text-base text-white">Beta Girişi</span>
+              </button>
+
               {/* Privacy Policy Link */}
               <div className="mt-6 text-center">
                 <Link

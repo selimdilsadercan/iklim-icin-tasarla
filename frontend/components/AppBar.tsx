@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTranslations } from "@/hooks/useTranslations";
 
 // Page enum for active state
@@ -80,12 +81,14 @@ interface AppBarProps {
 
 export default function AppBar({ currentPage }: AppBarProps) {
   const t = useTranslations('navigation');
+  const pathname = usePathname();
+
   const isActive = (page: PageType) => {
     return currentPage === page;
   };
 
   // Check if we're in beta mode by looking at the current path
-  const isBetaMode = typeof window !== 'undefined' && window.location.pathname.startsWith('/beta');
+  const isBetaMode = pathname?.startsWith('/beta');
   const items = isBetaMode ? getBetaNavigationItems(t) : getNavigationItems(t);
 
   return (
