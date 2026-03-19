@@ -4,8 +4,9 @@
   "private": true,
   "description": "İklim Eval Monorepo - Evaluator (Python), Backend (Encore), Frontend",
   "scripts": {
-    "dev": "cd frontend && npm run dev",
+    "dev": "npx concurrently -n NEXT,ENCORE -c blue,green \"npm:frontend\" \"npm:encore\"",
+    "frontend": "cd frontend && npm run dev",
     "encore": "cd backend && encore run",
     "eval": "cd evaluator && npm run eval --"
   }
-}   
+}
