@@ -3,6 +3,7 @@ import { supabase } from "../db/supabase";
 
 interface CreateJobParams {
   studentIds: string[];
+  classId: string;
   startDate: string;
   endDate: string;
 }
@@ -13,10 +14,23 @@ interface JobResponse {
   config: JobConfig;
   created_at: string;
   updated_at: string;
+  processed_count: number;
+  total_count: number;
+  eligible_count: number;
+  total_messages: number;
+  processed_messages: number;
+  current_student_name?: string;
+  class_name: string;
+  teacher_name: string;
+  avg_overall_score?: number;
+  avg_content_score?: number;
+  avg_discussion_score?: number;
+  participants?: { user_id: string; name: string; count: number; score?: number }[];
 }
 
 interface JobConfig {
   student_ids: string[];
+  class_id?: string;
   start_date: string;
   end_date: string;
 }
@@ -42,6 +56,7 @@ export const createJob = api(
           status: "pending",
           config: {
             student_ids: params.studentIds,
+            class_id: params.classId,
             start_date: params.startDate,
             end_date: params.endDate,
           },
@@ -53,7 +68,14 @@ export const createJob = api(
     if (error) {
       throw new APIError(ErrCode.Internal, error.message);
     }
-    return data;
+    return {
+      ...data,
+      processed_count: 0,
+      total_count: params.studentIds.length,
+      eligible_count: 0,
+      total_messages: 0,
+      processed_messages: 0,
+    };
   },
 );
 
@@ -89,7 +111,23 @@ export const claimPendingJob = api(
     if (updateError) {
       throw new APIError(ErrCode.Internal, updateError.message);
     }
-    return { job: updatedJob };
+
+    // processed_count ve total_count hesapla
+    const { count } = await supabase
+      .from("student_reports")
+      .select("*", { count: "exact", head: true })
+      .eq("job_id", job.id);
+
+    return { 
+      job: {
+        ...updatedJob,
+        processed_count: count || 0,
+        total_count: updatedJob.config.student_ids?.length || 0,
+        eligible_count: 0,
+        total_messages: 0,
+        processed_messages: 0
+      } 
+    };
   },
 );
 
@@ -316,23 +354,45 @@ export const getJobMessages = api(
 );
 
 /**
- * Tüm batch işlerini listeler.
+ * Tüm batch işlerini listeler (RPC ile detaylı istatistiklerle).
  */
 export const listJobs = api(
   { expose: true, method: "GET", path: "/batch/jobs" },
   async (): Promise<ListJobsResponse> => {
-    const { data, error } = await supabase
-      .from("batch_jobs")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(50);
+    // Yeni RPC fonksiyonunu çağırıyoruz
+    const { data, error } = await supabase.rpc("get_jobs_with_stats", {
+      p_limit: 100
+    });
 
     if (error) {
       throw new APIError(ErrCode.Internal, error.message);
     }
-    return { jobs: data || [] };
+
+    const jobs: JobResponse[] = (data || []).map((j: any) => ({
+      id: j.id,
+      status: j.status,
+      config: j.config,
+      error_message: j.error_message,
+      created_at: j.created_at,
+      updated_at: j.updated_at,
+      processed_count: Number(j.processed_count || 0),
+      total_count: Number(j.total_count || 0),
+      eligible_count: Number(j.eligible_count || 0),
+      total_messages: Number(j.total_messages || 0),
+      processed_messages: Number(j.processed_messages || 0),
+      current_student_name: j.current_student_name,
+      class_name: j.class_name,
+      teacher_name: j.teacher_name,
+      avg_overall_score: j.avg_overall_score ? Number(j.avg_overall_score) : undefined,
+      avg_content_score: j.avg_content_score ? Number(j.avg_content_score) : undefined,
+      avg_discussion_score: j.avg_discussion_score ? Number(j.avg_discussion_score) : undefined,
+      participants: j.participants
+    }));
+
+    return { jobs };
   },
 );
+
 
 interface DeleteJobParams {
   id: string;

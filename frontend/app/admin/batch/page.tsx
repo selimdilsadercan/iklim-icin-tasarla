@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { AdminProtectedRoute } from "@/components/auth/AdminProtectedRoute";
 import AdminSidebar from "@/components/AdminSidebar";
 import AdminAppBar from "@/components/AdminAppBar";
@@ -19,6 +19,15 @@ import {
   Plus,
   PencilSimple,
   Trash,
+  SkipForwardCircleIcon,
+  CaretDown,
+  CaretUp,
+  TrendUp,
+  Trophy,
+  Quotes,
+  User,
+  ChartBar,
+  ArrowSquareOut,
 } from "@phosphor-icons/react";
 
 export default function BatchAdminPage() {
@@ -40,6 +49,14 @@ export default function BatchAdminPage() {
     new Date().toISOString().split("T")[0],
   );
   const [isCreating, setIsCreating] = useState(false);
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+
+  const toggleRow = (jobId: string) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [jobId]: !prev[jobId],
+    }));
+  };
 
   // Edit modal local states
   const [editStartDate, setEditStartDate] = useState("");
@@ -105,6 +122,7 @@ export default function BatchAdminPage() {
 
       await BatchService.createJob({
         studentIds,
+        classId: selectedClass,
         startDate,
         endDate,
       });
@@ -193,12 +211,12 @@ export default function BatchAdminPage() {
         <AdminAppBar currentPage="batch" />
         <AdminSidebar currentPage="batch" />
 
-        <div className="lg:ml-64 px-6 pb-24 lg:pb-8 pt-8 min-h-screen">
+        <div className="lg:ml-64 px-6 pb-24 lg:pb-8 pt-8 min-h-screen" lang="tr">
           <div className="max-w-sm lg:max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center mb-10">
               <h1 className="text-2xl font-bold text-gray-800 mb-2">
-                Batch Değerlendirme Sistemi
+                BATCH DEĞERLENDİRME SİSTEMİ
               </h1>
               <p className="text-gray-600 max-w-2xl mx-auto">
                 Öğrenci mesajlarını toplu olarak rubric kriterlerine göre akıllı asistan ile analiz edin.
@@ -283,18 +301,18 @@ export default function BatchAdminPage() {
                 <h3 className="text-lg font-bold text-gray-800">Son Analiz İşleri</h3>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full text-left">
+                <table className="w-full text-left table-fixed">
                   <thead>
-                    <tr className="bg-gray-50/50 text-gray-400 text-xs uppercase tracking-wider border-b border-gray-100">
-                      <th className="px-6 py-4 font-semibold text-gray-900">İş ID</th>
-                      <th className="px-6 py-4 font-semibold text-gray-900">Durum</th>
-                      <th className="px-6 py-4 font-semibold text-gray-900">Kapsam</th>
-                      <th className="px-6 py-4 font-semibold text-gray-900">Tarih Aralığı</th>
-                      <th className="px-6 py-4 font-semibold text-gray-900">Oluşturulma</th>
-                      <th className="px-6 py-4 font-semibold text-gray-900 text-right">İşlemler</th>
+                    <tr className="bg-gray-50/50 text-gray-400 text-[10px] font-black uppercase tracking-wider border-b border-gray-100">
+                      <th className="px-6 py-4 font-semibold text-gray-900 w-16 text-center">#</th>
+                      <th className="px-6 py-4 font-semibold text-gray-900 w-[25%]">SINIF / ÖĞRETMEN</th>
+                      <th className="px-6 py-4 font-semibold text-gray-900 w-[20%]">DURUM</th>
+                      <th className="px-6 py-4 font-semibold text-gray-900 w-[15%]">KAPSAM</th>
+                      <th className="px-6 py-4 font-semibold text-gray-900 w-[20%]">TARİH ARALIĞI</th>
+                      <th className="px-6 py-4 font-semibold text-gray-900 text-right w-32">İŞLEMLER</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-50 text-sm">
+                  <tbody className="text-xs text-gray-600">
                     {jobs.length === 0 ? (
                       <tr>
                         <td
@@ -305,66 +323,284 @@ export default function BatchAdminPage() {
                         </td>
                       </tr>
                     ) : (
-                      jobs.map((job) => (
-                        <tr
-                          key={job.id}
-                          className="hover:bg-gray-50 transition-colors"
-                        >
-                          <td className="px-6 py-4 font-mono text-sm text-gray-600">
-                            #{job.id.slice(0, 8)}
-                          </td>
-                          <td className="px-6 py-4">
-                            <div className="flex items-center gap-2">
-                              {getStatusIcon(job.status)}
-                              <span
-                                className={`text-sm font-medium capitalize 
-                                ${
-                                  job.status === "completed"
-                                    ? "text-green-600"
-                                    : job.status === "running"
-                                      ? "text-blue-600"
-                                      : job.status === "failed"
-                                        ? "text-red-600"
-                                        : "text-gray-500"
-                                }`}
-                              >
-                                {job.status}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-600">
-                            {job.config.student_ids?.length || 0} Öğrenci
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-500">
-                            {job.config.start_date} / {job.config.end_date}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-500">
-                            {new Date(job.created_at).toLocaleString("tr-TR")}
-                          </td>
-                          <td className="px-6 py-4 text-right">
-                            {job.status === "pending" ? (
-                              <div className="flex items-center justify-end gap-2">
-                                <button
-                                  onClick={() => handleOpenEditModal(job)}
-                                  className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
-                                  title="Düzenle"
-                                >
-                                  <PencilSimple weight="bold" className="w-4 h-4" />
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteJob(job.id)}
-                                  className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                                  title="Sil"
-                                >
-                                  <Trash weight="bold" className="w-4 h-4" />
-                                </button>
-                              </div>
-                            ) : (
-                              <span className="text-xs text-gray-300">—</span>
+                      jobs.map((job) => {
+                        const messageProgress = job.total_messages > 0
+                          ? Math.round((job.processed_messages / job.total_messages) * 100)
+                          : (job.status === "completed" ? 100 : 0);
+
+                        const isSkipped = job.status === "completed" && job.total_messages === 0;
+                        const isExpanded = !!expandedRows[job.id];
+
+                        return (
+                          <React.Fragment key={job.id}>
+                            <tr
+                              className={`transition-all cursor-pointer group border-b border-gray-100 ${isExpanded ? 'bg-blue-50/50' : 'hover:bg-blue-50/20'} ${isSkipped ? 'bg-amber-50/10' : ''}`}
+                              onClick={() => toggleRow(job.id)}
+                            >
+                              <td className="px-6 py-4 text-center">
+                                <div className="flex items-center justify-center">
+                                  {isExpanded ? (
+                                    <CaretUp weight="bold" className="w-4 h-4 text-blue-600" />
+                                  ) : (
+                                    <CaretDown weight="bold" className="w-4 h-4 text-gray-400 group-hover:text-blue-400" />
+                                  )}
+                                </div>
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="flex flex-col min-w-0">
+                                  <span className="text-sm font-bold text-gray-900 group-hover:text-blue-700 transition-colors truncate">
+                                    {job.class_name}
+                                  </span>
+                                  <span className="text-[10px] text-gray-500 flex items-center gap-1 truncate">
+                                    <User size={12} weight="fill" className="text-blue-400 shrink-0" />
+                                    <span className="truncate">{job.teacher_name}</span>
+                                  </span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="flex flex-col gap-1.5">
+                                  <div className="flex items-center gap-2">
+                                    {isSkipped ? (
+                                      <SkipForwardCircleIcon weight="fill" className="w-4 h-4 text-amber-500" />
+                                    ) : (
+                                      getStatusIcon(job.status)
+                                    )}
+                                    <span className={`text-[10px] font-bold uppercase tracking-widest ${
+                                      isSkipped ? 'text-amber-600' :
+                                      job.status === 'completed' ? 'text-green-600' :
+                                      job.status === 'running' ? 'text-blue-600' : 'text-gray-400'
+                                    }`}>
+                                      {isSkipped ? "SKIPPED" : job.status === 'running' ? 'ANALİZ EDİLİYOR' : job.status.toLocaleUpperCase('tr-TR')}
+                                    </span>
+                                  </div>
+                                  <div className="w-32 h-1.5 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                                    <div 
+                                      className={`h-full transition-all duration-1000 ${
+                                        isSkipped ? 'bg-amber-400' :
+                                        job.status === 'completed' ? 'bg-green-500' : 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]'
+                                      }`}
+                                      style={{ width: `${messageProgress}%` }}
+                                    />
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="flex flex-col gap-0.5">
+                                  <div className="flex items-center gap-1.5 text-gray-700 font-bold">
+                                    <Users size={14} weight="bold" className="text-gray-400" />
+                                    {job.eligible_count}
+                                    <span className="text-[10px] text-gray-400 font-normal ml-0.5">Öğrenci</span>
+                                  </div>
+                                  <div className="flex items-center gap-1.5 text-[10px] text-gray-400">
+                                    <Quotes size={12} weight="fill" />
+                                    <span>{job.total_messages} Mesaj</span>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="flex flex-col text-[10px] text-gray-500">
+                                  <div className="flex items-center gap-1 font-medium bg-gray-100/80 w-fit px-2 py-0.5 rounded-full mb-1 text-gray-700">
+                                    <Clock size={12} />
+                                    {job.config.start_date.split('-').reverse().join('.')} - {job.config.end_date.split('-').reverse().join('.')}
+                                  </div>
+                                  <span className="text-[9px] text-gray-400 ml-1">Kayıt: {new Date(job.created_at).toLocaleDateString('tr-TR')}</span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 text-right">
+                                <div className="flex items-center justify-end gap-1">
+                                  {job.status === "pending" ? (
+                                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                      <button
+                                        onClick={(e) => { e.stopPropagation(); handleOpenEditModal(job); }}
+                                        className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                                        title="Düzenle"
+                                      >
+                                        <PencilSimple weight="bold" size={16} />
+                                      </button>
+                                      <button
+                                        onClick={(e) => { e.stopPropagation(); handleDeleteJob(job.id); }}
+                                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                        title="Sil"
+                                      >
+                                        <Trash weight="bold" size={16} />
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <span className="text-[10px] text-gray-400 italic">
+                                      {job.status === "completed" ? "Rapor Hazır" : "İşlemde"}
+                                    </span>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+
+                            {/* Detay Paneli (Expandable Area) */}
+                            {isExpanded && (
+                              <tr className="bg-blue-50/20">
+                                <td colSpan={6} className="px-6 py-8 bg-gray-50/80 backdrop-blur-md rounded-b-2xl border-x border-b border-gray-100 shadow-inner">
+                                  <div className="max-w-5xl mx-auto space-y-8">
+                                    {/* Üst Kısım: Özet Kartlar */}
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                      {/* Ortalama Skor Kartı */}
+                                      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+                                        <div className="flex items-center gap-3 mb-4">
+                                          <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
+                                            <ChartBar size={20} weight="fill" />
+                                          </div>
+                                          <span className="text-xs font-black text-gray-400 uppercase tracking-widest">SINIF ORTALAMASI</span>
+                                        </div>
+                                        <div className="flex items-baseline gap-2">
+                                          <span className="text-4xl font-black text-gray-900 leading-none">
+                                            {job.avg_overall_score ? job.avg_overall_score.toFixed(1) : "0.0"}
+                                          </span>
+                                          <span className="text-sm font-bold text-gray-400">/ 10</span>
+                                        </div>
+                                        <div className="mt-4 flex gap-4">
+                                          <div className="flex flex-col">
+                                            <span className="text-[10px] text-gray-400 font-bold uppercase">İçerik</span>
+                                            <span className="text-sm font-black text-gray-700">{job.avg_content_score?.toFixed(1) || "0.0"}</span>
+                                          </div>
+                                          <div className="w-px h-8 bg-gray-100"></div>
+                                          <div className="flex flex-col">
+                                            <span className="text-[10px] text-gray-400 font-bold uppercase">Tartışma</span>
+                                            <span className="text-sm font-black text-gray-700">{job.avg_discussion_score?.toFixed(1) || "0.0"}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      {/* İşlem Özeti Kartı */}
+                                      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+                                        <div className="flex items-center gap-3 mb-4">
+                                          <div className="p-2 bg-orange-50 text-orange-600 rounded-xl">
+                                            <TrendUp size={20} weight="fill" />
+                                          </div>
+                                          <span className="text-xs font-black text-gray-400 uppercase tracking-widest">İŞLEM DETAYI</span>
+                                        </div>
+                                        <div className="space-y-3">
+                                          <div className="flex justify-between items-center text-sm">
+                                            <span className="text-gray-500 font-medium">Toplam Mesaj</span>
+                                            <span className="font-black text-gray-900">{job.total_messages}</span>
+                                          </div>
+                                          <div className="flex justify-between items-center text-sm">
+                                            <span className="text-gray-500 font-medium">Analiz Edilen</span>
+                                            <span className="font-black text-gray-900">{job.processed_count} Öğrenci</span>
+                                          </div>
+                                          <div className="flex justify-between items-center text-sm">
+                                            <span className="text-gray-500 font-medium">İşlem Kapsamı</span>
+                                            <span className="font-black text-blue-600">{job.eligible_count} / {job.total_count}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      {/* Durum Kartı */}
+                                      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+                                        <div className="flex items-center gap-3 mb-4">
+                                          <div className="p-2 bg-green-50 text-green-600 rounded-xl">
+                                            <CheckCircle size={20} weight="fill" />
+                                          </div>
+                                          <span className="text-xs font-black text-gray-400 uppercase tracking-widest">ANALİZ DURUMU</span>
+                                        </div>
+                                        <div className="flex flex-col h-full justify-between pb-2">
+                                          <div className="flex items-center gap-2">
+                                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                                              job.status === 'completed' ? 'bg-green-100 text-green-700' :
+                                              job.status === 'running' ? 'bg-blue-100 text-blue-700 animate-pulse' : 'bg-gray-100 text-gray-700'
+                                            }`}>
+                                              {job.status === 'completed' ? 'TAMAMLANDI' : 
+                                               job.status === 'running' ? `ANALİZ: ${job.current_student_name || 'BEKLENİYOR'}` : job.status.toLocaleUpperCase('tr-TR')}
+                                            </span>
+                                          </div>
+                                          <div className="mt-4 text-[10px] text-gray-400 font-medium leading-relaxed italic">
+                                            Bu analiz {(new Date(job.created_at)).toLocaleDateString('tr-TR')} tarihinde başlatıldı.
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Alt Kısım: Öğrenci Listesi */}
+                                    <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden transition-all hover:shadow-md">
+                                      <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/30 flex justify-between items-center">
+                                        <div className="flex items-center gap-3">
+                                          <div className="p-1.5 bg-blue-600 text-white rounded-lg">
+                                            <Users size={16} weight="bold" />
+                                          </div>
+                                          <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest">ÖĞRENCİ ANALİZLERİ</h3>
+                                        </div>
+                                        <span className="text-[10px] font-bold text-gray-400">MESAJ SAYISINA GÖRE SIRALANMIŞTIR</span>
+                                      </div>
+                                      <div className="overflow-hidden">
+                                        <table className="w-full text-left">
+                                          <thead>
+                                            <tr className="bg-gray-50/50 text-[10px] text-gray-400 font-black uppercase tracking-wider border-b border-gray-100">
+                                              <th className="px-6 py-3 w-16 text-center">DR</th>
+                                              <th className="px-6 py-3">ÖĞRENCİ ADI</th>
+                                              <th className="px-6 py-3 text-center">MESAJ</th>
+                                              <th className="px-6 py-3 text-center">SKOR</th>
+                                              <th className="px-6 py-3 text-right">EYLEM</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-gray-50">
+                                            {job.participants && job.participants.length > 0 ? (
+                                              job.participants.map((participant, pIdx) => (
+                                                <tr key={participant.user_id} className="hover:bg-blue-50/30 transition-colors group">
+                                                  <td className="px-6 py-4 text-center">
+                                                    <span className={`inline-flex items-center justify-center w-6 h-6 rounded-lg text-[10px] font-black ${
+                                                      pIdx === 0 ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-500'
+                                                    }`}>
+                                                      {pIdx + 1}
+                                                    </span>
+                                                  </td>
+                                                  <td className="px-6 py-4">
+                                                    <span className="text-sm font-bold text-gray-800 group-hover:text-blue-600 transition-colors uppercase">
+                                                      {participant.name}
+                                                    </span>
+                                                  </td>
+                                                  <td className="px-6 py-4 text-center">
+                                                    <span className="text-sm font-black text-gray-900">{participant.count}</span>
+                                                  </td>
+                                                  <td className="px-6 py-4 text-center">
+                                                    {participant.score ? (
+                                                      <span className={`px-2 py-1 rounded-lg text-xs font-black ${
+                                                        participant.score >= 7 ? 'bg-green-100 text-green-700' :
+                                                        participant.score >= 4 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'
+                                                      }`}>
+                                                        {participant.score.toFixed(1)}
+                                                      </span>
+                                                    ) : (
+                                                      <span className="text-xs font-bold text-gray-300">--</span>
+                                                    )}
+                                                  </td>
+                                                  <td className="px-6 py-4 text-right leading-none">
+                                                    <a
+                                                      href={`/admin/student?studentId=${participant.user_id}`}
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                      className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-xl text-[10px] font-black text-gray-600 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-sm"
+                                                    >
+                                                      PROFİLİ AÇ
+                                                      <ArrowSquareOut size={14} weight="bold" />
+                                                    </a>
+                                                  </td>
+                                                </tr>
+                                              ))
+                                            ) : (
+                                              <tr>
+                                                <td colSpan={5} className="px-6 py-12 text-center text-gray-400 italic text-sm">
+                                                  Henüz analiz edilmiş öğrenci verisi bulunmuyor.
+                                                </td>
+                                              </tr>
+                                            )}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
                             )}
-                          </td>
-                        </tr>
-                      ))
+                          </React.Fragment>
+                        );
+                      })
                     )}
                   </tbody>
                 </table>

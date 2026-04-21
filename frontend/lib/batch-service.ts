@@ -11,6 +11,18 @@ export interface BatchJob {
   error_message?: string;
   created_at: string;
   updated_at: string;
+  processed_count: number;
+  total_count: number;
+  eligible_count: number;
+  total_messages: number;
+  processed_messages: number;
+  current_student_name?: string;
+  class_name: string;
+  teacher_name: string;
+  avg_overall_score?: number;
+  avg_content_score?: number;
+  avg_discussion_score?: number;
+  participants?: { user_id: string; name: string; count: number; score?: number }[];
 }
 
 export class BatchService {
@@ -27,6 +39,7 @@ export class BatchService {
    */
   static async createJob(params: {
     studentIds: string[];
+    classId: string;
     startDate: string;
     endDate: string;
   }): Promise<BatchJob> {
