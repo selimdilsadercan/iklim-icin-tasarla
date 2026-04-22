@@ -261,6 +261,7 @@ export default function AdminClassesPage() {
 
         await BatchService.createJob({
           studentIds,
+          classId,
           startDate,
           endDate,
         });

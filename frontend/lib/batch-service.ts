@@ -7,6 +7,7 @@ export interface BatchJob {
     student_ids: string[];
     start_date: string;
     end_date: string;
+    class_id: string;
   };
   error_message?: string;
   created_at: string;
@@ -22,7 +23,8 @@ export interface BatchJob {
   avg_overall_score?: number;
   avg_content_score?: number;
   avg_discussion_score?: number;
-  participants?: { user_id: string; name: string; count: number; score?: number }[];
+  fallback_count?: number;
+  participants?: { user_id: string; name: string; count: number; score?: number; fallback_count?: number }[];
 }
 
 export class BatchService {

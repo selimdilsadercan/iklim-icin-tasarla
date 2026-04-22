@@ -25,6 +25,7 @@ interface JobResponse {
   avg_overall_score?: number;
   avg_content_score?: number;
   avg_discussion_score?: number;
+  fallback_count?: number;
   participants?: { user_id: string; name: string; count: number; score?: number }[];
 }
 
@@ -386,6 +387,7 @@ export const listJobs = api(
       avg_overall_score: j.avg_overall_score ? Number(j.avg_overall_score) : undefined,
       avg_content_score: j.avg_content_score ? Number(j.avg_content_score) : undefined,
       avg_discussion_score: j.avg_discussion_score ? Number(j.avg_discussion_score) : undefined,
+      fallback_count: j.fallback_count ? Number(j.fallback_count) : 0,
       participants: j.participants
     }));
 

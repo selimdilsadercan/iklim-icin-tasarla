@@ -20,6 +20,7 @@ RETURNS TABLE (
     avg_overall_score NUMERIC,
     avg_content_score NUMERIC,
     avg_discussion_score NUMERIC,
+    fallback_count BIGINT,
     participants JSONB
 ) AS $$
 BEGIN
@@ -136,26 +137,33 @@ BEGIN
         (SELECT AVG(sr.overall_score) FROM public.student_reports sr WHERE sr.job_id = bj.id),
         (SELECT AVG((sr.stats->>'avg_content_score')::numeric) FROM public.student_reports sr WHERE sr.job_id = bj.id),
         (SELECT AVG((sr.stats->>'avg_discussion_score')::numeric) FROM public.student_reports sr WHERE sr.job_id = bj.id),
+        (SELECT COUNT(me.id) FROM public.message_evaluations me WHERE me.job_id = bj.id AND me.feedback ILIKE '%fallback%'),
         -- TÜM KATILIMCILAR (Mesaj sayısına göre sıralı)
         (
             SELECT jsonb_agg(
                 jsonb_build_object(
                     'user_id', ur.user_id,
                     'name', ur.display_name,
-                    'count', p.msg_count,
-                    'score', sr.overall_score
+                    'count', COALESCE(p.msg_count, 0),
+                    'score', sr.overall_score,
+                    'fallback_count', COALESCE(p.fallback_messages, 0)
                 )
-                ORDER BY p.msg_count DESC
+                ORDER BY p.msg_count DESC NULLS LAST, ur.display_name ASC
             )
             FROM (
-                SELECT ch.user_id, count(*) as msg_count
+                SELECT (x::TEXT)::UUID as s_id
+                FROM jsonb_array_elements_text(bj.config->'student_ids') AS x
+            ) c
+            JOIN public.user_roles ur ON ur.user_id = c.s_id
+            LEFT JOIN (
+                SELECT ch.user_id, count(*) as msg_count, 
+                       COUNT(*) FILTER (WHERE me.feedback ILIKE '%fallback%') as fallback_messages
                 FROM public.message_evaluations me
                 JOIN public.chat_history ch ON ch.id = me.message_id
                 WHERE me.job_id = bj.id
                 GROUP BY ch.user_id
-            ) p
-            JOIN public.user_roles ur ON ur.user_id = p.user_id
-            LEFT JOIN public.student_reports sr ON sr.job_id = bj.id AND sr.student_id = p.user_id
+            ) p ON p.user_id = c.s_id
+            LEFT JOIN public.student_reports sr ON sr.job_id = bj.id AND sr.student_id = c.s_id
         )
     FROM public.batch_jobs bj
     ORDER BY bj.created_at DESC

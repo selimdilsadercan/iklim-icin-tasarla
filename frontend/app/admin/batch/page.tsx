@@ -28,6 +28,8 @@ import {
   User,
   ChartBar,
   ArrowSquareOut,
+  WarningCircle,
+  ArrowClockwise,
 } from "@phosphor-icons/react";
 
 export default function BatchAdminPage() {
@@ -134,6 +136,48 @@ export default function BatchAdminPage() {
       alert("İş başlatılamadı!");
     } finally {
       setIsCreating(false);
+    }
+  };
+
+  const handleRetryFallbacks = async (job: BatchJob) => {
+    if (!job.participants) return;
+    
+    // Güçlendirilmiş kontrol: Hem sayıyı garanti et hem de skorsuzları al
+    const failedStudentIds = job.participants
+      .filter(p => {
+        const fCount = Number(p.fallback_count || 0);
+        return fCount > 0 || !p.score;
+      })
+      .map(p => p.user_id);
+      
+    // Eğer spesifik öğrenci bulunamadıysa ama global hata varsa, tüm öğrencileri veya config'deki listeyi dene
+    let targetIds = failedStudentIds;
+    let message = `${failedStudentIds.length} öğrenci için analiz tekrar başlatılsın mı?`;
+
+    if (targetIds.length === 0 && Number(job.fallback_count || 0) > 0) {
+      targetIds = job.config.student_ids;
+      message = `Hatalı analizler tam olarak ayrıştırılamadı. Tüm sınıfın (${targetIds.length} öğrenci) analizini yeniden başlatmak ister misiniz?`;
+    }
+
+    if (targetIds.length === 0) {
+      alert("Yeniden denenecek hatalı analiz bulunamadı.");
+      return;
+    }
+
+    if (!confirm(message)) return;
+
+    try {
+      await BatchService.createJob({
+        studentIds: targetIds,
+        classId: job.config.class_id || "",
+        startDate: job.config.start_date,
+        endDate: job.config.end_date,
+      });
+      alert("Yeniden analiz işlemi sıraya alındı.");
+      fetchJobs();
+    } catch (error) {
+      console.error("Retry fallbacks error:", error);
+      alert("İşlem başlatılamadı!");
     }
   };
 
@@ -347,11 +391,19 @@ export default function BatchAdminPage() {
                                 </div>
                               </td>
                               <td className="px-6 py-4">
-                                <div className="flex flex-col min-w-0">
-                                  <span className="text-sm font-bold text-gray-900 group-hover:text-blue-700 transition-colors truncate">
-                                    {job.class_name}
-                                  </span>
-                                  <span className="text-[10px] text-gray-500 flex items-center gap-1 truncate">
+                                  <div className="flex flex-col min-w-0">
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-sm font-bold text-gray-900 group-hover:text-blue-700 transition-colors truncate">
+                                        {job.class_name}
+                                      </span>
+                                      {Number(job.fallback_count || 0) > 0 ? (
+                                        <div className="flex items-center gap-1 px-1.5 py-0.5 bg-red-50 border border-red-100 rounded text-red-600 shadow-sm" title={`${job.fallback_count} mesaj yedek sistemle analiz edildi.`}>
+                                          <WarningCircle size={10} weight="fill" />
+                                          <span className="text-[8px] font-black uppercase tracking-tighter">FALLBACK</span>
+                                        </div>
+                                      ) : null}
+                                    </div>
+                                    <span className="text-[10px] text-gray-500 flex items-center gap-1 truncate">
                                     <User size={12} weight="fill" className="text-blue-400 shrink-0" />
                                     <span className="truncate">{job.teacher_name}</span>
                                   </span>
@@ -493,24 +545,43 @@ export default function BatchAdminPage() {
                                       </div>
 
                                       {/* Durum Kartı */}
-                                      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+                                      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md relative overflow-hidden">
+                                        {Number(job.fallback_count || 0) > 0 && (
+                                          <div className="absolute -top-1 -right-1 w-16 h-16 bg-red-50 rounded-bl-full flex items-center justify-center pl-4 pb-4">
+                                            <WarningCircle size={24} weight="fill" className="text-red-500" />
+                                          </div>
+                                        )}
                                         <div className="flex items-center gap-3 mb-4">
-                                          <div className="p-2 bg-green-50 text-green-600 rounded-xl">
-                                            <CheckCircle size={20} weight="fill" />
+                                          <div className={`p-2 rounded-xl ${Number(job.fallback_count || 0) > 0 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}`}>
+                                            {Number(job.fallback_count || 0) > 0 ? <WarningCircle size={20} weight="fill" /> : <CheckCircle size={20} weight="fill" />}
                                           </div>
                                           <span className="text-xs font-black text-gray-400 uppercase tracking-widest">ANALİZ DURUMU</span>
                                         </div>
                                         <div className="flex flex-col h-full justify-between pb-2">
-                                          <div className="flex items-center gap-2">
-                                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                                          <div className="flex flex-col gap-2">
+                                            <span className={`w-fit px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
                                               job.status === 'completed' ? 'bg-green-100 text-green-700' :
                                               job.status === 'running' ? 'bg-blue-100 text-blue-700 animate-pulse' : 'bg-gray-100 text-gray-700'
                                             }`}>
                                               {job.status === 'completed' ? 'TAMAMLANDI' : 
                                                job.status === 'running' ? `ANALİZ: ${job.current_student_name || 'BEKLENİYOR'}` : job.status.toLocaleUpperCase('tr-TR')}
                                             </span>
+                                            {Number(job.fallback_count || 0) > 0 && (
+                                              <div className="space-y-2 mt-2">
+                                                <p className="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded-lg border border-red-100">
+                                                  DİKKAT: {job.fallback_count} Mesaj yapay zeka hatası nedeniyle kural tabanlı (fallback) analiz edildi.
+                                                </p>
+                                                <button
+                                                  onClick={() => handleRetryFallbacks(job)}
+                                                  className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shadow-md active:scale-95"
+                                                >
+                                                  <ArrowClockwise size={14} weight="bold" />
+                                                  HATALARI YENİDEN ANALİZ ET
+                                                </button>
+                                              </div>
+                                            )}
                                           </div>
-                                          <div className="mt-4 text-[10px] text-gray-400 font-medium leading-relaxed italic">
+                                          <div className="mt-2 text-[10px] text-gray-400 font-medium leading-relaxed italic">
                                             Bu analiz {(new Date(job.created_at)).toLocaleDateString('tr-TR')} tarihinde başlatıldı.
                                           </div>
                                         </div>
@@ -551,9 +622,19 @@ export default function BatchAdminPage() {
                                                     </span>
                                                   </td>
                                                   <td className="px-6 py-4">
-                                                    <span className="text-sm font-bold text-gray-800 group-hover:text-blue-600 transition-colors uppercase">
-                                                      {participant.name}
-                                                    </span>
+                                                    <div className="flex flex-col">
+                                                      <span className="text-sm font-bold text-gray-800 group-hover:text-blue-600 transition-colors uppercase">
+                                                        {participant.name}
+                                                      </span>
+                                                      {Number(participant.fallback_count || 0) > 0 ? (
+                                                        <span className="text-[9px] font-black text-red-500 uppercase flex items-center gap-1">
+                                                          <WarningCircle size={10} weight="fill" />
+                                                          {participant.fallback_count} MESAJ FALLBACK
+                                                        </span>
+                                                      ) : Number(participant.count || 0) === 0 ? (
+                                                        <span className="text-[9px] font-black text-gray-400 uppercase">ANALİZ EDİLMEDİ</span>
+                                                      ) : null}
+                                                    </div>
                                                   </td>
                                                   <td className="px-6 py-4 text-center">
                                                     <span className="text-sm font-black text-gray-900">{participant.count}</span>
