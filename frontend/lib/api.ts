@@ -7,7 +7,7 @@ const BACKEND_URL = isLocalhost
 
 export async function apiRequest<T>(
   path: string,
-  method: "GET" | "POST" | "PATCH" | "DELETE" = "GET",
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" = "GET",
   body?: any
 ): Promise<T> {
   const url = `${BACKEND_URL}${path}`;

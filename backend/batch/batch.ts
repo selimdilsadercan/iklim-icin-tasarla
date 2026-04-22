@@ -26,7 +26,13 @@ interface JobResponse {
   avg_content_score?: number;
   avg_discussion_score?: number;
   fallback_count?: number;
-  participants?: { user_id: string; name: string; count: number; score?: number }[];
+  error_message?: string;
+  participants?: {
+    user_id: string;
+    name: string;
+    count: number;
+    score?: number;
+  }[];
 }
 
 interface JobConfig {
@@ -40,8 +46,26 @@ interface ListJobsResponse {
   jobs: JobResponse[];
 }
 
+interface AnalysisGroup {
+  id: string;
+  name: string;
+  description?: string;
+  job_ids: string[];
+  created_at: string;
+}
+
+interface CreateGroupParams {
+  name: string;
+  description?: string;
+  jobIds: string[];
+}
+
 interface GetPendingJobResponse {
   job: JobResponse | null;
+}
+
+interface GetAnalysisGroupResponse {
+  group: AnalysisGroup | null;
 }
 
 /**
@@ -101,9 +125,9 @@ export const claimPendingJob = api(
     // 2. İşin durumunu "running" olarak güncelle
     const { data: updatedJob, error: updateError } = await supabase
       .from("batch_jobs")
-      .update({ 
+      .update({
         status: "running",
-        updated_at: new Date().toISOString() 
+        updated_at: new Date().toISOString(),
       })
       .eq("id", job.id)
       .select()
@@ -119,15 +143,15 @@ export const claimPendingJob = api(
       .select("*", { count: "exact", head: true })
       .eq("job_id", job.id);
 
-    return { 
+    return {
       job: {
         ...updatedJob,
         processed_count: count || 0,
         total_count: updatedJob.config.student_ids?.length || 0,
         eligible_count: 0,
         total_messages: 0,
-        processed_messages: 0
-      } 
+        processed_messages: 0,
+      },
     };
   },
 );
@@ -187,7 +211,9 @@ interface StudentReportResponse {
  */
 export const submitStudentReport = api(
   { expose: true, method: "POST", path: "/batch/student-report" },
-  async (params: StudentReportParams): Promise<{ success: boolean; id: string }> => {
+  async (
+    params: StudentReportParams,
+  ): Promise<{ success: boolean; id: string }> => {
     const { data, error } = await supabase
       .from("student_reports")
       .insert([
@@ -215,7 +241,11 @@ export const submitStudentReport = api(
  */
 export const getJobReports = api(
   { expose: true, method: "GET", path: "/batch/jobs/:id/reports" },
-  async ({ id }: { id: string }): Promise<{ reports: StudentReportResponse[] }> => {
+  async ({
+    id,
+  }: {
+    id: string;
+  }): Promise<{ reports: StudentReportResponse[] }> => {
     const { data, error } = await supabase
       .from("student_reports")
       .select("*")
@@ -262,21 +292,35 @@ export const submitEvaluation = api(
  * Bir öğrencinin tüm mesaj değerlendirmelerini getirir (RPC).
  */
 export const getStudentEvaluations = api(
-  { expose: true, method: "GET", path: "/batch/evaluations/student/:studentId" },
-  async ({ studentId }: { studentId: string }): Promise<{ evaluations: any[] }> => {
+  {
+    expose: true,
+    method: "GET",
+    path: "/batch/evaluations/student/:studentId",
+  },
+  async ({
+    studentId,
+  }: {
+    studentId: string;
+  }): Promise<{ evaluations: any[] }> => {
     try {
       const { data, error } = await supabase.rpc("get_student_evaluations", {
         p_student_id: studentId,
       });
 
       if (error) {
-        throw new APIError(ErrCode.Internal, `Database error: ${error.message}`);
+        throw new APIError(
+          ErrCode.Internal,
+          `Database error: ${error.message}`,
+        );
       }
 
       return { evaluations: data || [] };
     } catch (e: any) {
       if (e instanceof APIError) throw e;
-      throw new APIError(ErrCode.Internal, e.message || "Bilinmeyen bir hata oluştu");
+      throw new APIError(
+        ErrCode.Internal,
+        e.message || "Bilinmeyen bir hata oluştu",
+      );
     }
   },
 );
@@ -293,17 +337,22 @@ export const getStudentReports = api(
       });
 
       if (error) {
-        throw new APIError(ErrCode.Internal, `Database error: ${error.message}`);
+        throw new APIError(
+          ErrCode.Internal,
+          `Database error: ${error.message}`,
+        );
       }
 
       return { reports: data || [] };
     } catch (e: any) {
       if (e instanceof APIError) throw e;
-      throw new APIError(ErrCode.Internal, e.message || "Bilinmeyen bir hata oluştu");
+      throw new APIError(
+        ErrCode.Internal,
+        e.message || "Bilinmeyen bir hata oluştu",
+      );
     }
   },
 );
-
 
 interface JobMessagesResponse {
   messages: JobMessage[];
@@ -333,7 +382,7 @@ export const getJobMessages = api(
       if (error) {
         throw new APIError(
           ErrCode.Internal,
-          `Database error: ${error.message}`
+          `Database error: ${error.message}`,
         );
       }
 
@@ -349,7 +398,10 @@ export const getJobMessages = api(
       return { messages };
     } catch (e: any) {
       if (e instanceof APIError) throw e;
-      throw new APIError(ErrCode.Internal, e.message || "Bilinmeyen bir hata oluştu");
+      throw new APIError(
+        ErrCode.Internal,
+        e.message || "Bilinmeyen bir hata oluştu",
+      );
     }
   },
 );
@@ -362,7 +414,7 @@ export const listJobs = api(
   async (): Promise<ListJobsResponse> => {
     // Yeni RPC fonksiyonunu çağırıyoruz
     const { data, error } = await supabase.rpc("get_jobs_with_stats", {
-      p_limit: 100
+      p_limit: 100,
     });
 
     if (error) {
@@ -384,17 +436,77 @@ export const listJobs = api(
       current_student_name: j.current_student_name,
       class_name: j.class_name,
       teacher_name: j.teacher_name,
-      avg_overall_score: j.avg_overall_score ? Number(j.avg_overall_score) : undefined,
-      avg_content_score: j.avg_content_score ? Number(j.avg_content_score) : undefined,
-      avg_discussion_score: j.avg_discussion_score ? Number(j.avg_discussion_score) : undefined,
+      avg_overall_score: j.avg_overall_score
+        ? Number(j.avg_overall_score)
+        : undefined,
+      avg_content_score: j.avg_content_score
+        ? Number(j.avg_content_score)
+        : undefined,
+      avg_discussion_score: j.avg_discussion_score
+        ? Number(j.avg_discussion_score)
+        : undefined,
       fallback_count: j.fallback_count ? Number(j.fallback_count) : 0,
-      participants: j.participants
+      participants: j.participants,
     }));
 
     return { jobs };
   },
 );
 
+interface GetJobResponse {
+  job: JobResponse | null;
+}
+
+/**
+ * Belirli bir işin detaylarını getirir (Eldeki RPC fonksiyonu üzerinden).
+ */
+export const getJob = api(
+  { expose: true, method: "GET", path: "/batch/jobs/:id" },
+  async ({ id }: { id: string }): Promise<GetJobResponse> => {
+    // Mevcut listJobs RPC'sini kullanıyoruz ve içinden ID ile süzüyoruz.
+    // Gelecekte performans için get_job_with_stats RPC'si eklenmelidir.
+    const { data, error } = await supabase.rpc("get_jobs_with_stats", {
+      p_limit: 200, // Daha geniş bir aralıkta arıyoruz
+    });
+
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
+
+    const job = (data || []).find((j: any) => j.id === id);
+    if (!job) return { job: null };
+
+    return {
+      job: {
+        id: job.id,
+        status: job.status,
+        config: job.config,
+        error_message: job.error_message,
+        created_at: job.created_at,
+        updated_at: job.updated_at,
+        processed_count: Number(job.processed_count || 0),
+        total_count: Number(job.total_count || 0),
+        eligible_count: Number(job.eligible_count || 0),
+        total_messages: Number(job.total_messages || 0),
+        processed_messages: Number(job.processed_messages || 0),
+        current_student_name: job.current_student_name,
+        class_name: job.class_name,
+        teacher_name: job.teacher_name,
+        avg_overall_score: job.avg_overall_score
+          ? Number(job.avg_overall_score)
+          : undefined,
+        avg_content_score: job.avg_content_score
+          ? Number(job.avg_content_score)
+          : undefined,
+        avg_discussion_score: job.avg_discussion_score
+          ? Number(job.avg_discussion_score)
+          : undefined,
+        fallback_count: job.fallback_count ? Number(job.fallback_count) : 0,
+        participants: job.participants,
+      },
+    };
+  },
+);
 
 interface DeleteJobParams {
   id: string;
@@ -448,11 +560,13 @@ export const startWorker = api(
   async (): Promise<{ status: string }> => {
     try {
       const response = await fetch(`${EVALUATOR_URL}/worker/start`, {
-        method: "POST"
+        method: "POST",
       });
       return (await response.json()) as { status: string };
     } catch (e) {
-      throw new Error("Evaluator servisine erişilemedi. Lütfen servisin çalıştığından emin olun.");
+      throw new Error(
+        "Evaluator servisine erişilemedi. Lütfen servisin çalıştığından emin olun.",
+      );
     }
   },
 );
@@ -468,7 +582,7 @@ export const getWorkerStatus = api(
       const data = (await response.json()) as { worker_running: boolean };
       return { worker_running: data.worker_running };
     } catch (e) {
-       return { worker_running: false };
+      return { worker_running: false };
     }
   },
 );
@@ -515,4 +629,82 @@ export const updateJob = api(
   },
 );
 
+/**
+ * Yeni bir analiz grubu oluşturur.
+ */
+export const createAnalysisGroup = api(
+  { expose: true, method: "POST", path: "/batch/groups" },
+  async (params: CreateGroupParams): Promise<AnalysisGroup> => {
+    const { data, error } = await supabase
+      .from("analysis_groups")
+      .insert([
+        {
+          name: params.name,
+          description: params.description,
+          job_ids: params.jobIds,
+        },
+      ])
+      .select()
+      .single();
 
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
+    return data;
+  },
+);
+
+/**
+ * Tüm analiz gruplarını listeler.
+ */
+export const listAnalysisGroups = api(
+  { expose: true, method: "GET", path: "/batch/groups" },
+  async (): Promise<{ groups: AnalysisGroup[] }> => {
+    const { data, error } = await supabase
+      .from("analysis_groups")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
+    return { groups: data || [] };
+  },
+);
+
+/**
+ * Bir analiz grubunu siler.
+ */
+export const deleteAnalysisGroup = api(
+  { expose: true, method: "DELETE", path: "/batch/groups/:id" },
+  async ({ id }: { id: string }): Promise<{ success: boolean }> => {
+    const { error } = await supabase
+      .from("analysis_groups")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
+    return { success: true };
+  },
+);
+
+/**
+ * Bir analiz grubunun detaylarını getirir.
+ */
+export const getAnalysisGroup = api(
+  { expose: true, method: "GET", path: "/batch/groups/:id" },
+  async ({ id }: { id: string }): Promise<GetAnalysisGroupResponse> => {
+    const { data, error } = await supabase
+      .from("analysis_groups")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (error) {
+      throw new APIError(ErrCode.Internal, error.message);
+    }
+    return { group: data };
+  },
+);
