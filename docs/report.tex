@@ -1,0 +1,603 @@
+    % ============================================================================
+    % Design for Climate (Iklim Icin Tasarla) — Graduation Project Report
+    % Build: pdflatex report.tex  (run twice for TOC/refs)
+    % ============================================================================
+    \documentclass[12pt,a4paper,oneside]{report}
+
+    \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \usepackage{lmodern}
+    \usepackage[english,turkish]{babel}
+    \usepackage{csquotes}
+    \usepackage{geometry}
+    \geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+    \usepackage{graphicx}
+    \usepackage{adjustbox}
+    \graphicspath{{figures/}}
+    % Wide UI screenshots (up to 2880px); cap width and height so figures stay inside margins.
+    \newcommand{\includereportscreenshot}[1]{%
+        \adjustbox{max size={0.88\linewidth}{0.58\textheight},center}{%
+            \includegraphics{#1}%
+        }%
+    }
+    \newcommand{\includedbdiagram}[1]{%
+        \adjustbox{max size={0.95\linewidth}{0.72\textheight},center}{%
+            \includegraphics{#1}%
+        }%
+    }
+    \usepackage{booktabs}
+    \usepackage{longtable}
+    \usepackage{array}
+    \usepackage{multirow}
+    \usepackage{float}
+    \usepackage{caption}
+    \usepackage{amsmath,amssymb}
+    \usepackage{listings}
+    \usepackage{xcolor}
+    \usepackage{hyperref}
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue!60!black,
+        citecolor=green!50!black,
+        urlcolor=blue!70!black,
+        pdftitle={Design for Climate Graduation Project Report},
+    }
+    \usepackage{enumitem}
+    \setlist{nosep}
+    \usepackage{tikz}
+    \usetikzlibrary{shapes,arrows,arrows.meta,positioning,fit,backgrounds,shapes.geometric}
+    \usepackage{titlesec}
+    \usepackage{fancyhdr}
+
+    % Chapter, Section, Subsection formats - Heading: Bold Sans-serif, Body: Serif
+    \titleformat{\chapter}[hang]
+        {\normalfont\huge\bfseries\sffamily}
+        {\thechapter.}
+        {1em}
+        {}
+    \titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2ex plus .2ex}
+
+    \titleformat{\section}
+        {\normalfont\Large\bfseries\sffamily}
+        {\thesection}
+        {1em}
+        {}
+
+    \titleformat{\subsection}
+        {\normalfont\large\bfseries\sffamily}
+        {\thesubsection}
+        {1em}
+        {}
+
+    % Fancyhdr setup - Page numbers in top right corner
+    \pagestyle{fancy}
+    \fancyhf{}
+    \fancyhead[R]{\thepage}
+    \fancyhead[L]{\leftmark}
+    \renewcommand{\headrulewidth}{0.4pt}
+
+    % Redefining plain style for chapter pages (page number top right, no line)
+    \fancypagestyle{plain}{
+        \fancyhf{}
+        \fancyhead[R]{\thepage}
+        \renewcommand{\headrulewidth}{0pt}
+    }
+
+    % --- Metadata (ITU Conventions) ---
+    \newcommand{\university}{Istanbul Technical University}
+    \newcommand{\faculty}{Faculty of Computer and Informatics Engineering}
+    \newcommand{\department}{Computer Engineering Department}
+    \newcommand{\program}{Computer Engineering Undergraduate Program}
+    \newcommand{\thesistitle}{Full-Stack Climate Education Platform for Middle School Students: Frontend Development and Service Integration of AI Chat and Pedagogical Evaluation Modules}
+    \newcommand{\studentname}{Selim Dilşad Ercan}
+    \newcommand{\studentnumber}{150210104}
+    \newcommand{\advisor}{Assoc. Prof. Dr. Gökhan İnce}
+    \newcommand{\thesisyear}{2026}
+    \newcommand{\submissiondate}{May 2026}
+
+    % Code listings
+    \definecolor{codebg}{RGB}{245,245,245}
+    \definecolor{codeframe}{RGB}{200,200,200}
+    \lstset{
+        backgroundcolor=\color{codebg},
+        frame=single,
+        rulecolor=\color{codeframe},
+        basicstyle=\ttfamily\small,
+        breaklines=true,
+        captionpos=b,
+        numbers=left,
+        numberstyle=\tiny\color{gray},
+        keywordstyle=\color{blue!70!black}\bfseries,
+        commentstyle=\color{green!40!black},
+        stringstyle=\color{red!60!black},
+        showstringspaces=false,
+        tabsize=2,
+    }
+    \lstdefinelanguage{TypeScript}{
+        keywords={const,let,var,function,async,await,return,import,export,interface,type,class,extends,if,else,for,while,try,catch,throw,new,true,false,null,from,as},
+        sensitive=true,
+        morecomment=[l]{//},
+        morecomment=[s]{/*}{*/},
+        morestring=[b]",
+    }
+
+    \begin{document}
+    \selectlanguage{english}
+
+    % --- Title page ---
+    \begin{titlepage}
+        \centering
+        \vspace*{1cm}
+        {\Large \textbf{\university}\par}
+        \vspace{0.4cm}
+        {\large \faculty\par}
+        {\large \department\par}
+        \vspace{2cm}
+        {\huge \textbf{\thesistitle}\par}
+        \vspace{1.5cm}
+        {\Large GRADUATION PROJECT REPORT\par}
+        \vspace{2.5cm}
+        \begin{tabular}{rl}
+            Student:   & \studentname \\
+            ID:        & \studentnumber \\
+            Program:   & \program \\
+            Advisor:   & \advisor \\
+            Submitted: & \submissiondate \\
+        \end{tabular}
+        \vfill
+        {\large \thesisyear\par}
+    \end{titlepage}
+
+
+
+    \pagenumbering{Roman}
+    \setcounter{page}{2}
+
+    \clearpage
+    \selectlanguage{turkish}
+    \phantomsection
+    \begin{center}
+        {\LARGE\bfseries Özet}\par\vspace{1.2em}
+    \end{center}
+    \addcontentsline{toc}{chapter}{Özet}
+
+    Bu mezuniyet projesi, ortaokul düzeyindeki öğrencilerin iklim okuryazarlığını ve çevre bilincini artırmayı hedefleyen yenilikçi bir eğitim platformu olan \textbf{İklim İçin Tasarla} sisteminin uçtan uca yazılım mimarisini, istemci uygulamalarını ve servis entegrasyon katmanlarını sunmaktadır. Günümüzde iklim değişikliği eğitimi çoğunlukla durağan materyaller üzerinden yürütülmekte olup, öğrencilerin aktif katılımını ve sorgulamaya dayalı öğrenimini teşvik etmekte yetersiz kalmaktadır. Bu sınırlamaları aşmak amacıyla geliştirilen platform; öğrencilere yapay zeka destekli sohbet arayüzleri sunarken, öğretmenlere de öğrencilerinin gelişimini izleme, analiz etme ve değerlendirme imkanı tanımaktadır. 
+
+    Projenin kapsamı; Next.js 15, React 19 ve Tailwind CSS teknolojileriyle geliştirilmiş duyarlı (responsive) bir web arayüzünü, Capacitor 7 çalışma zamanı (runtime) entegrasyonu ile paketlenmiş Android ve iOS yerel mobil uygulamalarını, Encore.dev çerçevesi (framework) üzerinde TypeScript diliyle inşa edilmiş mikroservis tabanlı bir arka plan mimarisini ve verilerin güvenli bir şekilde depolanmasını sağlayan Supabase (PostgreSQL) veritabanı katmanını içermektedir. Ayrıca, okul yöneticilerinin sisteme öğrenci ve sınıf kayıtlarını toplu olarak aktarabilmesi için \texttt{Registrator} adında ayrı bir web uygulaması geliştirilmiştir. Bu uygulama, CSV veya Excel dosyalarından öğrenci listelerini içe aktarmakta, öğrenci isimlerini standart e-posta adreslerine dönüştürmekte, Supabase Auth üzerinde kullanıcı hesaplarını otomatik olarak oluşturmakta ve öğrencilere dağıtılmak üzere giriş bilgilerini içeren yazdırılabilir PDF bilgi kartları üretmektedir.
+
+    Platformun merkezinde, öğrencilerin farklı çevre temaları çerçevesinde etkileşime girebileceği yapay zeka asistanları yer almaktadır. Bu doğrultuda, daha önceki çalışmalarda eğitilmiş olan \texttt{iklim-model-short} dil modeli istemci tarafına entegre edilmiştir. Öğrencilerin ilgisini çekmek ve odaklanmış bir öğrenme deneyimi sunmak amacıyla dört farklı karakter tanımlanmıştır: Sürdürülebilir yaşam tarzı ve geri dönüşüm konularına odaklanan \textbf{Yaprak}, temiz ve yenilenebilir enerji kaynaklarını anlatan \textbf{Robi}, sürdürülebilir tarım ve gıda israfını ele alan \textbf{Buğday} ve su tasarrufu ile deniz ekosistemlerini korumayı hedefleyen \textbf{Damla}. Sohbet arayüzü, öğrencilere akışkan ve anlık bir yanıt deneyimi (streaming chat) sunmak amacıyla Server-Sent Events (SSE) protokolünü kullanmaktadır.
+
+    Öğretmenlerin pedagojik takibini kolaylaştırmak amacıyla, Python dilinde doğal dil işleme (NLP) yöntemleriyle geliştirilen pedagojik analiz ve puanlama algoritmaları, Encore backend sistemiyle asenkron bir iş kuyruğu (job queue) üzerinden entegre edilmiştir. Bu asenkron yapı sayesinde, uzun süren metin analizi işlemleri sırasında API zaman aşımı (timeout) sorunları engellenmiş ve öğretmenlerin web paneli üzerinden toplu analiz işleri (batch evaluation jobs) tanımlayarak işlerin durumunu gerçek zamanlı izlemesi sağlanmıştır. Öğrenci verilerinin gizliliği, veri tabanı düzeyinde tanımlanan Satır Düzeyinde Güvenlik (RLS) politikalarıyla korunmaktadır. Bu politikalar sayesinde her öğrenci yalnızca kendi sohbet geçmişine erişebilirken, öğretmenler ise sadece kendi sınıflarındaki öğrencilerin analiz raporlarını görebilmektedir.     Geliştirilen bu entegre yazılım mimarisi, akademik düzeydeki yapay zeka ve öğrenme analitiği prototiplerinin okullarda güvenle ve ölçeklenebilir şekilde kullanılabilecek kararlı bir ürüne dönüştürülmesi sürecine katkı sunmaktadır. Sistem, bir akademik dönem boyunca gerçek okul ortamlarında kullanılmış; 60'tan fazla sınıfta 700'den fazla öğrenciye hizmet vermiştir.
+
+    \vspace{0.5cm}
+    \noindent\textbf{Anahtar Kelimeler:} iklim eğitimi, sohbet robotu, tam yığın web geliştirme, rol tabanlı erişim kontrolü, yapay zeka entegrasyonu, pedagojik değerlendirme, ortaokul eğitimi.
+
+    % --- English Abstract ---
+    \clearpage
+    \selectlanguage{english}
+    \phantomsection
+    \begin{center}
+        {\LARGE\bfseries Abstract}\par\vspace{1.2em}
+    \end{center}
+    \addcontentsline{toc}{chapter}{Abstract}
+
+    This graduation project delivers the comprehensive full-stack software architecture, client applications, and service integration layers of \textbf{Design for Climate} (\textit{Iklim Icin Tasarla}), an interactive digital learning platform engineered to foster climate literacy and eco-awareness among middle school students. Traditional climate change curricula rely on static textbooks and teacher-led instruction, leaving students as passive recipients of environmental knowledge. To resolve these pedagogical limitations, this project implements a highly interactive, responsive web and mobile application that connects students with specialized conversational AI agents and provides educators with quantitative pedagogical assessment dashboards.
+
+    The architectural scope of this system encompasses a responsive web frontend built using Next.js 15, React 19, and Tailwind CSS; cross-platform mobile application shells for Android and iOS devices packaged using the Capacitor 7 runtime; a service-oriented microservices backend developed using TypeScript on the Encore.dev development platform; and a secure cloud relational database layer managed via Supabase (PostgreSQL). Additionally, a separate administrative web application named \texttt{Registrator} was implemented to facilitate bulk user onboarding. Built with Vite, React, and TypeScript, the application lets administrators upload CSV or Excel rosters through a browser interface, transform student records into standardized academic credentials, provision accounts in Supabase Auth, and export printable PDF credential cards containing unique login instructions for students.
+
+    At the core of the student experience are four conversational AI personas mapped to the pre-trained and optimized climate language model, \texttt{iklim-model-short}. To channel learning inquiries into specific environmental domains, four distinct characters were implemented: \textbf{Yaprak} (promoting sustainable lifestyles and waste recycling), \textbf{Robi} (explaining clean energy resources and energy efficiency), \textbf{Buğday} (focusing on local sustainable agriculture and food preservation), and \textbf{Damla} (advocating for water conservation and marine protection). The frontend leverages Server-Sent Events (SSE) to deliver real-time, token-streamed chat replies, ensuring low latency and high interactive engagement.
+
+    To support classroom teachers in monitoring student progress, a Python-based natural language processing (NLP) evaluator developed by co-researchers was wrapped into a containerized network service and connected to the Encore backend via an asynchronous job queue. This multi-stage queue prevents API network timeouts during long-running batch textual analyses, allowing teachers to initiate batch evaluation tasks for entire student cohorts and monitor performance charts on their dashboard. User data confidentiality is enforced via strict database-level Row-Level Security (RLS) policies. These policies guarantee that students are isolated to their own chat records, while teachers are restricted to querying statistics of their assigned classes. The final system establishes a secure, scalable, and robust software engineering pipeline for migrating experimental AI models into school-ready educational platforms.
+
+    The system was also used in real school settings during one academic term, supporting more than 700 students across more than 60 classes.
+
+    \vspace{0.5cm}
+    \noindent\textbf{Keywords:} climate education, chatbot, full-stack web, role-based access control, artificial intelligence integration, pedagogical evaluation, middle school.
+
+    \clearpage
+    \tableofcontents
+
+    % ============================================================================
+    \clearpage
+    \pagenumbering{arabic}
+    \setcounter{page}{1}
+
+    \chapter{Introduction}
+    \label{ch:intro}
+
+    \section{Problem Statement}
+    Climate change education has become a core element of middle school curricula worldwide. However, students frequently encounter static, non-interactive instructional materials that limit opportunities for active participation. Traditional classroom environments are often constrained by time and teacher-to-student ratios, leaving little room for personalized feedback or inquiry-based learning. Digital conversational agents present a promising avenue to address these limitations by providing personalized, self-paced interactions.
+
+    Despite the promise of educational chatbots, translating research-stage language models and specialized evaluation algorithms into practical, school-ready platforms involves significant engineering and integration hurdles. Academic prototypes are typically designed as single-user scripts requiring complex local runtime environments, making them impractical for classroom use by educators and students. To deploy these innovations in schools, they must be unified into an integrated, user-friendly platform featuring responsive web-based clients, automated class management panels, and simplified dashboard controls.
+
+    \section{Project Objectives}
+    The primary objective of this graduation project is to design, implement, and deploy a comprehensive full-stack software application that integrates the conversational AI models and pedagogical evaluation engines from the \textit{Design for Climate} research ecosystem. Specifically, the project aims to develop a cross-platform client for students, a robust backend service architecture with a resilient job queue to orchestrate analytical tasks, a structured database layer, and a browser-based bulk onboarding web application (\texttt{Registrator}).
+
+    \section{Scope and Out of Scope}
+    The scope of this graduation project encompasses the design, implementation, and deployment of the following components:
+    \begin{itemize}
+        \item A responsive web and mobile frontend application developed using Next.js 15, React 19, and Tailwind CSS.
+        \item Cross-platform mobile packaging for Android and iOS devices using Capacitor.
+        \item A TypeScript backend service architecture built on the Encore.dev framework.
+        \item A cloud-based database using Supabase, featuring specialized SQL functions and Row-Level Security (RLS) policies.
+        \item The Registrator web application (Vite/React), designed for bulk user enrollment and class provisioning.
+        \item The migration and software integration of the \texttt{iklim-model-short} streaming chat endpoint.
+        \item The operational service wrapper and connection bridge for the Python-based evaluation module.
+    \end{itemize}
+
+    The following research contributions, developed by other members of the research team, are considered out of scope and are described only at the integration level:
+    \begin{itemize}
+        \item The training, fine-tuning, and parameter optimization of the \texttt{iklim-model-short} language model.
+        \item The pedagogical design and prompt engineering parameters of the four chat assistant personas.
+        \item The scientific formulation and algorithmic definition of the natural language feature extraction and message scoring scripts.
+    \end{itemize}
+
+    \section{Project Contributions}
+    The major software engineering and integration contributions delivered in this graduation project are summarized in Table~\ref{tab:contributions}.
+
+    \begin{table}[H]
+        \centering
+        \caption{Contribution distribution within this graduation project}
+        \label{tab:contributions}
+        \begin{tabular}{@{}p{5.5cm}p{7.5cm}@{}}
+            \toprule
+            \textbf{Component} & \textbf{Role in this graduation project} \\
+            \midrule
+            Web/mobile frontend & Design, implementation, and deployment of all user pages. \\
+            Encore backend & Job queue, REST APIs, and Python evaluator integration. \\
+            Supabase SQL/RPC & Database schema, custom functions, and dashboard statistics. \\
+            Registrator & Vite/React web app for spreadsheet import, Supabase provisioning, and PDF credentials. \\
+            iklim-model-short & Integration of streaming API, fallbacks, and chat client logic. \\
+            Iklim-Eval (Python) & Packaging as a network service with webhook results delivery. \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    The remainder of this graduation project report is structured as follows. Section~\ref{ch:literature} conducts a detailed literature review and compares the proposed system qualitatively with existing tools. Section~\ref{ch:approach} describes the developed approach and system model, detailing requirements, architecture, database layout, implementations, AI integration, and access controls. Section~\ref{ch:test} outlines testing procedures, system verification results, field use in schools, and deployment details. Finally, Section~\ref{ch:conclusion} concludes the report and discusses potential future enhancements.
+
+    \chapter{Related Work}
+    \label{ch:literature}
+
+    Digital learning platforms and conversational agents have received significant attention in educational technology literature. Intelligent Tutoring Systems (ITS) have long been recognized for their capacity to simulate one-on-one human tutoring by adapting instructional content, pacing, and feedback mechanisms to individual student performance and learning speeds \cite{vanlehn2011}. Over the past decade, gamification, digital simulations, and dialog-driven agents have also emerged as powerful pedagogical tools to foster climate literacy among young learners, helping to bridge the gap between abstract scientific concepts (such as carbon footprints, hydrological cycles, and greenhouse effects) and everyday personal actions \cite{unesco2019, monroe2019}.
+
+    The integration of artificial intelligence (AI) in education, particularly through Large Language Models (LLMs) and persona-based chatbots, has opened new frontiers for interactive learning. Studies indicate that conversational agents configured with specific pedagogical roles can dramatically lower barriers to student inquiry, acting as patient, non-judgmental conversational partners \cite{wollny2021}. For younger age groups, such as primary and middle school cohorts, persona design is critical; structured, thematic chatbot personas prevent cognitive overload and maintain student focus on learning objectives \cite{wollny2021, kuhail2022}. In the context of environmental awareness, conversational agents have successfully been deployed to lead students through interactive scenario-based discussions, prompting reflection on climate action plans \cite{wollny2021, kuhail2022}.
+
+    Furthermore, the rise of learning analytics and educational data mining has empowered educators to transition from observational teaching to data-driven pedagogical interventions \cite{kotsiantis2012}. Automated essay scoring and natural language feature extraction systems allow for the processing of large volumes of student-generated text, identifying semantic patterns, conceptual gaps, and learning progression markers \cite{attali2006, gasevic2015}. Educational dashboards that visualize these analytics—often categorized as open learner models—not only assist teachers in identifying students who need additional guidance but also prompt metacognitive reflection among students regarding their own progress \cite{bull2016}.
+
+    However, translating these academic research innovations into classroom-ready applications exposes several architectural and operational gaps. Many experimental educational prototypes focus exclusively on the student-facing user interface, neglecting the robust multi-tenant data isolation and administrative provisioning tools required for institutional security. In contrast, commercial Learning Management Systems (LMS) offer extensive class enrollment tools but lack domain-specific, AI-driven interactive features. Table~\ref{tab:comparison} provides a qualitative comparison of the proposed platform with representative learning frameworks described in the literature.
+
+    \begin{table}[H]
+        \centering
+        \caption{Qualitative comparison with existing platforms}
+        \label{tab:comparison}
+        \small
+        \begin{tabular}{@{}lp{3.2cm}p{3.2cm}p{4cm}@{}}
+            \toprule
+            \textbf{Dimension} & \textbf{Standard AI Chatbots} & \textbf{Generic LMS} & \textbf{Proposed Platform} \\
+            \midrule
+            \textbf{Target Audience} & General users \cite{wollny2021}. & General academic courses. & Middle school students and educators. \\
+            \textbf{Pedagogical Focus} & Open assistance \cite{vanlehn2011}. & Grade management. & Climate action, conversational analysis. \\
+            \textbf{Teacher Controls} & None. & High (rosters, assignments). & Cohort analytics, batch evaluations. \\
+            \textbf{Data Isolation} & User-level sessions. & Standard tenancy. & Row-Level Security, class boundaries \cite{postgresqlRLS, supabaseRLS}. \\
+            \textbf{Deployment Shell} & Web only. & Web / Mobile app. & Native cross-platform package (Capacitor) \cite{traxler2009}. \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    The primary innovation of this graduation project lies in the operational unification of conversational climate AI and asynchronous pedagogical evaluation into a single, secure, role-based application. Rather than deploying a standalone chatbot, this system implements the complete classroom data loop: from student chat sessions to backend job queues, worker-based language analysis, and secure teacher panels, providing a scalable model for classroom-integrated AI.
+
+    \chapter{Developed Approach and System Model}
+    \label{ch:approach}
+
+    This chapter details the software architecture, design requirements, data schemas, and integration strategies that form the core of the developed platform.
+
+    \section{System Requirements}
+    The software engineering design was guided by a set of functional and non-functional requirements defined in collaboration with middle school educators.
+
+    \subsection{Stakeholders and Roles}
+    The platform supports three distinct user roles, each mapped to a specific user experience:
+    \begin{itemize}
+        \item \textbf{Student}: Accesses the conversational workspace to chat with the four climate assistants. They can view personal conversation statistics, track their learning level, and review past messages.
+        \item \textbf{Teacher}: Manages assigned classes and student cohorts. They can access student chat logs, review performance metrics, and initiate background batch evaluation jobs.
+        \item \textbf{Administrator}: Manages system-wide data, including school departments, teacher assignments, and global statistics.
+    \end{itemize}
+
+    \subsection{Functional Requirements}
+    \begin{enumerate}
+        \item \textbf{Role-Based Authentication}: Secure signup and login managed via Supabase Auth, redirecting users to \texttt{/admin} or \texttt{/home} based on their role.
+        \item \textbf{Conversational Interface}: A real-time chat interface featuring message streaming and markdown rendering for rich formatting.
+        \item \textbf{Classroom Management Dashboard}: Visual charts for teachers indicating bot interaction distribution and student message volume trends.
+        \item \textbf{Batch Evaluation Engine}: An interface for teachers to create evaluation jobs by specifying date ranges and student cohorts, monitoring status in real-time.
+        \item \textbf{Bulk Data Provisioning}: The Registrator web application to import student rosters from CSV or Excel spreadsheets, provision Supabase accounts, and export PDF information cards.
+        \item \textbf{Multilingual Interface}: Static localization support for Turkish, English, German, Spanish, and Dutch.
+    \end{enumerate}
+
+    \subsection{Non-Functional Requirements}
+    \begin{itemize}
+        \item \textbf{Row-Level Security (RLS)}: Strict database-level isolation preventing students from accessing other users' records and limiting teachers to their assigned classes.
+        \item \textbf{Mobile Optimization}: Seamless execution on Android and iOS devices, with a responsive layout designed for school-issued tablets.
+        \item \textbf{Loosely Coupled Services}: An asynchronous bridge between the backend API and the evaluation scripts to prevent API timeouts during heavy analyses.
+    \end{itemize}
+
+    \section{System Architecture}
+    The system consists of four independent modules: \texttt{frontend}, \texttt{backend}, \texttt{evaluator}, and \texttt{registrator}, designed to operate as a cohesive cloud platform. Figure~\ref{fig:architecture} illustrates the high-level architecture and data flows.
+
+    \begin{figure}[H]
+        \centering
+        \includedbdiagram{service.png}
+        \caption{Full-stack architecture and communication channels between users, the Next.js client, Encore backend, Python evaluator, Supabase, and the Registrator web application.}
+        \label{fig:architecture}
+    \end{figure}
+
+    The frontend web client communicates directly with Supabase for data mutations and auth sessions, while routing analytical operations to the Encore backend. The Encore backend acts as an orchestration layer, managing the evaluation queue and passing workloads to the Python service.
+
+    The technologies chosen for the system are outlined in Table~\ref{tab:tech_rationale}, along with the engineering justifications for their selection.
+
+    \begin{table}[H]
+        \centering
+        \caption{Technology choices and design justifications}
+        \label{tab:tech_rationale}
+        \small
+        \begin{tabular}{@{}lp{3cm}p{8cm}@{}}
+            \toprule
+            \textbf{Layer} & \textbf{Technology} & \textbf{Justification} \\
+            \midrule
+            \textbf{Frontend} & Next.js 15, React 19 \cite{nextjs2024}, Tailwind CSS 4 & Server-side rendering optimizations, rapid UI prototyping, and robust component architecture. \\
+            \textbf{Backend} & Encore.dev (TypeScript) \cite{encore2024} & Automated routing, type-safe API generation, local dev servers, and built-in tracing. \\
+            \textbf{Database} & Supabase (PostgreSQL) \cite{supabase2024} & Built-in authentication, instant REST APIs, and native support for SQL RLS policies. \\
+            \textbf{Evaluation} & Python 3, FastAPI, Docker & Seamless execution of scientific NLP libraries (NLTK, spaCy) and isolated runtime packaging. \\
+            \textbf{Mobile} & Capacitor 7 \cite{capacitor2024} & Wrapper for Next.js build outputs into native Android/iOS shells without rewriting views. \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \section{Database Design}
+    The relational database layout maps the school hierarchies, chat interactions, and evaluation results. The database schema diagram is illustrated in Figure~\ref{fig:db_schema}.
+
+    \begin{figure}[H]
+        \centering
+        \includedbdiagram{diagram.png}
+        \caption{Entity-relationship model of the Supabase PostgreSQL database (production schema export).}
+        \label{fig:db_schema}
+    \end{figure}
+
+    The schema isolates multi-tenant records at the database engine level. The \texttt{user\_roles} table acts as the primary junction connecting Supabase Auth users to their roles and classes, while RLS filters retrieve records only if the client session matches the foreign keys.
+
+    \section{Frontend Subsystem}
+    \label{sec:frontend}
+    The client-side application is architected using Next.js 15, taking advantage of React 19 Server Components and dynamic client-side rendering to optimize bundle size and interface performance. The application structure is organized into separate route groups to enforce logical session boundaries:
+    \begin{itemize}
+        \item \texttt{app/(main)/}: Encompasses student-facing screens, including the interactive conversational dashboard, real-time chat sessions, profile statistics, and localization selectors.
+        \item \texttt{app/admin/}: Contains the educator administration interface, consisting of student progress dashboards, raw chat log viewers, batch evaluation controls, and cohort charts.
+        \item \texttt{app/beta/}: Offers a lightweight sandbox allowing guest trials without requiring active school database credentials.
+    \end{itemize}
+
+    The student-facing route group presents a persona-based home screen and dedicated chat workspaces for each climate assistant. All screenshots included in this report were anonymized by replacing real school, teacher, student, and user identifiers with demonstration labels.
+
+    Figure~\ref{fig:student_home} shows the Turkish-language student home screen, where learners choose among the four climate assistant personas.
+
+    \begin{figure}[H]
+        \centering
+        \includereportscreenshot{home.png}
+        \caption{Student home screen in the Turkish interface, showing the four climate assistant personas available in the platform.}
+        \label{fig:student_home}
+    \end{figure}
+
+    Figure~\ref{fig:robi_chat_interface} presents an in-progress conversation with the Robi energy assistant, demonstrating the deployed chat client and Turkish localization.
+
+    \begin{figure}[H]
+        \centering
+        \includereportscreenshot{chat.png}
+        \caption{Student chat interface showing a conversation with the Robi energy assistant through the Turkish interface.}
+        \label{fig:robi_chat_interface}
+    \end{figure}
+
+    The \texttt{app/admin/} route group provides educators and administrators with cohort-level analytics. Figure~\ref{fig:admin_dashboard} shows the system overview with anonymized aggregate statistics, daily message trends, and bot interaction distribution.
+
+    \begin{figure}[H]
+        \centering
+        \includereportscreenshot{dashboard.png}
+        \caption{Anonymized administrator dashboard showing system-level statistics, message trends, and bot interaction distribution.}
+        \label{fig:admin_dashboard}
+    \end{figure}
+
+    A key engineering challenge addressed in the frontend architecture is the compilation of the web codebase into native mobile shells using Capacitor 7. When running within a native iOS WebView, the application does not execute from a standard remote origin; instead, it is served locally via the \texttt{capacitor://localhost} protocol. This origin shift triggers strict Cross-Origin Resource Sharing (CORS) defenses on standard API servers. 
+
+    To overcome this, the application separates the API clients into local development mock wrappers and production wrappers. In production, requests are dispatched directly to the secured HTTPS endpoints on Encore Cloud (\texttt{staging-iklim-bu6i.encr.app}). For iOS builds, CORS headers on the Encore backend are dynamically set to accept requests originating from the local mobile client. In the local development sandbox, Capacitor configurations use the \texttt{server.allowNavigation} directive combined with local HTTP proxying to prevent SSL certificate and cross-origin blocks.
+
+    \section{Backend Subsystem and Asynchronous Evaluation Queue}
+    The backend microservices layer is implemented using the Encore.dev framework in TypeScript, providing a highly scalable and type-safe environment for orchestrating operations between the Next.js client, the Supabase PostgreSQL database, and the Python-based natural language processing (NLP) evaluation engine. One of the main challenges in this architecture is processing massive text-based chat histories without introducing HTTP gateway timeouts. Since parsing student conversations involves computationally intensive operations (e.g., tokenization, syntax parsing, and semantic extraction using spaCy and NLTK), executing these analyses in the main API request thread is unfeasible. To address this, the backend is built around a state-machine driven asynchronous job queue.
+
+    The entry point for batch analysis is the \texttt{POST /batch/jobs} route, which is exposed exclusively to authenticated users carrying educator or administrator roles. When an educator initiates an evaluation from the frontend dashboard, they submit a JSON payload containing the targeted class identifiers and the evaluation parameters, such as date ranges:
+    \begin{lstlisting}[language=json,caption={Payload structure for POST /batch/jobs}]
+    {
+    "class_id": "a8b7c6d5-4e3f-2b1a-0c9b-8a7f6e5d4c3b",
+    "start_date": "2026-05-01T00:00:00Z",
+    "end_date": "2026-05-31T23:59:59Z"
+    }
+    \end{lstlisting}
+    Upon receiving this request, the Encore backend queries the database using Supabase helper RPCs to ensure the requesting teacher has ownership of the specified class. If authorized, the service generates a unique Job UUID and inserts a new row into the \texttt{batch\_jobs} table with a status of \texttt{pending}. Rather than keeping the HTTP connection open during the processing phase, the server immediately returns a \texttt{202 Accepted} response containing the Job ID, allowing the frontend to immediately render a progress loader and continue operation.
+
+    The background processing is handled via a polling and worker lease pattern. The external Python evaluation container runs an independent daemon process that continuously polls the backend's internal network via the \texttt{POST /batch/jobs/claim} endpoint. To prevent multiple workers from processing the same cohort, this claim operation executes within an isolated database transaction. The backend checks for the oldest record with a \texttt{pending} status, updates its status to \texttt{running}, and locks the row. The API then returns the job parameters alongside the raw student dialogue transcripts collected from the \texttt{chat\_history} table for the requested date window.
+
+    Once the Python worker has compiled the transcripts and calculated the performance metrics for a student, it submits the structured analysis back to the backend via \texttt{POST /batch/student-report}. This endpoint accepts the individual scores (such as vocabulary diversity, topical coverage, and engagement index) and writes them to the \texttt{student\_reports} table. 
+
+    Finally, once the worker completes the calculations for all students in the class, it calls the \texttt{POST /batch/jobs/complete} endpoint. This triggers an aggregation pipeline in Encore that calculates class-level averages (such as average overall grade and bot usage distributions) and saves the results back to the database, changing the job state to \texttt{completed}. The frontend, which polls the job status or receives updates, displays the finalized analytics charts to the teacher. This asynchronous structure decouples the analytical computations from the Web UI, preserving application performance even under high system load.
+
+    Figure~\ref{fig:batch_analysis} shows the educator-facing batch analysis screen, where completed evaluation jobs and report generation status are listed in the administration interface.
+
+    \begin{figure}[H]
+        \centering
+        \includereportscreenshot{batch.png}
+        \caption{Anonymized batch analysis interface showing completed evaluation jobs and report generation status.}
+        \label{fig:batch_analysis}
+    \end{figure}
+
+    \section{AI Chat Integration}
+    \label{sec:ai_chat}
+    The student-facing chat workspace maps conversations to four distinct environmental personas, designed to cover diverse climate subjects:
+    \begin{itemize}
+        \item \textbf{Yaprak (Eco-friendly Lifestyle)}: Guided by system instructions that focus on waste reduction, material circularity, recycling, and carbon footprints.
+        \item \textbf{Robi (Clean Energy)}: Configured to explain renewable energies (solar, wind, geothermal), grid efficiency, and thermal insulation.
+        \item \textbf{Buğday (Sustainable Agriculture)}: Programmed to discuss soil biodiversity, seasonal crops, local distribution loops, and minimizing food waste.
+        \item \textbf{Damla (Water Management)}: Instructed to lead discussions on water footprints, wastewater reclamation, and marine ecosystem conservation.
+    \end{itemize}
+
+    As shown in Figure~\ref{fig:robi_chat_interface} (Section~\ref{sec:frontend}), the chat client connects to the pre-trained \texttt{iklim-model-short} model using Server-Sent Events (SSE). Unlike standard REST payloads, which return the complete response at once, SSE streams text tokens to the client as they are generated by the model. The client parses these chunks, updates the state container in real-time, and renders markdown blocks dynamically. In case of network disruptions, the chat engine caches unsent student messages in local storage and attempts automatic re-connection to maintain conversation continuity in classroom environments with unstable internet connections.
+
+    \section{Registrator Web Application}
+    The Registrator is a standalone web application built with Vite, React, and TypeScript, separate from the main Next.js student and teacher platform. It provides a browser-based interface for automating school onboarding at scale. Administrators upload student rosters as CSV or Excel spreadsheets through a drag-and-drop file uploader; the application parses the files, validates required fields, and previews parsed classes and student records before provisioning.
+
+    The processing pipeline normalizes Turkish characters in names and class identifiers (e.g., converting ``ö'' to ``o'', ``ş'' to ``s''), generates standardized email handles (e.g., \texttt{student.name@school.proje}), assigns secure randomized passwords, and prepares class and role mappings for Supabase. From the web interface, operators can provision classes, students, and optionally teachers directly into Supabase Auth and the platform database using configured project credentials. After provisioning, the application exports printable PDF credential cards grouped by class using jsPDF, packaged as downloadable ZIP archives for rapid classroom distribution.
+
+    \section{Data Isolation and Access Control}
+    \label{sec:security}
+
+    To prevent unauthorized data access and maintain class boundaries in a shared database instance, the platform implements database-level isolation policies. PostgreSQL Row-Level Security (RLS) policies are active on key tables, ensuring that authenticated users can only query or mutate rows connected to their authorization scope:
+
+    \begin{lstlisting}[language=SQL,caption={Row-Level Security policy for chat history}]
+    CREATE POLICY "Student read own chat" ON public.chat_history
+        FOR SELECT USING (auth.uid() = user_id);
+    \end{lstlisting}
+
+    This database policy ensures that a student is strictly restricted to retrieving their own chat history. Similarly, teachers are authorized to view messages only for students enrolled in classes assigned to them via the \texttt{teacher\_classes} table. Authentication sessions and credentials tokens are handled natively by Supabase Auth, ensuring that client applications do not carry hardcoded secret keys or raw database credentials.
+
+    \chapter{Testing, Deployment, and Results}
+    \label{ch:test}
+
+    \section{Testing Strategy}
+    The verification process combined automated backend checks with manual device testing:
+    \begin{itemize}
+        \item \textbf{Automated API Verification}: Encore API endpoints were tested using integrated trace logs to ensure correct JSON payloads and response codes.
+        \item \textbf{Security Policy Auditing}: RLS verification was performed by sending API requests using simulated student sessions to verify that unauthorized data queries were blocked.
+        \item \textbf{Mobile Emulation}: Capacitor builds were executed in Android Studio and Apple Xcode emulators to verify UI layouts and chat streaming performance under limited network conditions.
+    \end{itemize}
+
+    \section{System Verification Results}
+    Table~\ref{tab:verification_results} summarizes the implemented platform capabilities and the outcomes observed during verification.
+
+    \begin{table}[H]
+        \centering
+        \caption{Implemented system capabilities and verification results}
+        \label{tab:verification_results}
+        \begin{tabular}{@{}p{4.5cm}p{8cm}@{}}
+            \toprule
+            \textbf{Capability} & \textbf{Verification result} \\
+            \midrule
+            Student authentication & Students can log in with generated credentials and access the assistant selection screen. \\
+            AI chat streaming & The chat interface receives and renders assistant responses through the streaming client. \\
+            Admin dashboard & Administrators can view aggregate statistics, message trends, and bot distributions. \\
+            Batch evaluation & Evaluation jobs can be created, processed asynchronously, and listed with completion status. \\
+            Data isolation & RLS policies restrict students to their own chat records and teachers to assigned classes. \\
+            Mobile packaging & The frontend was packaged and tested through Capacitor-based mobile builds. \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \section{Field Use in Schools}
+    \label{sec:field_use}
+
+    Beyond local development and functional verification, the platform was used in real school environments over the course of one academic term. During this period, the system supported more than \textbf{700 students} across more than \textbf{60 classes}. Students interacted with the four climate-focused assistant personas through the student-facing chat interface, while teachers and administrators used the management dashboard to monitor classroom activity and review interaction statistics.
+
+    Teachers also used the batch analysis workflow to evaluate student conversations across selected date ranges. This enabled both educators and the project team to observe message volumes, bot usage distributions, and student engagement patterns under realistic classroom conditions. The use of the system in schools provided practical feedback on the authentication flow, assistant selection interface, teacher dashboard, batch analysis pipeline, and database-level access control mechanisms.
+
+    This field use demonstrated that the platform could operate beyond a laboratory prototype. In particular, the role-based structure, student-facing chat experience, asynchronous evaluation workflow, and teacher-facing analytics dashboard were validated through real educational usage.
+
+    \section{Deployment Details}
+    The production system is deployed across a distributed cloud environment:
+    \begin{itemize}
+        \item \textbf{Frontend Application}: Hosted on Vercel with automatic CD pipelines triggered on repository commits.
+        \item \textbf{Backend Microservices}: Hosted on Encore Cloud, providing automated SSL provisioning and horizontal scaling.
+        \item \textbf{Database Layer}: Managed PostgreSQL instance hosted on Supabase.
+        \item \textbf{Evaluation Engine}: Packaged as a Docker container and deployed to an isolated VPS instance.
+    \end{itemize}
+
+    \chapter{Conclusion and Future Work}
+    \label{ch:conclusion}
+
+    This graduation project delivers a secure, full-stack, and school-ready implementation of the \textbf{Design for Climate} platform. The architecture successfully integrates conversational AI models with a background pedagogical evaluation queue, resolving scalability and classroom management challenges encountered when moving experimental educational AI tools into school environments.
+
+    The main engineering contribution of this project is the transformation of separate AI, evaluation, authentication, and classroom management components into a unified and deployable educational software platform. Rather than remaining disconnected research prototypes, the conversational model, Python evaluator, Supabase authentication layer, admin dashboards, and the Registrator provisioning web application were integrated into a single role-based product that can be operated in real classroom settings.
+
+    From a pedagogical perspective, the platform demonstrates how middle school climate education can combine persona-based AI dialogue with teacher-facing analytics and asynchronous batch assessment. Verification confirmed that core capabilities---including student login, streaming chat, administrative reporting, batch job processing, row-level data isolation, and mobile packaging---function together as an end-to-end system, as summarized in Table~\ref{tab:verification_results}.
+
+    In addition to technical verification, the platform was used in real school settings throughout one academic term, supporting more than 700 students across more than 60 classes. This field use provided practical validation of the classroom workflow, teacher dashboard, and asynchronous evaluation pipeline.
+
+    Future enhancements will focus on replacing the external ngrok bridge with direct container service-to-service communication, adding support for automated PDF progress reports, and introducing offline chat synchronization for environments with limited internet connectivity.
+
+    % ============================================================================
+    \begin{thebibliography}{99}
+    \bibitem{unesco2019}
+    UNESCO, \textit{Education for Sustainable Development: A Roadmap}, Paris, France: UNESCO Publishing, 2019.
+
+    \bibitem{vanlehn2011}
+    K. VanLehn, ``The relative effectiveness of human tutoring, intelligent tutoring systems, and other tutoring systems,'' \textit{Educ. Psychologist}, vol. 46, no. 4, pp. 197--221, Oct. 2011.
+
+    \bibitem{wollny2021}
+    N. M. H. Wollny, J. Schneider, D. Di Mitri, J. Joshua, M. Rittmann, and H. Drachsler, ``Are we there yet? - A systematic literature review on chatbots in education,'' \textit{IEEE Trans. Learn. Technol.}, vol. 14, no. 3, pp. 320--334, Jun. 2021.
+
+    \bibitem{kuhail2022}
+    M. A. Kuhail, N. Alturki, S. Alramlawi, and K. Alhejori, ``Interacting with educational chatbots: A systematic review,'' \textit{Education and Information Technologies}, vol. 28, pp. 973--1018, 2023.
+
+    \bibitem{monroe2019}
+    M. C. Monroe, R. R. Plate, A. Oxarart, A. Bowers, and W. A. Chaves, ``Identifying effective climate change education strategies: A systematic review of the research,'' \textit{Environmental Education Research}, vol. 25, no. 6, pp. 791--812, 2019.
+
+    \bibitem{gasevic2015}
+    D. Gasevic, S. Dawson, and G. Siemens, ``Let's not forget translation when talking about learning analytics,'' \textit{J. Learn. Anal.}, vol. 2, no. 1, pp. 72--90, Apr. 2015.
+
+    \bibitem{kotsiantis2012}
+    S. B. Kotsiantis, ``Use of machine learning techniques for educational data mining,'' \textit{Appl. Artif. Intell.}, vol. 26, no. 6, pp. 562--585, Jul. 2012.
+
+    \bibitem{bull2016}
+    S. Bull and J. Kay, ``Open learner models as drivers for metacognitive processes,'' \textit{IEEE Trans. Learn. Technol.}, vol. 9, no. 4, pp. 370--385, Oct.--Dec. 2016.
+
+    \bibitem{attali2006}
+    Y. Attali and J. Burstein, ``Automated essay scoring with e-rater v2.0,'' \textit{J. Technol. Learn. Assessment}, vol. 4, no. 3, pp. 1--30, Feb. 2006.
+
+    \bibitem{nextjs2024}
+    Vercel, ``Next.js App Router Documentation,'' 2024. [Online]. Available: \url{https://nextjs.org/docs}
+
+    \bibitem{encore2024}
+    Encore.dev, ``Building Backend Services with TypeScript,'' 2024. [Online]. Available: \url{https://encore.dev/docs}
+
+    \bibitem{supabase2024}
+    Supabase, ``Row Level Security and Auth,'' 2024. [Online]. Available: \url{https://supabase.com/docs}
+
+    \bibitem{postgresqlRLS}
+    PostgreSQL Global Development Group, ``Row Security Policies,'' PostgreSQL Documentation, 2026. [Online]. Available: \url{https://www.postgresql.org/docs/current/ddl-rowsecurity.html}
+
+    \bibitem{supabaseRLS}
+    Supabase, ``Row Level Security,'' Supabase Documentation, 2026. [Online]. Available: \url{https://supabase.com/docs/guides/database/postgres/row-level-security}
+
+    \bibitem{capacitor2024}
+    Ionic Team, ``Capacitor: Cross-platform Native Runtime,'' 2024. [Online]. Available: \url{https://capacitorjs.com/docs}
+
+    \bibitem{traxler2009}
+    J. Traxler, ``Defining mobile learning in the era of smart devices,'' \textit{Int. J. Mobile Blend. Learn.}, vol. 1, no. 1, pp. 1--12, Jan. 2009.
+    \end{thebibliography}
+
+    % ============================================================================
+    \appendix
+    \chapter{Source Code Layout}
+    \label{app:layout}
+
+    Table~\ref{tab:root_dirs} lists the primary directories of the platform repository.
+
+    \begin{table}[H]
+        \centering
+        \caption{Repository root directories}
+        \label{tab:root_dirs}
+        \begin{tabular}{@{}ll@{}}
+            \toprule
+            \textbf{Directory} & \textbf{Description} \\
+            \midrule
+            \texttt{frontend/} & Next.js web/mobile client application. \\
+            \texttt{backend/} & Encore TypeScript API backend. \\
+            \texttt{evaluator/} & Python FastAPI analysis service and worker scripts. \\
+            \texttt{registrator/} & Vite + React web application for bulk enrollment and credential export. \\
+            \texttt{docker-compose.yml} & Configuration for running the evaluator container. \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \end{document}

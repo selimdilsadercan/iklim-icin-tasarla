@@ -1,0 +1,24 @@
+
+- teknik detaylardan bahsetmissin ama ai ile yapildiklari cok belli oluyor. mesela batch evaluation api kisminda oyle liste liste endpoint verebilirsin yine ama oncesinde detayli aciklaman lazim bu teknik detaylari. hatta paragraf icine yedirebildiklerini paragraf halinde yaz.
+- bu kadar cok asiri teknik rapor gibi degil de paragraflarin aciklayici ve okunabilir oldugu o yogunlukta bir sey daha guzel olur diye dusunuyorum. su sekliyle stajda okudugum raporlara benziyor ve ai oldugu cok net anlasiliyor. hoca da bunun duzeltilmesini ister muhtemelen.
+- template kalan doldurmadigin yerleri doldur
+- formatlamada cok hata var. en temizi latexe gecirmen olur orada bir suru seyle ugrasmamis olursun. ai a tex ve yanindaki dosyalari atip donustturtebilirsin latexe. overleaf veya vscode uzerinden yapabilirsin
+- abstract yazmissin ama format oyle degil en az 1 en fazla 2 sayfa olacak sekilde turkce ve ingilizce ozet yazman lazim ayri ayri. format cok onemli tum
+- chapter isimlerinden chapter diye bahsetme
+- templatedeki structure i al ve icine subsection olarak yaz. mesela senin 3 ve sonraki birkac sectionunu developed approach and system model icine yazman lazim
+- figur hatali renderlaniyor
+- sayfa numaralandirmasi hatali. ilk kisimlar buyuk roma rakamlari olmali ve toop right olmali
+- marginleri kontrol et ama bundan once latexe gecsen cozulecek
+- fontu referansa gore yap
+- kisa kalan bir suru yer var benimki 22 sayfaymis mesela ve 21 tane referansim varmis
+- bir yerde thesis kullaniyorusun graduation project olacak
+- related work asiri zayif kalmis ve kisa
+- related studylerle karsilastirma yaptigin kisimlari koymamissin. orada numerik seyler yoksa qualitative degerlendir. mesela learning platformlarla, iklim egitim araclariyla, teacher dashboardlariyla, chatbot education uygulamalariyla vs karsilastir.
+- referanslara akademik paper da ekle
+- sistemleri neden sectigini de acikla
+- databasedeki tablolari da iliskisini figur koyabilirsin
+- chat ve dashboard screenshot koyabilrisin
+- iosta vercelin domain almadan calismamasindan bahset
+- butun referanslarin text icinde cited olmasi lazim
+- referanslar IEEE formatinda degil
+- gorselleri appendixs icinde de kullanabilirsin. veya detayli yukarida bahsettigim teknik kisimlari.
