@@ -7,6 +7,6 @@
     "dev": "npx concurrently -n NEXT,ENCORE -c blue,green \"npm:frontend\" \"npm:encore\"",
     "frontend": "cd frontend && npm run dev",
     "encore": "cd backend && encore run",
-    "eval": "cd evaluator && npm run eval --"
+    "eval": "cd evaluator && python3 local.py"
   }
 }
