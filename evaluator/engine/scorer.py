@@ -7,11 +7,12 @@ from typing import Dict, Union
 from .prompts import create_content_prompt, create_dialog_prompt
 
 class Scorer:
-    def __init__(self, api_key: str = None, model: str = None):
+    def __init__(self, api_key: str = None, model: str = None, fallback_on_error: bool = True):
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
         # Öncelik: parametre > env > varsayılan
-        self.model = model or os.environ.get("ANTHROPIC_MODEL", "claude-3-haiku-20240307")
+        self.model = model or os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-20250514")
         self.client = anthropic.Anthropic(api_key=self.api_key) if self.api_key else None
+        self.fallback_on_error = fallback_on_error
 
     @staticmethod
     def rule_based_content_score(features: Dict) -> int:
@@ -38,6 +39,8 @@ class Scorer:
         rule_score = self.rule_based_content_score(features) if score_type == "content" else self.rule_based_dialog_score(features)
         
         if not self.client:
+            if not self.fallback_on_error:
+                raise RuntimeError("ANTHROPIC_API_KEY is not configured; LLM scoring cannot continue.")
             return {"score": rule_score, "reasoning": "Sanal Ortam/Rule-based (API Key yok)", "method": "rule_based"}
 
         try:
@@ -63,8 +66,12 @@ class Scorer:
                 result = json.loads(json_match.group(0))
                 result["method"] = "llm"
                 return result
+
+            raise ValueError("LLM response did not contain a JSON object.")
             
         except Exception as e:
+            if not self.fallback_on_error:
+                raise
             print(f"  ⚠ LLM Error: {str(e)}")
             
         return {"score": rule_score, "reasoning": "Rule-based evaluation (LLM error or fallback)", "method": "rule_based"}

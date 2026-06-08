@@ -34,7 +34,7 @@ fi
 # 4. .env dosyasi kontrolu
 if [ ! -f "$SCRIPT_DIR/.env" ]; then
     echo "ANTHROPIC_API_KEY=sk-ant-buraya-yaziniz" > "$SCRIPT_DIR/.env"
-    echo "ANTHROPIC_MODEL=claude-3-haiku-20240307" >> "$SCRIPT_DIR/.env"
+    echo "ANTHROPIC_MODEL=claude-sonnet-4-20250514" >> "$SCRIPT_DIR/.env"
     echo "[3/3] .env dosyasi olusturuldu."
 else
     echo "[3/3] .env mevcut."
