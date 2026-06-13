@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Design for Climate Graduation Project Poster - ITU</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- html2pdf.js library for direct vector/canvas PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- CONTROL BAR -->
+  <div class="control-bar">
+    <button class="control-btn" onclick="zoomOut()" title="Uzaklaştır" style="font-size: 11pt; font-weight: 800; padding-left: 4mm; padding-right: 4mm;">−</button>
+    <div class="zoom-display" id="zoom-val">35%</div>
+    <button class="control-btn" onclick="zoomIn()" title="Yakınlaştır" style="font-size: 11pt; font-weight: 800; padding-left: 4mm; padding-right: 4mm;">+</button>
+    <button class="control-btn" onclick="location.reload()" title="Yenile">🔄 Yenile</button>
+    <button class="control-btn pdf-btn" onclick="downloadPDF()">📄 Save PDF (A1)</button>
+  </div>
+
+  <div class="poster-wrapper">
+    <div class="poster-container" id="poster">
+    <div class="main-content">
+      <!-- HEADER -->
+      <header>
+      <div class="header-text">
+        <h1>Design for Climate: A Full-Stack AI Learning Platform for Middle School Climate Education</h1>
+        <div class="header-sub">
+          Web & mobile platform integrating AI chat personas, teacher analytics, secure student data isolation, and asynchronous pedagogical evaluation.
+        </div>
+        <div class="header-meta">
+          <div><span>Student:</span> Selim Dilşad Ercan (150210104)</div>
+          <div><span>Advisor:</span> Assoc. Prof. Dr. Gökhan İnce</div>
+          <div><span>Department:</span> Computer Engineering Department</div>
+          <div><span>University:</span> Istanbul Technical University</div>
+        </div>
+      </div>
+      <div class="logo-container" style="display: flex; justify-content: flex-end; align-items: center;">
+        <img src="logo.png" alt="ITU Logo" style="height: 40mm; object-fit: contain;">
+      </div>
+    </header>
+
+    <!-- CONTENT GRID -->
+    <div class="content-grid">
+      
+      <!-- COLUMN 1: Problem, Solution, AI Personas -->
+      <div class="column">
+        
+        <!-- PROBLEM -->
+        <div class="card card-grow intro-card">
+          <h2>Problem</h2>
+          <div class="card-body">
+            <p>
+              Middle school climate education relies on static materials with limited personal feedback. Research-stage AI models and evaluation scripts are also difficult to deploy securely in real school environments.
+            </p>
+          </div>
+        </div>
+
+        <!-- SOLUTION -->
+        <div class="card card-grow intro-card">
+          <h2>Proposed Platform</h2>
+          <div class="card-body">
+            <p>
+              A full-stack web and mobile learning platform that connects students with climate-focused AI personas, providing teachers with secure analytics and pedagogical evaluation dashboards.
+            </p>
+          </div>
+        </div>
+
+        <!-- AI PERSONAS -->
+        <div class="card card-grow">
+          <h2>AI Personas</h2>
+          <div class="card-body">
+            <div class="personas-grid">
+              <div class="persona-card yaprak">
+                <img class="persona-avatar" src="../images/bot/yaprak.jpeg" alt="Yaprak">
+                <div class="persona-info">
+                  <div class="persona-title">Yaprak</div>
+                  <div class="persona-desc">Sustainable lifestyle & recycling</div>
+                </div>
+              </div>
+              <div class="persona-card robi">
+                <img class="persona-avatar" src="../images/bot/robi.jpeg" alt="Robi">
+                <div class="persona-info">
+                  <div class="persona-title">Robi</div>
+                  <div class="persona-desc">Clean energy</div>
+                </div>
+              </div>
+              <div class="persona-card bugday">
+                <img class="persona-avatar" src="../images/bot/bugday.jpeg" alt="Buğday">
+                <div class="persona-info">
+                  <div class="persona-title">Buğday</div>
+                  <div class="persona-desc">Sustainable agriculture</div>
+                </div>
+              </div>
+              <div class="persona-card damla">
+                <img class="persona-avatar" src="../images/bot/damla.jpeg" alt="Damla">
+                <div class="persona-info">
+                  <div class="persona-title">Damla</div>
+                  <div class="persona-desc">Water conservation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VERIFIED CAPABILITIES -->
+        <div class="card">
+          <h2>Verified Capabilities</h2>
+          <div class="card-body">
+            <ul class="verified-list">
+              <li><span class="check-icon">✓</span> Student authentication</li>
+              <li><span class="check-icon">✓</span> Streaming AI chat</li>
+              <li><span class="check-icon">✓</span> Admin dashboard</li>
+              <li><span class="check-icon">✓</span> Batch evaluation jobs</li>
+              <li><span class="check-icon">✓</span> Row-Level Security</li>
+              <li><span class="check-icon">✓</span> Mobile packaging</li>
+            </ul>
+          </div>
+        </div>
+        <!-- ENGINEERING CHALLENGES SOLVED -->
+        <div class="card">
+          <h2>Engineering Challenges Solved</h2>
+          <div class="card-body">
+            <ul class="challenges-list">
+              <li>
+                <span class="challenge-icon">
+                  <svg class="challenge-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </span>
+                <div><strong>Mobile CORS Handling:</strong> Capacitor client support for native mobile environments.</div>
+              </li>
+              <li>
+                <span class="challenge-icon">
+                  <svg class="challenge-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </span>
+                <div><strong>Long-Running Evaluation:</strong> Async queue prevents HTTP gateway timeouts.</div>
+              </li>
+              <li>
+                <span class="challenge-icon">
+                  <svg class="challenge-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </span>
+                <div><strong>Student Data Privacy:</strong> RLS policies enforce role-based access control.</div>
+              </li>
+              <li>
+                <span class="challenge-icon">
+                  <svg class="challenge-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </span>
+                <div><strong>Bulk School Onboarding:</strong> CSV/Excel import and credential PDF generation.</div>
+              </li>
+              <li>
+                <span class="challenge-icon">
+                  <svg class="challenge-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                </span>
+                <div><strong>Real-Time AI Chat:</strong> SSE streaming for low-latency conversational interaction.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- COLUMN 2: System Architecture & Async Pipeline -->
+      <div class="column">
+        
+        <div class="card card-grow">
+          <h2>System Architecture</h2>
+          <div class="card-body">
+            <div class="schema-container" style="background: none; border: none; padding: 0;">
+              <img src="../system.png" alt="System Architecture" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
+            </div>
+          </div>
+        </div>
+
+        <!-- DEVELOPED MODULES -->
+        <div class="card card-grow">
+          <h2>Developed Modules</h2>
+          <div class="card-body">
+            <div class="modules-grid">
+              <div class="module-mini-card student">
+                <span class="module-icon">
+                  <svg class="module-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                </span>
+                <div class="module-details">
+                  <div class="module-title">Student Client</div>
+                  <div class="module-desc">Persona selection, chat UI, profile statistics</div>
+                </div>
+              </div>
+              <div class="module-mini-card teacher">
+                <span class="module-icon">
+                  <svg class="module-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                </span>
+                <div class="module-details">
+                  <div class="module-title">Teacher Dashboard</div>
+                  <div class="module-desc">Class analytics, message trends, student reports</div>
+                </div>
+              </div>
+              <div class="module-mini-card backend">
+                <span class="module-icon">
+                  <svg class="module-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </span>
+                <div class="module-details">
+                  <div class="module-title">Backend Services</div>
+                  <div class="module-desc">REST APIs, authorization checks, async job queue</div>
+                </div>
+              </div>
+              <div class="module-mini-card evaluator">
+                <span class="module-icon">
+                  <svg class="module-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1 0-3.12 3 3 0 0 1 0-4.88 2.5 2.5 0 0 1 0-3.12A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 0-3.12 3 3 0 0 0 0-4.88 2.5 2.5 0 0 0 0-3.12A2.5 2.5 0 0 0 14.5 2Z"></path></svg>
+                </span>
+                <div class="module-details">
+                  <div class="module-title">Evaluation Bridge</div>
+                  <div class="module-desc">Python NLP worker integration and callbacks</div>
+                </div>
+              </div>
+              <div class="module-mini-card registrator">
+                <span class="module-icon">
+                  <svg class="module-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                </span>
+                <div class="module-details">
+                  <div class="module-title">Registrator Tool</div>
+                  <div class="module-desc">Bulk student import and credential card printing</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ASYNC PIPELINE -->
+        <div class="card card-grow">
+          <h2>Async Evaluation Pipeline</h2>
+          <div class="card-body">
+            <div class="pipeline-flow">
+              <div class="pipeline-step">
+                <span class="step-icon">📝</span>
+                <span class="step-text">Teacher creates job</span>
+              </div>
+              <div class="pipeline-arrow">↓</div>
+              <div class="pipeline-step">
+                <span class="step-icon">⚙️</span>
+                <span class="step-text">Backend queues job</span>
+              </div>
+              <div class="pipeline-arrow">↓</div>
+              <div class="pipeline-step">
+                <span class="step-icon">🧠</span>
+                <span class="step-text">Python evaluator scores</span>
+              </div>
+              <div class="pipeline-arrow">↓</div>
+              <div class="pipeline-step">
+                <span class="step-icon">📊</span>
+                <span class="step-text">Dashboard updates</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- COLUMN 3: Contributions, Impact, Future Work -->
+      <div class="column">
+        
+        <!-- KEY CONTRIBUTIONS -->
+        <div class="card">
+          <h2>Key Engineering Contributions</h2>
+          <div class="card-body">
+            <ul class="contributions-list">
+              <li><span class="contrib-icon">📱</span> Next.js + Capacitor for web/mobile client</li>
+              <li><span class="contrib-icon">⚙️</span> Encore.dev backend & async job queue</li>
+              <li><span class="contrib-icon">🔒</span> Supabase PostgreSQL + RLS security</li>
+              <li><span class="contrib-icon">💬</span> SSE-based streaming AI chat</li>
+              <li><span class="contrib-icon">📄</span> Registrator for bulk onboarding & PDF cards</li>
+              <li><span class="contrib-icon">🧠</span> Python NLP evaluator integration</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- FIELD USE / RESULTS -->
+        <div class="card results-box card-grow">
+          <h2>Field Use / Results</h2>
+          <div class="card-body">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-number">700+</div>
+                <div class="stat-label">Students</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number">15,000+</div>
+                <div class="stat-label">Messages Sent</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number">60+</div>
+                <div class="stat-label">Classes</div>
+              </div>
+            </div>
+            <p class="impact-text">
+              Used in real school settings to support classroom-scale climate education.
+            </p>
+          </div>
+        </div>
+
+        <!-- SAMPLE PEDAGOGICAL ANALYSIS -->
+        <div class="card">
+          <h2>Sample Pedagogical Analysis</h2>
+          <div class="card-body">
+            <div class="analysis-box">
+              <div class="analysis-header">
+                <div class="analysis-score-container">
+                  <div class="analysis-score-label">DEVELOPMENT SCORE</div>
+                  <div class="analysis-score-value">4.6 <span>/ 10</span></div>
+                </div>
+                <div class="analysis-meta">
+                  <div class="analysis-meta-item"><span>Participation:</span> <span class="badge high">High</span></div>
+                  <div class="analysis-meta-item"><span>Trend:</span> <span class="badge stable">Stable</span></div>
+                </div>
+              </div>
+              <div class="analysis-section">
+                <div class="analysis-section-title">Educator Feedback</div>
+                <div class="analysis-text feedback">
+                  "Student Yusuf shows active engagement (25 messages) in water and climate topics, but low content depth suggests a need for structured support in concept mapping and design processes."
+                </div>
+              </div>
+              <div class="analysis-section">
+                <div class="analysis-section-title">Message Scoring Output (AI)</div>
+                <div class="analysis-text-grid">
+                  <div class="analysis-sub-card">
+                    <div class="sub-card-title">CONTENT SCORE: 1/3</div>
+                    <div class="sub-card-desc">Contains only the basic term 'design'; lacks advanced environmental vocabulary or concept connections.</div>
+                  </div>
+                  <div class="analysis-sub-card">
+                    <div class="sub-card-title">DIALOGUE LEVEL: C</div>
+                    <div class="sub-card-desc">Formulates questions and seeks feedback, advancing the dialogue, but lacks complex reasoning or systematic planning.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESEARCH-TO-PRODUCT INTEGRATION -->
+        <div class="card">
+          <h2>Research-to-Product Integration</h2>
+          <div class="card-body">
+            <ul class="integration-list">
+              <li>
+                <span class="integration-icon">⚡</span>
+                <div><strong>AI Chat Integration:</strong> Streaming climate model responses through SSE.</div>
+              </li>
+              <li>
+                <span class="integration-icon">⚙️</span>
+                <div><strong>Async Evaluation:</strong> Queue-based bridge between backend and NLP worker.</div>
+              </li>
+              <li>
+                <span class="integration-icon">🔒</span>
+                <div><strong>Data Isolation:</strong> Role-based access with PostgreSQL RLS.</div>
+              </li>
+              <li>
+                <span class="integration-icon">📄</span>
+                <div><strong>Registrator:</strong> Bulk onboarding and printable credential cards.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- FUTURE WORK -->
+        <div class="card">
+          <h2>Future Work</h2>
+          <div class="card-body">
+            <ul>
+              <li>Direct Encore hosting for Python evaluator</li>
+              <li>Local SQLite caching for offline mobile use</li>
+              <li>Downloadable PDF progress reports</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- TECHNOLOGIES USED -->
+        <div class="card">
+          <h2>Technologies Used</h2>
+          <div class="card-body">
+            <div class="tech-grid">
+              <span class="tech-badge">
+                <svg class="tech-icon" viewBox="0 0 128 128"><path d="M64 0C28.7 0 0 28.7 0 64s28.7 64 64 64c22.1 0 41.5-11.2 53-28.1L53.1 39.6h-7.3V88h7.2V50.9l51.9 61c9-12.8 14.3-28.3 14.3-45.1C128 28.7 99.3 0 64 0zm0 10.8c27.1 0 49.5 20.3 52.8 46.8L59 10.8h5zM96.6 88h7.2V39.6h-7.2V88z"/></svg>
+                Next.js
+              </span>
+              <span class="tech-badge">
+                <svg class="tech-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7"><ellipse cx="50" cy="50" rx="15" ry="40" transform="rotate(0 50 50)"/><ellipse cx="50" cy="50" rx="15" ry="40" transform="rotate(60 50 50)"/><ellipse cx="50" cy="50" rx="15" ry="40" transform="rotate(120 50 50)"/><circle cx="50" cy="50" r="5" fill="currentColor"/></svg>
+                React
+              </span>
+              <span class="tech-badge">
+                <svg class="tech-icon" viewBox="0 0 24 24"><path d="M12 6.036c-2.287 0-3.81 1.143-4.571 3.428 1.143-.38 2.095-.19 2.857.572.505.505.865.918 1.571 1.624C13.064 12.868 14.353 14.156 16.57 14.156c2.287 0 3.81-1.143 4.572-3.429-1.143.381-2.095.19-2.857-.571-.505-.505-.865-.919-1.572-1.625C15.506 7.324 14.218 6.036 12 6.036zm-6.857 6.858c-2.287 0-3.81 1.143-4.572 3.428 1.143-.38 2.095-.19 2.857.571.505.505.865.92 1.572 1.626C6.206 19.724 7.494 21.012 9.711 21.012c2.287 0 3.81-1.143 4.572-3.428-1.143.38-2.095-.19-2.857-.572-.505-.505-.865-.918-1.571-1.624C8.65 14.186 7.362 12.894 5.143 12.894z"/></svg>
+                Tailwind
+              </span>
+              <span class="tech-badge">
+                <svg class="tech-icon" viewBox="0 0 24 24"><path d="M12 0a12 12 0 0 0-8.485 20.485 1 1 0 0 0 1.415-1.414A10 10 0 1 1 12 22a9.98 9.98 0 0 1-5.657-1.758 1 1 0 1 0-1.13 1.654A12 12 0 1 0 12 0zm-3 7a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9zm-1 5a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8zm1 5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9z"/></svg>
+                Capacitor
+              </span>
+              <span class="tech-badge">
+                <svg class="tech-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Encore.dev
+              </span>
+              <span class="tech-badge">
+                <svg class="tech-icon" viewBox="0 0 24 24"><path d="M18.89 11.23h-6.22l5.13-10.15a.46.46 0 0 0-.58-.6L4 6.74a.84.84 0 0 0-.16 1.43l6.23 4.6-5.13 10.15a.46.46 0 0 0 .58.6l13.21-6.26a.84.84 0 0 0 .16-1.43z"/></svg>
+                Supabase
+              </span>
+              <span class="tech-badge">
+                <svg class="tech-icon" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 4.887 2.917 9.094 7.086 10.957.172.039.34.078.514.117v-2.029c-1.895-.494-3.155-1.921-3.66-3.83-.078-.293.078-.586.371-.664.293-.078.586.078.664.371.39 1.484 1.34 2.578 2.625 2.97V18c0-.39.31-.7.7-.7.39 0 .7.31.7.7v1.898c2.148-.22 3.86-2.016 3.86-4.198 0-2.316-1.884-4.2-4.2-4.2s-4.2 1.884-4.2 4.2c0 .39-.31.7-.7.7-.39 0-.7-.31-.7-.7 0-3.086 2.514-5.6 5.6-5.6s5.6 2.514 5.6 5.6c0 2.976-2.324 5.4-5.266 5.586A11.96 11.96 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+                PostgreSQL
+              </span>
+              <span class="tech-badge">
+                <svg class="tech-icon" viewBox="0 0 24 24"><path d="M12 0a12 12 0 1 0 12 12A12.013 12.013 0 0 0 12 0zm4.24 9.17-5.18 5.17v4.61l-1.07-1.07v-3.54l-2.61 2.61-1.37-1.37 3.98-3.98H6.45l1.07-1.07h4.63l2.84-2.84z"/></svg>
+                FastAPI
+              </span>
+              <span class="tech-badge">
+                <svg class="tech-icon" viewBox="0 0 24 24"><path d="M13.983 11.078h2.119c.102 0 .186-.083.186-.185V9.006a.185.185 0 0 0-.186-.186h-2.119a.185.185 0 0 0-.185.186v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 0 0 .186-.186V3.575a.186.186 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.186.185v1.888c0 .102.084.186.186.186m0 2.774h2.118a.185.185 0 0 0 .186-.185V6.348a.185.185 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.186.185v1.887c0 .102.084.186.186.186m-2.954 2.656h2.119c.102 0 .185-.083.185-.185V9.006a.185.185 0 0 0-.185-.186H8.075a.185.185 0 0 0-.185.186v1.888c0 .102.083.185.185.185m0-2.774h2.119c.102 0 .185-.083.185-.186V6.348a.185.185 0 0 0-.185-.185H8.075a.185.185 0 0 0-.185.185v1.887c0 .102.083.186.185.186m-2.955 2.774h2.119c.105 0 .185-.083.185-.185V9.006a.185.185 0 0 0-.185-.186H5.12a.185.185 0 0 0-.185.186v1.888c0 .102.083.185.185.185m-2.95 0h2.119c.102 0 .185-.083.185-.185V9.006a.185.185 0 0 0-.185-.186H2.17a.185.185 0 0 0-.185.186v1.888c0 .102.083.185.185.185m-2.954-2.774h2.119c.102 0 .185-.083.185-.186V6.348a.185.185 0 0 0-.185-.185h-2.119a.185.185 0 0 0-.185.185v1.887c0 .102.083.186.185.186m5.908-2.774h2.119c.102 0 .185-.083.185-.186V3.575a.185.185 0 0 0-.185-.185H5.12a.185.185 0 0 0-.185.185v1.888c0 .102.083.186.185.186m-2.954 0h2.119c.102 0 .185-.083.185-.186V3.575a.185.185 0 0 0-.185-.185H2.17a.185.185 0 0 0-.185.185v1.888c0 .102.083.186.185.186M1.216 12.07c0 5.48 4.946 5.854 5.307 5.854c.025 0 .048-.004.074-.004c.24-.005.45-.145.541-.366c.196-.479.725-1.78.725-1.78s-.361-.202-.676-.328c-.687-.272-1.34-.648-1.92-1.121c-.24-.193-.534-.41-.75-.629c-.026-.025-.034-.034-.055-.059c-.327-.367-.615-.785-.856-1.233c-.099-.185-.175-.37-.253-.559c-.059-.142-.11-.285-.16-.431c-.07-.204-.127-.412-.178-.622c-.058-.239-.092-.482-.109-.728H1.122c-.165 0-.327.012-.491.03c-.017.002-.036.002-.052.005c-.08.01-.152.043-.204.093c-.053.05-.087.12-.095.195a3.7 3.7 0 0 0-.064.63zm22.42-1.782c-.443-.902-1.324-1.503-2.316-1.503c-.13 0-.264.01-.397.033a.243.243 0 0 0-.188.163a11.23 11.23 0 0 1-2.923 4.391a10.457 10.457 0 0 1-3.666 2.302c-.085.03-.162.088-.216.163c-.9 1.258-2.33 2.016-3.87 2.016c-.277 0-.555-.024-.83-.075a.25.25 0 0 0-.263.15a4.8 4.8 0 0 1-1.395 1.956c-.078.064-.108.169-.077.265c.252.795.666 1.517 1.217 2.12a.25.25 0 0 0 .265.07a11.758 11.758 0 0 0 5.46-3.087a12.3 12.3 0 0 0 3.256-5.187c.39-.015.772-.075 1.135-.177a.25.25 0 0 0 .178-.293c-.097-.478-.145-.968-.145-1.462c0-1.637.525-3.149 1.417-4.394a.254.254 0 0 0-.005-.3z"/></svg>
+                Docker
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- END-TO-END CLASSROOM WORKFLOW -->
+    <div class="card workflow-card">
+      <h2>End-to-End Classroom Workflow</h2>
+      <div class="card-body">
+        <div class="workflow-steps">
+          <div class="workflow-step">
+            <div class="step-num">1</div>
+            <div class="step-title">Students Log In</div>
+            <div class="step-desc">Secure role-based access</div>
+          </div>
+          <div class="step-divider">➔</div>
+          <div class="workflow-step">
+            <div class="step-num">2</div>
+            <div class="step-title">Choose AI Persona</div>
+            <div class="step-desc">Select one of 4 climate bots</div>
+          </div>
+          <div class="step-divider">➔</div>
+          <div class="workflow-step">
+            <div class="step-num">3</div>
+            <div class="step-title">Chat & Learn</div>
+            <div class="step-desc">Real-time AI conversations</div>
+          </div>
+          <div class="step-divider">➔</div>
+          <div class="workflow-step">
+            <div class="step-num">4</div>
+            <div class="step-title">Trigger Evaluation</div>
+            <div class="step-desc">Teacher starts analysis</div>
+          </div>
+          <div class="step-divider">➔</div>
+          <div class="workflow-step">
+            <div class="step-num">5</div>
+            <div class="step-title">NLP Scoring</div>
+            <div class="step-desc">Worker evaluates responses</div>
+          </div>
+          <div class="step-divider">➔</div>
+          <div class="workflow-step">
+            <div class="step-num">6</div>
+            <div class="step-title">Results Dashboard</div>
+            <div class="step-desc">Teacher reviews statistics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUDENT & TEACHER INTERFACES -->
+    <div class="card interfaces-card">
+      <h2>Student & Teacher Interfaces</h2>
+      <div class="card-body">
+        <div class="interfaces-grid">
+          <div class="interface-item">
+            <img src="../images/home.png" alt="Student Home">
+            <div class="interface-label">Student Home Dashboard</div>
+          </div>
+          <div class="interface-item">
+            <img src="../images/chat.png" alt="Chat Interface">
+            <div class="interface-label">AI Persona Chat (Robi)</div>
+          </div>
+          <div class="interface-item">
+            <img src="../images/dashboard.png" alt="Teacher Analytics">
+            <div class="interface-label">Teacher Analytics Dashboard</div>
+          </div>
+          <div class="interface-item">
+            <img src="../images/batch.png" alt="Batch Analysis">
+            <div class="interface-label">Registrator Batch Upload</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <div class="footer-university">Istanbul Technical University</div>
+        <div class="footer-subtext">Faculty of Computer and Informatics Engineering · Computer Engineering Department</div>
+      </div>
+      <div class="footer-right">
+        Selim Dilşad Ercan · 150210104 · 2026
+      </div>
+    </div>
+  </footer>
+
+  </div>
+</div>
+
+<script>
+  let zoomLevel = parseFloat(localStorage.getItem('poster-zoom')) || 0.35;
+  const poster = document.getElementById('poster');
+  const zoomVal = document.getElementById('zoom-val');
+  const wrapper = poster.parentElement;
+
+  function updateZoom() {
+    poster.style.transform = `scale(${zoomLevel})`;
+    poster.style.transformOrigin = 'top center';
+    zoomVal.innerText = Math.round(zoomLevel * 100) + '%';
+    
+    wrapper.style.height = (841 * zoomLevel) + 'mm';
+    wrapper.style.width = (594 * zoomLevel) + 'mm';
+    
+    localStorage.setItem('poster-zoom', zoomLevel);
+  }
+
+  function zoomIn() {
+    zoomLevel = Math.min(zoomLevel + 0.05, 2.0);
+    updateZoom();
+  }
+
+  // Round to nearest 0.05 to avoid floats like 0.29999999999999993
+  function zoomOut() {
+    zoomLevel = Math.max(zoomLevel - 0.05, 0.1);
+    zoomLevel = Math.round(zoomLevel * 100) / 100;
+    updateZoom();
+  }
+
+  function loadZoom() {
+    updateZoom();
+  }
+
+  function downloadPDF() {
+    const element = document.getElementById('poster');
+    const originalTransform = element.style.transform;
+    const originalHeight = wrapper.style.height;
+    const originalWidth = wrapper.style.width;
+    const originalShadow = element.style.boxShadow;
+    const originalOverflow = element.style.overflow;
+    
+    // Reset zoom and shadow temporarily for 1:1 capture
+    element.style.transform = 'none';
+    element.style.boxShadow = 'none';
+    element.style.overflow = 'hidden';
+    wrapper.style.height = '841mm';
+    wrapper.style.width = '594mm';
+    
+    const btn = document.querySelector('.pdf-btn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '⏳ Generating PDF...';
+    btn.disabled = true;
+
+    function restore() {
+      element.style.transform = originalTransform;
+      element.style.boxShadow = originalShadow;
+      element.style.overflow = originalOverflow;
+      wrapper.style.height = originalHeight;
+      wrapper.style.width = originalWidth;
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
+
+    // Wait for browser reflow so offsetWidth/Height reflect the reset dimensions
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const w = element.offsetWidth;
+        const h = element.offsetHeight;
+
+        const opt = {
+          margin: 0,
+          filename: 'design-for-climate-poster.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { 
+            scale: 2, 
+            useCORS: true,
+            logging: false,
+            scrollX: 0,
+            scrollY: 0,
+            width: w,
+            height: h,
+            windowWidth: w,
+            windowHeight: h
+          },
+          // Use element's actual pixel size as page format (adding a small buffer to prevent blank second page)
+          jsPDF: { unit: 'px', format: [w, h + 2], orientation: 'portrait', hotfixes: ['px_scaling'] },
+          pagebreak: { mode: 'avoid-all' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+          restore();
+        }).catch(err => {
+          console.warn('Direct PDF generation failed. Falling back to browser print dialog.', err);
+          restore();
+          window.print();
+        });
+      });
+    });
+  }
+
+  // Initial load
+  window.addEventListener('DOMContentLoaded', loadZoom);
+</script>
+
+</body>
+</html>
